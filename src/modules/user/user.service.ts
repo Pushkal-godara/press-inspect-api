@@ -108,7 +108,7 @@ export class UserService {
 
   async updateLastLogin(id: number): Promise<void> {
     const user = await this.findById(id);
-    await user.update({ lastLogin: new Date() });
+    await user.update({ last_login: new Date() });
   }
 
   private async hashPassword(password: string): Promise<string> {

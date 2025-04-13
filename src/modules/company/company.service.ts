@@ -65,10 +65,10 @@ export class CompanyService {
     });
   }
 
-  async findPlantsByCompanyId(companyId: number): Promise<Plant[]> {
-    await this.findCompanyById(companyId);
+  async findPlantsByCompanyId(company_id: number): Promise<Plant[]> {
+    await this.findCompanyById(company_id);
     return this.plantModel.findAll({
-      where: { companyId },
+      where: { company_id },
     });
   }
 
@@ -101,10 +101,10 @@ export class CompanyService {
     return this.departmentModel.create({ ...createDepartmentDto });
   }
 
-  async findDepartmentsByPlantId(plantId: number): Promise<Department[]> {
-    await this.findPlantById(plantId);
+  async findDepartmentsByPlantId(plant_id: number): Promise<Department[]> {
+    await this.findPlantById(plant_id);
     return this.departmentModel.findAll({
-      where: { plantId },
+      where: { plant_id },
     });
   }
 
@@ -137,10 +137,10 @@ export class CompanyService {
     return this.productionLineModel.create({ ...createProductionLineDto });
   }
 
-  async findProductionLinesByDepartmentId(departmentId: number): Promise<ProductionLine[]> {
-    await this.findDepartmentById(departmentId);
+  async findProductionLinesByDepartmentId(department_id: number): Promise<ProductionLine[]> {
+    await this.findDepartmentById(department_id);
     return this.productionLineModel.findAll({
-      where: { departmentId },
+      where: { department_id },
     });
   }
 

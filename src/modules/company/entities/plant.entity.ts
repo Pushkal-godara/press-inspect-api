@@ -30,7 +30,19 @@ export class Plant extends Model<Plant> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  companyId: number;
+  company_id: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @BelongsTo(() => Company)
   company: Company;

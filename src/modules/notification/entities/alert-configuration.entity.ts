@@ -43,8 +43,21 @@ export class AlertConfiguration extends Model<AlertConfiguration> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  inspectionJobId: number;
+  inspection_job_id: number;
 
   @BelongsTo(() => InspectionJob)
   inspectionJob: InspectionJob;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 }

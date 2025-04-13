@@ -37,4 +37,17 @@ export class DefectType extends Model<DefectType> {
     defaultValue: SeverityLevel.LOW,
   })
   severity: SeverityLevel;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 }

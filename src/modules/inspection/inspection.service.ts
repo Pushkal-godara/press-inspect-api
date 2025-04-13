@@ -32,7 +32,7 @@ export class InspectionService {
     
     return this.inspectionJobModel.create({
       ...createInspectionJobDto,
-      createdBy: userId,
+      created_by: userId,
     });
   }
 
@@ -42,11 +42,11 @@ export class InspectionService {
     });
   }
 
-  async findInspectionJobsByProductionLine(productionLineId: number): Promise<InspectionJob[]> {
-    await this.companyService.findProductionLineById(productionLineId);
+  async findInspectionJobsByProductionLine(production_line_id: number): Promise<InspectionJob[]> {
+    await this.companyService.findProductionLineById(production_line_id);
     
     return this.inspectionJobModel.findAll({
-      where: { productionLineId },
+      where: { production_line_id },
       include: [QualityParameter],
     });
   }
@@ -88,11 +88,11 @@ export class InspectionService {
     return this.qualityParameterModel.create({ ...createQualityParameterDto });
   }
 
-  async findQualityParametersByInspectionJob(inspectionJobId: number): Promise<QualityParameter[]> {
-    await this.findInspectionJobById(inspectionJobId);
+  async findQualityParametersByInspectionJob(inspection_job_id: number): Promise<QualityParameter[]> {
+    await this.findInspectionJobById(inspection_job_id);
     
     return this.qualityParameterModel.findAll({
-      where: { inspectionJobId },
+      where: { inspection_job_id },
     });
   }
 

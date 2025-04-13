@@ -1,4 +1,3 @@
-// Update in src/modules/user/entities/role.entity.ts
 import { Table, Column, Model, DataType, HasMany, BelongsToMany } from 'sequelize-typescript';
 import { User } from './user.entity';
 import { Permission } from './permission.entity';
@@ -27,6 +26,19 @@ export class Role extends Model<Role> {
     allowNull: true,
   })
   description: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 
   @HasMany(() => User)
   users: User[];

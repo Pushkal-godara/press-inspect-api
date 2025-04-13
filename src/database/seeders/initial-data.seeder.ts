@@ -11,6 +11,9 @@ import { Department } from '../../modules/company/entities/department.entity';
 import { ProductionLine } from '../../modules/company/entities/production-line.entity';
 import { Equipment, EquipmentType } from '../../modules/equipment/entities/equipment.entity';
 import { DefectType, SeverityLevel } from '../../modules/inspection/entities/defect-type.entity';
+import { InspectionJob } from '../../modules/inspection/entities/inspection-job.entity';
+import { QualityParameter } from '../../modules/inspection/entities/quality-parameter.entity';
+import { AlertConfiguration } from '../../modules/notification/entities/alert-configuration.entity';
 
 @Injectable()
 export class InitialDataSeeder {
@@ -33,6 +36,12 @@ export class InitialDataSeeder {
     private equipmentModel: typeof Equipment,
     @InjectModel(DefectType)
     private defectTypeModel: typeof DefectType,
+    @InjectModel(InspectionJob)
+    private inspectionJobModel: typeof InspectionJob,
+    @InjectModel(QualityParameter)
+    private qualityParameterModel: typeof QualityParameter,
+    @InjectModel(AlertConfiguration)
+    private alertConfigurationModel: typeof AlertConfiguration,
   ) {}
 
   async seed() {
@@ -51,6 +60,9 @@ export class InitialDataSeeder {
     await this.seedProductionLines();
     await this.seedEquipment();
     await this.seedDefectTypes();
+    await this.seedInspectionJobs();
+    await this.seedQualityParameters();
+    await this.seedAlertConfigurations();
     console.log('Database seeding completed!');
   }
 
@@ -219,20 +231,20 @@ export class InitialDataSeeder {
       {
         name: 'Press Inspection Admin',
         address: '123 Admin Street, New York, NY 10001',
-        contactInfo: { email: 'admin@pressinspection.com', phone: '123-456-7890' },
-        subscriptionStatus: 'active',
+        contact_info: { email: 'admin@pressinspection.com', phone: '123-456-7890' },
+        subscription_status: 'active',
       },
       {
         name: 'Acme Printing Co.',
         address: '456 Print Avenue, Chicago, IL 60601',
-        contactInfo: { email: 'info@acmeprinting.com', phone: '312-555-1234' },
-        subscriptionStatus: 'active',
+        contact_info: { email: 'info@acmeprinting.com', phone: '312-555-1234' },
+        subscription_status: 'active',
       },
       {
         name: 'Global Manufacturing Inc.',
         address: '789 Industry Blvd, Los Angeles, CA 90001',
-        contactInfo: { email: 'contact@globalmanufacturing.com', phone: '213-555-6789' },
-        subscriptionStatus: 'active',
+        contact_info: { email: 'contact@globalmanufacturing.com', phone: '213-555-6789' },
+        subscription_status: 'active',
       },
     ];
 
@@ -259,41 +271,41 @@ export class InitialDataSeeder {
         username: 'admin',
         email: 'admin@example.com',
         password: passwordHash,
-        firstName: 'Admin',
-        lastName: 'User',
-        isActive: true,
-        roleId: adminRole.id,
-        companyId: adminCompany.id,
+        first_name: 'Admin',
+        last_name: 'User',
+        is_active: true,
+        role_id: adminRole.id,
+        company_id: adminCompany.id,
       },
       {
         username: 'manager',
         email: 'manager@example.com',
         password: passwordHash,
-        firstName: 'Manager',
-        lastName: 'User',
-        isActive: true,
-        roleId: managerRole.id,
-        companyId: adminCompany.id,
+        first_name: 'Manager',
+        last_name: 'User',
+        is_active: true,
+        role_id: managerRole.id,
+        company_id: adminCompany.id,
       },
       {
         username: 'operator',
         email: 'operator@example.com',
         password: passwordHash,
-        firstName: 'Operator',
-        lastName: 'User',
-        isActive: true,
-        roleId: operatorRole.id,
-        companyId: adminCompany.id,
+        first_name: 'Operator',
+        last_name: 'User',
+        is_active: true,
+        role_id: operatorRole.id,
+        company_id: adminCompany.id,
       },
       {
         username: 'inspector',
         email: 'inspector@example.com',
         password: passwordHash,
-        firstName: 'Inspector',
-        lastName: 'User',
-        isActive: true,
-        roleId: inspectorRole.id,
-        companyId: adminCompany.id,
+        first_name: 'Inspector',
+        last_name: 'User',
+        is_active: true,
+        role_id: inspectorRole.id,
+        company_id: adminCompany.id,
       },
     ];
 
@@ -312,28 +324,28 @@ export class InitialDataSeeder {
       {
         name: 'North Plant',
         location: 'Chicago, IL',
-        companyId: 1,
+        company_id: 1,
       },
       {
         name: 'South Plant',
         location: 'Dallas, TX',
-        companyId: 1,
+        company_id: 1,
       },
       {
         name: 'Main Factory',
         location: 'Detroit, MI',
-        companyId: 2,
+        company_id: 2,
       },
       {
         name: 'West Coast Facility',
         location: 'Los Angeles, CA',
-        companyId: 3,
+        company_id: 3,
       },
     ];
 
     for (const plant of plants) {
       await this.plantModel.findOrCreate({
-        where: { name: plant.name, companyId: plant.companyId },
+        where: { name: plant.name, company_id: plant.company_id },
         defaults: plant,
       });
     }
@@ -345,29 +357,29 @@ export class InitialDataSeeder {
     const departments = [
       {
         name: 'Printing Department',
-        plantId: 1,
+        plant_id: 1,
       },
       {
         name: 'Quality Control',
-        plantId: 1,
+        plant_id: 1,
       },
       {
         name: 'Sheet Printing',
-        plantId: 3,
+        plant_id: 3,
       },
       {
         name: 'Roll Printing',
-        plantId: 3,
+        plant_id: 3,
       },
       {
         name: 'Packaging Printing',
-        plantId: 4,
+        plant_id: 4,
       },
     ];
 
     for (const department of departments) {
       await this.departmentModel.findOrCreate({
-        where: { name: department.name, plantId: department.plantId },
+        where: { name: department.name, plant_id: department.plant_id },
         defaults: department,
       });
     }
@@ -379,39 +391,39 @@ export class InitialDataSeeder {
     const productionLines = [
       {
         name: 'Line A',
-        departmentId: 1,
+        department_id: 1,
         status: 'active',
       },
       {
         name: 'Line B',
-        departmentId: 1,
+        department_id: 1,
         status: 'inactive',
       },
       {
         name: 'QC Line 1',
-        departmentId: 2,
+        department_id: 2,
         status: 'active',
       },
       {
         name: 'Sheet Line 1',
-        departmentId: 3,
+        department_id: 3,
         status: 'active',
       },
       {
         name: 'Roll Line 1',
-        departmentId: 4,
+        department_id: 4,
         status: 'active',
       },
       {
         name: 'Packaging Line 1',
-        departmentId: 5,
+        department_id: 5,
         status: 'active',
       },
     ];
 
     for (const line of productionLines) {
       await this.productionLineModel.findOrCreate({
-        where: { name: line.name, departmentId: line.departmentId },
+        where: { name: line.name, department_id: line.department_id },
         defaults: line,
       });
     }
@@ -425,52 +437,52 @@ export class InitialDataSeeder {
         name: 'Press Machine 1',
         type: EquipmentType.PRESS,
         model: 'HP Indigo 12000',
-        serialNumber: 'PM1001',
+        serial_number: 'PM1001',
         configuration: { maxSpeed: 4600, format: 'B2' },
         status: 'active',
-        productionLineId: 1,
+        production_line_id: 1,
       },
       {
         name: 'Quality Camera 1',
         type: EquipmentType.CAMERA,
         model: 'PressCam 4K',
-        serialNumber: 'QC1001',
+        serial_number: 'QC1001',
         configuration: { resolution: '4K', fps: 30, autoFocus: true },
         status: 'active',
-        productionLineId: 1,
+        production_line_id: 1,
       },
       {
         name: 'Density Sensor 1',
         type: EquipmentType.SENSOR,
         model: 'DensCheck 3000',
-        serialNumber: 'DS1001',
+        serial_number: 'DS1001',
         configuration: { accuracy: 0.01, samplingRate: 10 },
         status: 'active',
-        productionLineId: 1,
+        production_line_id: 1,
       },
       {
         name: 'Press Machine 2',
         type: EquipmentType.PRESS,
         model: 'Heidelberg Speedmaster',
-        serialNumber: 'PM2001',
+        serial_number: 'PM2001',
         configuration: { maxSpeed: 15000, format: 'B1' },
         status: 'active',
-        productionLineId: 4,
+        production_line_id: 4,
       },
       {
         name: 'Roll Press 1',
         type: EquipmentType.PRESS,
         model: 'Flexo XF-80',
-        serialNumber: 'RP1001',
+        serial_number: 'RP1001',
         configuration: { maxSpeed: 300, width: 80 },
         status: 'active',
-        productionLineId: 5,
+        production_line_id: 5,
       },
     ];
 
     for (const item of equipment) {
       await this.equipmentModel.findOrCreate({
-        where: { name: item.name, productionLineId: item.productionLineId },
+        where: { name: item.name, production_line_id: item.production_line_id },
         defaults: item,
       });
     }
@@ -540,5 +552,190 @@ export class InitialDataSeeder {
     }
 
     console.log('Defect types seeded successfully');
+  }
+
+  private async seedInspectionJobs() {
+    const inspectionJobs = [
+      {
+        name: 'Daily Color Inspection',
+        description: 'Standard daily color quality inspection',
+        status: 'active',
+        configuration: { 
+          captureInterval: 5000, 
+          saveImages: true,
+          qualityThreshold: 0.95
+        },
+        production_line_id: 1,
+        created_by: 1
+      },
+      {
+        name: 'High-Speed Print Check',
+        description: 'Quality inspection for high-speed printing operations',
+        status: 'active',
+        configuration: { 
+          captureInterval: 2000, 
+          saveImages: true,
+          qualityThreshold: 0.92
+        },
+        production_line_id: 4,
+        created_by: 2
+      },
+      {
+        name: 'Package Label Verification',
+        description: 'Verification of package label printing quality',
+        status: 'inactive',
+        configuration: { 
+          captureInterval: 8000, 
+          saveImages: true,
+          qualityThreshold: 0.98
+        },
+        production_line_id: 6,
+        created_by: 2
+      }
+    ];
+  
+    for (const job of inspectionJobs) {
+      await this.inspectionJobModel.findOrCreate({
+        where: { name: job.name, production_line_id: job.production_line_id },
+        defaults: job,
+      });
+    }
+  
+    console.log('Inspection jobs seeded successfully');
+  }
+
+  private async seedQualityParameters() {
+    const qualityParameters = [
+      {
+        name: 'Color Density',
+        description: 'Measures the density of color on printed material',
+        unit: 'density',
+        min_value: 0.8,
+        max_value: 1.2,
+        target_value: 1.0,
+        inspection_job_id: 1
+      },
+      {
+        name: 'Registration Accuracy',
+        description: 'Measures alignment accuracy between color layers',
+        unit: 'mm',
+        min_value: 0,
+        max_value: 0.05,
+        target_value: 0.01,
+        inspection_job_id: 1
+      },
+      {
+        name: 'Print Contrast',
+        description: 'Measures the contrast between printed and non-printed areas',
+        unit: 'ratio',
+        min_value: 0.7,
+        max_value: 0.95,
+        target_value: 0.85,
+        inspection_job_id: 1
+      },
+      {
+        name: 'Dot Gain',
+        description: 'Measures the increase in size of printed dots',
+        unit: 'percentage',
+        min_value: 10,
+        max_value: 25,
+        target_value: 18,
+        inspection_job_id: 2
+      },
+      {
+        name: 'Barcode Quality',
+        description: 'ANSI grade of barcode print quality',
+        unit: 'grade',
+        min_value: 3,
+        max_value: 4,
+        target_value: 4,
+        inspection_job_id: 3
+      }
+    ];
+  
+    for (const param of qualityParameters) {
+      await this.qualityParameterModel.findOrCreate({
+        where: { name: param.name, inspection_job_id: param.inspection_job_id },
+        defaults: param,
+      });
+    }
+  
+    console.log('Quality parameters seeded successfully');
+  }
+
+  private async seedAlertConfigurations() {
+    const alertConfigurations = [
+      {
+        name: 'Color Density Alert',
+        description: 'Alerts when color density falls outside acceptable range',
+        condition: {
+          parameter: 'Color Density',
+          operator: 'outside_range',
+          minValue: 0.8,
+          maxValue: 1.2,
+          consecutiveViolations: 3
+        },
+        recipients: [
+          { type: 'email', value: 'manager@example.com' },
+          { type: 'sms', value: '+1234567890' }
+        ],
+        inspection_job_id: 1
+      },
+      {
+        name: 'Registration Error Alert',
+        description: 'Alerts when registration accuracy exceeds threshold',
+        condition: {
+          parameter: 'Registration Accuracy',
+          operator: 'greater_than',
+          value: 0.05,
+          consecutiveViolations: 1
+        },
+        recipients: [
+          { type: 'email', value: 'operator@example.com' },
+          { type: 'email', value: 'manager@example.com' }
+        ],
+        inspection_job_id: 1
+      },
+      {
+        name: 'Dot Gain Critical Alert',
+        description: 'High priority alert when dot gain exceeds critical threshold',
+        condition: {
+          parameter: 'Dot Gain',
+          operator: 'greater_than',
+          value: 25,
+          consecutiveViolations: 2
+        },
+        recipients: [
+          { type: 'email', value: 'manager@example.com' },
+          { type: 'sms', value: '+1234567890' },
+          { type: 'push', value: 'maintenance_team' }
+        ],
+        inspection_job_id: 2
+      },
+      {
+        name: 'Barcode Quality Alert',
+        description: 'Alerts when barcode quality falls below grade 3',
+        condition: {
+          parameter: 'Barcode Quality',
+          operator: 'less_than',
+          value: 3,
+          consecutiveViolations: 1
+        },
+        recipients: [
+          { type: 'email', value: 'quality@example.com' },
+          { type: 'email', value: 'manager@example.com' }
+        ],
+        inspection_job_id: 3
+      }
+    ];
+  
+    for (const config of alertConfigurations) {
+      await this.alertConfigurationModel.findOrCreate({
+        where: { name: config.name, inspection_job_id: config.inspection_job_id },
+        defaults: config,
+      });
+    }
+  
+    console.log('Alert configurations seeded successfully');
   }
 }

@@ -46,7 +46,7 @@ export class InspectionJob extends Model<InspectionJob> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  productionLineId: number;
+  production_line_id: number;
 
   @BelongsTo(() => ProductionLine)
   productionLine: ProductionLine;
@@ -56,7 +56,7 @@ export class InspectionJob extends Model<InspectionJob> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  createdBy: number;
+  created_by: number;
 
   @BelongsTo(() => User)
   creator: User;
@@ -66,4 +66,17 @@ export class InspectionJob extends Model<InspectionJob> {
 
   @HasMany(() => AlertConfiguration)
   alertConfigurations: AlertConfiguration[];
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 }

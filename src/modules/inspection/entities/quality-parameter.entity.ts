@@ -34,27 +34,40 @@ export class QualityParameter extends Model<QualityParameter> {
     type: DataType.FLOAT,
     allowNull: true,
   })
-  minValue: number;
+  min_value: number;
 
   @Column({
     type: DataType.FLOAT,
     allowNull: true,
   })
-  maxValue: number;
+  max_value: number;
 
   @Column({
     type: DataType.FLOAT,
     allowNull: true,
   })
-  targetValue: number;
+  target_value: number;
 
   @ForeignKey(() => InspectionJob)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  inspectionJobId: number;
+  inspection_job_id: number;
 
   @BelongsTo(() => InspectionJob)
   inspectionJob: InspectionJob;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 }

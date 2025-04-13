@@ -32,7 +32,19 @@ export class ProductionLine extends Model<ProductionLine> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  departmentId: number;
+  department_id: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @BelongsTo(() => Department)
   department: Department;

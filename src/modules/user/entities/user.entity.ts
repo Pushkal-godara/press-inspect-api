@@ -36,33 +36,34 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: true,
   })
-  firstName: string;
+  first_name: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
   })
-  lastName: string;
+  last_name: string;
 
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
     defaultValue: true,
   })
-  isActive: boolean;
+  is_active: boolean;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
   })
-  lastLogin: Date;
+  last_login: Date;
 
   @ForeignKey(() => Role)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
+    field: 'role_id'
   })
-  roleId: number;
+  role_id: number;
 
   @BelongsTo(() => Role)
   role: Role;
@@ -72,8 +73,21 @@ export class User extends Model<User> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  companyId: number;
+  company_id: number;
 
   @BelongsTo(() => Company)
   company: Company;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
+
 }

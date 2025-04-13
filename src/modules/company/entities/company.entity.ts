@@ -30,14 +30,26 @@ export class Company extends Model<Company> {
     allowNull: true,
     defaultValue: {},
   })
-  contactInfo: Record<string, any>;
+  contact_info: Record<string, any>;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     defaultValue: 'active',
   })
-  subscriptionStatus: string;
+  subscription_status: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @HasMany(() => User)
   users: User[];

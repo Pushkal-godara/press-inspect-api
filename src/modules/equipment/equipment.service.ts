@@ -24,11 +24,11 @@ export class EquipmentService {
     return this.equipmentModel.findAll();
   }
 
-  async findByProductionLineId(productionLineId: number): Promise<Equipment[]> {
-    await this.companyService.findProductionLineById(productionLineId);
+  async findByProductionLineId(production_line_id: number): Promise<Equipment[]> {
+    await this.companyService.findProductionLineById(production_line_id);
     
     return this.equipmentModel.findAll({
-      where: { productionLineId },
+      where: { production_line_id },
     });
   }
 

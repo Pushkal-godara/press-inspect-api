@@ -16,13 +16,15 @@ import { Department } from '../modules/company/entities/department.entity';
 import { ProductionLine } from '../modules/company/entities/production-line.entity';
 import { Equipment } from '../modules/equipment/entities/equipment.entity';
 import { DefectType } from '../modules/inspection/entities/defect-type.entity';
+import { QualityParameter } from '../modules/inspection/entities/quality-parameter.entity';
+import { InspectionJob } from '../modules/inspection/entities/inspection-job.entity';
+import { AlertConfiguration } from '../modules/notification/entities/alert-configuration.entity';
 
 @Module({
   imports: [
     CommandModule,
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV || 'development'}`,
     }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,6 +39,12 @@ import { DefectType } from '../modules/inspection/entities/defect-type.entity';
         autoLoadModels: true,
         synchronize: true,
         logging: configService.get('NODE_ENV') !== 'production',
+        define: {
+          timestamps: true,
+          underscored: true,
+          createdAt: 'created_at',
+          updatedAt: 'updated_at'
+        },
       }),
     }),
     SequelizeModule.forFeature([
@@ -50,6 +58,9 @@ import { DefectType } from '../modules/inspection/entities/defect-type.entity';
       ProductionLine,
       Equipment,
       DefectType,
+      QualityParameter,
+      InspectionJob,
+      AlertConfiguration
     ]),
   ],
   providers: [SeedCommand, InitialDataSeeder],

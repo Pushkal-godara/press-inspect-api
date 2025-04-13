@@ -41,7 +41,7 @@ export class Equipment extends Model<Equipment> {
     type: DataType.STRING,
     allowNull: true,
   })
-  serialNumber: string;
+  serial_number: string;
 
   @Column({
     type: DataType.JSONB,
@@ -61,14 +61,26 @@ export class Equipment extends Model<Equipment> {
     type: DataType.DATE,
     allowNull: true,
   })
-  lastMaintenance: Date;
+  last_maintenance: Date;
 
   @ForeignKey(() => ProductionLine)
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  productionLineId: number;
+  production_line_id: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @BelongsTo(() => ProductionLine)
   productionLine: ProductionLine;

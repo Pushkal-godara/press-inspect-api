@@ -1,4 +1,3 @@
-// src/modules/user/entities/permission.entity.ts
 import { Table, Column, Model, DataType, BelongsToMany } from 'sequelize-typescript';
 import { Role } from './role.entity';
 import { RolePermission } from './role-permission.entity';
@@ -38,6 +37,18 @@ export class Permission extends Model<Permission> {
     allowNull: true,
   })
   description: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @BelongsToMany(() => Role, () => RolePermission)
   roles: Role[];

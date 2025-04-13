@@ -24,7 +24,19 @@ export class Department extends Model<Department> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  plantId: number;
+  plant_id: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  created_at: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  updated_at: Date;
 
   @BelongsTo(() => Plant)
   plant: Plant;

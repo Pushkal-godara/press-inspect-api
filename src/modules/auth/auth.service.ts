@@ -44,7 +44,7 @@ export class AuthService {
       sub: user.id,
       email: user.email,
       role: user.role?.name,
-      companyId: user.companyId,
+      companyId: user.company_id,
     };
     
     return this.jwtService.sign(payload);

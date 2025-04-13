@@ -28,7 +28,7 @@ export class NotificationService {
     await this.inspectionService.findInspectionJobById(inspectionJobId);
     
     return this.alertConfigModel.findAll({
-      where: { inspectionJobId },
+      where: { inspection_job_id: inspectionJobId },
     });
   }
 
