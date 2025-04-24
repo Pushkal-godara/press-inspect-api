@@ -2,10 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AddRoleDto } from './dto/add-role.dto';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { RolesGuard } from '../../core/guards/roles.guard';
-import { Roles } from '../../core/decorators/roles.decorator';
+import { PermissionGuard } from 'src/core/guards/permission.guard';
+import { RequirePermissions } from 'src/core/decorators/permission.decorator';
+import { Roles } from '../../core/decorators/public.decorator';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -15,7 +18,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  @Roles('admin')
+  @RequirePermissions('users:create')
+  // @Roles('admin')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User successfully created' })
   @ApiResponse({ status: 400, description: 'Bad request - Invalid data' })
@@ -26,6 +30,7 @@ export class UserController {
 
   @Get()
   @Roles('admin')
+  @RequirePermissions('users:read')
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, description: 'List of users' })
   findAll() {
@@ -33,6 +38,7 @@ export class UserController {
   }
 
   @Get(':id')
+  @RequirePermissions('users:read')
   @ApiOperation({ summary: 'Get user by ID' })
   @ApiResponse({ status: 200, description: 'User found' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -41,6 +47,7 @@ export class UserController {
   }
 
   @Patch(':id')
+  @RequirePermissions('users:update')
   @ApiOperation({ summary: 'Update user by ID' })
   @ApiResponse({ status: 200, description: 'User successfully updated' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -49,11 +56,24 @@ export class UserController {
   }
 
   @Delete(':id')
+  @RequirePermissions('users:delete')
   @Roles('admin')
   @ApiOperation({ summary: 'Delete user by ID' })
   @ApiResponse({ status: 200, description: 'User successfully deleted' })
   @ApiResponse({ status: 404, description: 'User not found' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
+  }
+
+  @Post(':id/roles')
+  @RequirePermissions('users:update')
+  addRole(@Param('id') id: number, @Body() addRoleDto: AddRoleDto) {
+    return this.userService.addRole(id, addRoleDto);
+  }
+
+  @Delete(':id/roles/:roleId')
+  @RequirePermissions('users:update')
+  removeRole(@Param('id') id: number, @Param('roleId') roleId: string) {
+    return this.userService.removeRole(id, roleId);
   }
 }

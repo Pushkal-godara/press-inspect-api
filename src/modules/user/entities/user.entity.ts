@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
-import { Role } from './role.entity';
-import { Company } from '../../company/entities/company.entity';
+import { Role } from '../../roles/entities/role.entity';
+import { UserRole } from '../../roles/entities/user-role.entity';
+import { Report } from '../../reports/entities/report.entity';
 
 @Table({
   tableName: 'users',
@@ -36,47 +37,34 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: true,
   })
-  first_name: string;
+  country: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    field: 'registration_id',
   })
-  last_name: string;
+  registrationId: string;
 
   @Column({
-    type: DataType.BOOLEAN,
-    allowNull: false,
-    defaultValue: true,
-  })
-  is_active: boolean;
-
-  @Column({
-    type: DataType.DATE,
+    type: DataType.STRING,
     allowNull: true,
+    field: 'cv_url',
   })
-  last_login: Date;
+  cvUrl: string;
 
-  @ForeignKey(() => Role)
   @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-    field: 'role_id'
+    type: DataType.TEXT,
+    allowNull: true,
+    field: 'work_experience',
   })
-  role_id: number;
+  workExperience: string;
 
-  @BelongsTo(() => Role)
-  role: Role;
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
 
-  @ForeignKey(() => Company)
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-  })
-  company_id: number;
-
-  @BelongsTo(() => Company)
-  company: Company;
+  @HasMany(() => Report, 'inspector_id')
+  reports: Report[];
 
   @Column({
     type: DataType.DATE,

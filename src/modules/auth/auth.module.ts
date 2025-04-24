@@ -9,6 +9,7 @@ import { UserModule } from '../user/user.module';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { getJwtConfig } from '../../config/jwt.config';
+import { PermissionGuard } from 'src/core/guards/permission.guard';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { getJwtConfig } from '../../config/jwt.config';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, LocalStrategy],
-  exports: [AuthService],
+  providers: [AuthService, JwtStrategy, LocalStrategy, PermissionGuard],
+  exports: [AuthService, PermissionGuard],
 })
 export class AuthModule {}

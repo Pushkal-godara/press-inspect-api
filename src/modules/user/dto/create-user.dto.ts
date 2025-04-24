@@ -27,37 +27,23 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 
-  @ApiProperty({
-    description: 'First name',
-    example: 'John',
-    required: false,
-  })
-  @IsString()
+  @ApiProperty()
   @IsOptional()
-  firstName?: string;
-
-  @ApiProperty({
-    description: 'Last name',
-    example: 'Doe',
-    required: false,
-  })
   @IsString()
+  country?: string;
+
+  @ApiProperty()
   @IsOptional()
-  lastName?: string;
+  @IsString()
+  registrationId?: string;
 
-  @ApiProperty({
-    description: 'Role ID',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  roleId: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  cvUrl?: string;
 
-  @ApiProperty({
-    description: 'Company ID',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  companyId: number;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  workExperience?: string;
 }

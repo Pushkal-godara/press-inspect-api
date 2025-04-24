@@ -3,10 +3,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { getSequelizeConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
-import { CompanyModule } from './modules/company/company.module';
+import { CompanyModule } from './modules/roles/roles.module';
 import { EquipmentModule } from './modules/equipment/equipment.module';
 import { InspectionModule } from './modules/inspection/inspection.module';
-import { NotificationModule } from './modules/notification/notification.module';
+import { NotificationModule } from './modules/permissions/permissions.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
