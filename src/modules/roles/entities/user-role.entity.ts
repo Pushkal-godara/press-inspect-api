@@ -22,4 +22,16 @@ export class UserRole extends Model {
     allowNull: false,
   })
   roleId: number;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  created_at?: Date;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+  })
+  updated_at?: Date;
 }

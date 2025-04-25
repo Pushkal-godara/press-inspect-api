@@ -5,6 +5,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './core/filters/http-exception.filter';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -28,13 +29,35 @@ async function bootstrap() {
   
   // Swagger documentation setup
   const options = new DocumentBuilder()
-    .setTitle('Press Inspection API')
+    .setTitle('PRINTOCARE API')
     .setDescription('API documentation for Press Inspection Software')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'Authorization',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'access_token',
+    )
     .build();
+
+    const corsOptions: CorsOptions = {
+      origin: '*',
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    };
+    app.enableCors(corsOptions);
+
   const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup(`${apiPrefix}/docs`, app, document);
+  SwaggerModule.setup(`${apiPrefix}/docs`, app, document, {
+      swaggerOptions: {
+        docExpansion: 'none', // This line ensures all docs are collapsed by default
+        persistAuthorization: true, // This will persist authorization between page reloads
+      },
+  });
   
   // Start the application
   const port = configService.get<number>('PORT', 4000);

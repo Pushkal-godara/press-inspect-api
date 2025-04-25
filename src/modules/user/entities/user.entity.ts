@@ -1,7 +1,7 @@
-import { Table, Column, Model, DataType, BelongsTo, ForeignKey } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, BelongsTo, ForeignKey, BelongsToMany, HasMany } from 'sequelize-typescript';
 import { Role } from '../../roles/entities/role.entity';
 import { UserRole } from '../../roles/entities/user-role.entity';
-import { Report } from '../../reports/entities/report.entity';
+import { Report } from '../../report/entities/report.entity';
 
 @Table({
   tableName: 'users',
@@ -68,14 +68,14 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
   })
-  created_at: Date;
+  created_at?: Date;
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
   })
-  updated_at: Date;
+  updated_at?: Date;
 
 }

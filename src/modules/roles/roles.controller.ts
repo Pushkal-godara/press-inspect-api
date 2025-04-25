@@ -9,7 +9,7 @@ import { RolesGuard } from '../../core/guards/roles.guard';
 import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 
-@ApiTags('company')
+@ApiTags('Roles')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard, PermissionGuard)
 @Controller('roles')

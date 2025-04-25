@@ -14,7 +14,9 @@ import {
   import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
   import { PermissionGuard } from '../../core/guards/permission.guard';
   import { RequirePermissions } from '../../core/decorators/permission.decorator';
+import { ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('Customers')
   @Controller('customers')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   export class CustomersController {

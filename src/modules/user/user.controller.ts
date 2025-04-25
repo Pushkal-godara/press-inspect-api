@@ -10,14 +10,14 @@ import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 import { Roles } from '../../core/decorators/public.decorator';
 
-@ApiTags('users')
+@ApiTags('Users')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard, RolesGuard)
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('create')
   @RequirePermissions('users:create')
   // @Roles('admin')
   @ApiOperation({ summary: 'Create a new user' })

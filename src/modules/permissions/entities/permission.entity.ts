@@ -40,15 +40,15 @@ export class Permission extends Model<Permission> {
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
   })
-  created_at: Date;
+  created_at?: Date;
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
   })
-  updated_at: Date;
+  updated_at?: Date;
 
   @BelongsToMany(() => Role, () => RolePermission)
   roles: Role[];

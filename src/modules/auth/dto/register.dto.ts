@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
+import { IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class RegisterDto {
@@ -41,5 +41,15 @@ export class RegisterDto {
   @IsOptional()
   @IsString()
   workExperience?: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsDate()
+  created_at?: Date;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsDate()
+  updated_at?: Date;
   
 }

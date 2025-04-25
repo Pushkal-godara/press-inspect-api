@@ -20,6 +20,7 @@ import {
   import { PermissionGuard } from '../../core/guards/permission.guard';
   import { RequirePermissions } from '../../core/decorators/permission.decorator';
   import { Request } from 'express';
+import { ApiTags } from '@nestjs/swagger';
   
   interface ReportFiltersQuery {
     inspectorId?: string;
@@ -32,6 +33,7 @@ import {
     endDate?: string;
   }
   
+  @ApiTags('Reports')
   @Controller('reports')
   @UseGuards(JwtAuthGuard, PermissionGuard)
   export class ReportsController {

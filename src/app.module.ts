@@ -3,11 +3,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { getSequelizeConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
-import { CompanyModule } from './modules/roles/roles.module';
-import { EquipmentModule } from './modules/equipment/equipment.module';
-import { InspectionModule } from './modules/inspection/inspection.module';
-import { NotificationModule } from './modules/permissions/permissions.module';
+import { CheckpointsModule } from './modules/checkpoints/checkpoints.module';
+import { CustomersModule } from './modules/customers/customers.module';
+import { GroupsModule } from './modules/groups/groups.module';
+import { ItemsModule } from './modules/items/items.module';
+import { ModelsModule } from './modules/models/models.module';
+import { PermissionsModule } from './modules/permissions/permissions.module';
+import { ReportsModule } from './modules/report/reports.module';
+import { RolesModule } from './modules/roles/roles.module';
+import { UnitsModule } from './modules/units/units.module';
 import { UserModule } from './modules/user/user.module';
+import { YearsModule } from './modules/years/years.module';
 
 @Module({
   imports: [
@@ -19,10 +25,16 @@ import { UserModule } from './modules/user/user.module';
     }),
     AuthModule,
     UserModule,
-    CompanyModule,
-    EquipmentModule,
-    InspectionModule,
-    NotificationModule,
+    RolesModule,
+    PermissionsModule,
+    GroupsModule,
+    ModelsModule,
+    ItemsModule,
+    YearsModule,
+    UnitsModule,
+    CustomersModule,
+    CheckpointsModule,
+    ReportsModule,
   ],
 })
 export class AppModule {}

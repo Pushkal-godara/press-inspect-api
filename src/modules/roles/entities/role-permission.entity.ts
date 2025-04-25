@@ -23,18 +23,16 @@ export class RolePermission extends Model<RolePermission> {
   })
   permission_id: number;
 
-  @CreatedAt
   @Column({
     type: DataType.DATE,
-    field: 'created_at',
+    allowNull: true,
   })
-  created_at: Date;
+  created_at?: Date;
 
-  @UpdatedAt
   @Column({
     type: DataType.DATE,
-    field: 'updated_at',
+    allowNull: true,
   })
-  updated_at: Date;
+  updated_at?: Date;
 
 }

@@ -27,53 +27,53 @@ async function bootstrap() {
   
   const permissions = [
     // User permissions
-    { name: 'Create User', resource: 'users', action: 'create', description: 'Create a new user' },
-    { name: 'Read Users', resource: 'users', action: 'read', description: 'Read user information' },
-    { name: 'Update User', resource: 'users', action: 'update', description: 'Update user information' },
-    { name: 'Delete User', resource: 'users', action: 'delete', description: 'Delete a user' },
+    { name: 'Create User', resource: 'users', action: 'create', description: 'Create a new user', created_at: new Date(), updated_at: new Date() },
+    { name: 'Read Users', resource: 'users', action: 'read', description: 'Read user information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update User', resource: 'users', action: 'update', description: 'Update user information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete User', resource: 'users', action: 'delete', description: 'Delete a user', created_at: new Date(), updated_at: new Date()  },
     
     // Role permissions
-    { name: 'Create Role', resource: 'roles', action: 'create', description: 'Create a new role' },
-    { name: 'Read Roles', resource: 'roles', action: 'read', description: 'Read role information' },
-    { name: 'Update Role', resource: 'roles', action: 'update', description: 'Update role information' },
-    { name: 'Delete Role', resource: 'roles', action: 'delete', description: 'Delete a role' },
+    { name: 'Create Role', resource: 'roles', action: 'create', description: 'Create a new role', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Roles', resource: 'roles', action: 'read', description: 'Read role information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Role', resource: 'roles', action: 'update', description: 'Update role information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Role', resource: 'roles', action: 'delete', description: 'Delete a role', created_at: new Date(), updated_at: new Date()  },
     
     // Permission permissions
-    { name: 'Create Permission', resource: 'permissions', action: 'create', description: 'Create a new permission' },
-    { name: 'Read Permissions', resource: 'permissions', action: 'read', description: 'Read permission information' },
-    { name: 'Update Permission', resource: 'permissions', action: 'update', description: 'Update permission information' },
-    { name: 'Delete Permission', resource: 'permissions', action: 'delete', description: 'Delete a permission' },
+    { name: 'Create Permission', resource: 'permissions', action: 'create', description: 'Create a new permission', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Permissions', resource: 'permissions', action: 'read', description: 'Read permission information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Permission', resource: 'permissions', action: 'update', description: 'Update permission information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Permission', resource: 'permissions', action: 'delete', description: 'Delete a permission', created_at: new Date(), updated_at: new Date()  },
     
     // Group permissions
-    { name: 'Create Group', resource: 'groups', action: 'create', description: 'Create a new group' },
-    { name: 'Read Groups', resource: 'groups', action: 'read', description: 'Read group information' },
-    { name: 'Update Group', resource: 'groups', action: 'update', description: 'Update group information' },
-    { name: 'Delete Group', resource: 'groups', action: 'delete', description: 'Delete a group' },
+    { name: 'Create Group', resource: 'groups', action: 'create', description: 'Create a new group', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Groups', resource: 'groups', action: 'read', description: 'Read group information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Group', resource: 'groups', action: 'update', description: 'Update group information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Group', resource: 'groups', action: 'delete', description: 'Delete a group', created_at: new Date(), updated_at: new Date()  },
     
     // Model permissions
-    { name: 'Create Model', resource: 'models', action: 'create', description: 'Create a new model' },
-    { name: 'Read Models', resource: 'models', action: 'read', description: 'Read model information' },
-    { name: 'Update Model', resource: 'models', action: 'update', description: 'Update model information' },
-    { name: 'Delete Model', resource: 'models', action: 'delete', description: 'Delete a model' },
+    { name: 'Create Model', resource: 'models', action: 'create', description: 'Create a new model', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Models', resource: 'models', action: 'read', description: 'Read model information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Model', resource: 'models', action: 'update', description: 'Update model information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Model', resource: 'models', action: 'delete', description: 'Delete a model', created_at: new Date(), updated_at: new Date()  },
     
     // Item permissions
-    { name: 'Create Item', resource: 'items', action: 'create', description: 'Create a new item' },
-    { name: 'Read Items', resource: 'items', action: 'read', description: 'Read item information' },
-    { name: 'Update Item', resource: 'items', action: 'update', description: 'Update item information' },
-    { name: 'Delete Item', resource: 'items', action: 'delete', description: 'Delete a item' },
+    { name: 'Create Item', resource: 'items', action: 'create', description: 'Create a new item', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Items', resource: 'items', action: 'read', description: 'Read item information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Item', resource: 'items', action: 'update', description: 'Update item information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Item', resource: 'items', action: 'delete', description: 'Delete a item', created_at: new Date(), updated_at: new Date()  },
     
     // Report permissions
-    { name: 'Create Report', resource: 'reports', action: 'create', description: 'Create a new report' },
-    { name: 'Read Reports', resource: 'reports', action: 'read', description: 'Read report information' },
-    { name: 'Update Report', resource: 'reports', action: 'update', description: 'Update report information' },
-    { name: 'Delete Report', resource: 'reports', action: 'delete', description: 'Delete a report' },
-    { name: 'Export Report', resource: 'reports', action: 'export', description: 'Export a report' },
+    { name: 'Create Report', resource: 'reports', action: 'create', description: 'Create a new report', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Read Reports', resource: 'reports', action: 'read', description: 'Read report information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Update Report', resource: 'reports', action: 'update', description: 'Update report information', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Delete Report', resource: 'reports', action: 'delete', description: 'Delete a report', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Export Report', resource: 'reports', action: 'export', description: 'Export a report', created_at: new Date(), updated_at: new Date()  },
     
     // Domain-specific permissions
-    { name: 'PrePress Inspection', resource: 'inspection', action: 'prepress', description: 'Conduct PrePress inspections' },
-    { name: 'Press Inspection', resource: 'inspection', action: 'press', description: 'Conduct Press inspections' },
-    { name: 'PostPress Inspection', resource: 'inspection', action: 'postpress', description: 'Conduct PostPress inspections' },
-    { name: 'Packaging Inspection', resource: 'inspection', action: 'packaging', description: 'Conduct Packaging inspections' },
+    { name: 'PrePress Inspection', resource: 'inspection', action: 'prepress', description: 'Conduct PrePress inspections', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Press Inspection', resource: 'inspection', action: 'press', description: 'Conduct Press inspections', created_at: new Date(), updated_at: new Date()  },
+    { name: 'PostPress Inspection', resource: 'inspection', action: 'postpress', description: 'Conduct PostPress inspections', created_at: new Date(), updated_at: new Date()  },
+    { name: 'Packaging Inspection', resource: 'inspection', action: 'packaging', description: 'Conduct Packaging inspections', created_at: new Date(), updated_at: new Date()  },
   ];
 
   const createdPermissions = {};
@@ -96,6 +96,8 @@ async function bootstrap() {
       name: 'Admin',
       description: 'Administrator with full access',
       permissions: Object.values(createdPermissions),
+      created_at: new Date(), 
+      updated_at: new Date() 
     },
     {
       name: 'PrePressInspector',
@@ -110,6 +112,8 @@ async function bootstrap() {
         createdPermissions['items:read'],
         createdPermissions['inspection:prepress'],
       ],
+      created_at: new Date(), 
+      updated_at: new Date()
     },
     {
       name: 'PressInspector',
@@ -124,6 +128,8 @@ async function bootstrap() {
         createdPermissions['items:read'],
         createdPermissions['inspection:press'],
       ],
+      created_at: new Date(), 
+      updated_at: new Date()
     },
     {
       name: 'PostPressInspector',
@@ -138,6 +144,8 @@ async function bootstrap() {
         createdPermissions['items:read'],
         createdPermissions['inspection:postpress'],
       ],
+      created_at: new Date(), 
+      updated_at: new Date()
     },
     {
       name: 'PackagingInspector',
@@ -152,6 +160,8 @@ async function bootstrap() {
         createdPermissions['items:read'],
         createdPermissions['inspection:packaging'],
       ],
+      created_at: new Date(), 
+      updated_at: new Date()
     },
   ];
 
@@ -183,6 +193,8 @@ async function bootstrap() {
       username: 'Admin User',
       email: 'admin@printocare.com',
       password: hashedPassword,
+      created_at: new Date(), 
+      updated_at: new Date()
     });
     
     await usersService.addRole(adminUser.id, { roleId: createdRoles['Admin'] });
@@ -196,10 +208,10 @@ async function bootstrap() {
   console.log('Creating groups...');
   
   const groups = [
-    { name: 'Pre Press' },
-    { name: 'Press' },
-    { name: 'Post Press' },
-    { name: 'Packaging' },
+    { name: 'Pre Press', created_at: new Date(), updated_at: new Date() },
+    { name: 'Press', created_at: new Date(), updated_at: new Date() },
+    { name: 'Post Press', created_at: new Date(), updated_at: new Date() },
+    { name: 'Packaging', created_at: new Date(), updated_at: new Date() },
   ];
 
   const createdGroups = {};
@@ -218,9 +230,9 @@ async function bootstrap() {
   console.log('Creating Pre Press models...');
   
   const prePressModels = [
-    { name: 'Suprasetter', groupId: createdGroups['Pre Press'] },
-    { name: 'Software', groupId: createdGroups['Pre Press'] },
-    { name: 'Topsetter', groupId: createdGroups['Pre Press'] },
+    { name: 'Suprasetter', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Software', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Topsetter', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
   ];
 
   const createdModels = {};
@@ -239,16 +251,16 @@ async function bootstrap() {
   console.log('Creating Suprasetter items...');
   
   const suprasetterItems = [
-    { name: 'Suprasetter 52', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter 74', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter 75', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter 105', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter 106', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter A52', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter A74', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter A75', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter A105', modelId: createdModels['Suprasetter'] },
-    { name: 'Suprasetter A106', modelId: createdModels['Suprasetter'] },
+    { name: 'Suprasetter 52', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter 74', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter 75', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter 105', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter 106', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter A52', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter A74', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter A75', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter A105', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
+    { name: 'Suprasetter A106', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
   ];
 
   for (const item of suprasetterItems) {
@@ -264,18 +276,18 @@ async function bootstrap() {
   console.log('Creating years...');
   
   const years = [
-    { range: '1960 - 1965' },
-    { range: '1966 - 1970' },
-    { range: '1971 - 1975' },
-    { range: '1976 - 1980' },
-    { range: '1981 - 1985' },
-    { range: '1986 - 1990' },
-    { range: '1991 - 1995' },
-    { range: '1996 - 2000' },
-    { range: '2001 - 2005' },
-    { range: '2006 - 2010' },
-    { range: '2011 - 2015' },
-    { range: '2020 - 2024' },
+    { range: '1960 - 1965', created_at: new Date(), updated_at: new Date() },
+    { range: '1966 - 1970', created_at: new Date(), updated_at: new Date() },
+    { range: '1971 - 1975', created_at: new Date(), updated_at: new Date() },
+    { range: '1976 - 1980', created_at: new Date(), updated_at: new Date() },
+    { range: '1981 - 1985', created_at: new Date(), updated_at: new Date() },
+    { range: '1986 - 1990', created_at: new Date(), updated_at: new Date() },
+    { range: '1991 - 1995', created_at: new Date(), updated_at: new Date() },
+    { range: '1996 - 2000', created_at: new Date(), updated_at: new Date() },
+    { range: '2001 - 2005', created_at: new Date(), updated_at: new Date() },
+    { range: '2006 - 2010', created_at: new Date(), updated_at: new Date() },
+    { range: '2011 - 2015', created_at: new Date(), updated_at: new Date() },
+    { range: '2020 - 2024', created_at: new Date(), updated_at: new Date() },
   ];
 
   for (const year of years) {
@@ -291,10 +303,10 @@ async function bootstrap() {
   console.log('Creating units...');
   
   const units = [
-    { name: 'Feeder Unit' },
-    { name: 'Printing Unit' },
-    { name: 'Coating Unit' },
-    { name: 'Delivery Unit' },
+    { name: 'Feeder Unit', created_at: new Date(), updated_at: new Date() },
+    { name: 'Printing Unit', created_at: new Date(), updated_at: new Date() },
+    { name: 'Coating Unit', created_at: new Date(), updated_at: new Date() },
+    { name: 'Delivery Unit', created_at: new Date(), updated_at: new Date() },
   ];
 
   const createdUnits = {};
