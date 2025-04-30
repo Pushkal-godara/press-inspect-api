@@ -13,24 +13,44 @@ export class RegisterDto {
   @ApiProperty({
     description: 'Email address',
     example: 'johndoe@example.com',
+    required: true
   })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
   @ApiProperty({
+    description: 'Role id',
+    example: 1,
+    required: true
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  roleId: number;
+
+  @ApiProperty({
     description: 'Password',
     example: 'Password123!',
+    required: true
   })
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
   password: string;
 
+  @ApiProperty({
+    description: 'Country',
+    example: 'Nigeria',
+    required: true
+  })
+  @IsNotEmpty()
+  @IsString()
+  country: string;
+
   @ApiProperty()
   @IsOptional()
   @IsString()
-  country?: string;
+  companyName?: string;
 
   @ApiProperty()
   @IsOptional()
@@ -51,5 +71,5 @@ export class RegisterDto {
   @IsOptional()
   @IsDate()
   updated_at?: Date;
-  
+
 }

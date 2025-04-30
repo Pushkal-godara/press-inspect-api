@@ -43,7 +43,7 @@ export class ReportDetail extends Model {
   checkpoint: Checkpoint;
 
   @Column({
-    type: DataType.ENUM('Good', 'Bad', 'Better'),
+    type: DataType.ENUM('Excellent', 'Good', 'Average', 'Bad'),
     allowNull: false,
   })
   rating: string;

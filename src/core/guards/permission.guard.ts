@@ -1,12 +1,16 @@
-import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY } from '../decorators/permission.decorator';
+import { UserService } from 'src/modules/user/user.service';
 
 @Injectable()
 export class PermissionGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    private userService: UserService,
+  ) {}
 
-  canActivate(context: ExecutionContext): boolean {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredPermissions = this.reflector.getAllAndOverride<string[]>(
       PERMISSIONS_KEY, 
       [
@@ -19,25 +23,37 @@ export class PermissionGuard implements CanActivate {
       return true;
     }
 
-    const { user } = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest();
+    const user = request.user;
     
-    if (!user || !user.permissions) {
-      throw new ForbiddenException('User not authenticated');
+    // Super Admin always has access
+    if (user.roles.includes('SuperAdmin')) {
+      return true;
     }
-
-    // // Check if user's role has the required permission
-    // const hasPermission = user.role?.permissions?.some(
-    //   permission => 
-    //     permission.resource === requiredPermission.resource && 
-    //     permission.action === requiredPermission.action
-    // );
     
-    // if (!hasPermission) {
-    //   throw new ForbiddenException(`Insufficient permissions. Requires ${requiredPermission.action} access to ${requiredPermission.resource}`);
-    // }
+    // For Admin role, apply country restrictions on user management
+    if (user.roles.includes('Admin') && 
+        requiredPermissions.some(p => p.startsWith('users:'))) {
+      
+      // Get the target user ID from params
+      const targetUserId = request.params.id;
+      if (targetUserId) {
+        const targetUser = await this.userService.findById(+targetUserId);
+        
+        // If target user is a Super Admin, deny access
+        if (targetUser.roles.some(r => r.name === 'SuperAdmin')) {
+          return false;
+        }
+        
+        // If countries don't match, deny access
+        if (targetUser.country !== user.country) {
+          return false;
+        }
+      }
+    }
     
     return requiredPermissions.every(permission => 
       user.permissions.includes(permission)
-    );;
+    );
   }
 }

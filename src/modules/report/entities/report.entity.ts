@@ -109,7 +109,7 @@ export class Report extends Model {
   overallScore: number;
 
   @Column({
-    type: DataType.ENUM('Good', 'Average', 'Not Good'),
+    type: DataType.ENUM('Excellent', 'Good', 'Average', 'Bad'),
     allowNull: true,
   })
   status: string;

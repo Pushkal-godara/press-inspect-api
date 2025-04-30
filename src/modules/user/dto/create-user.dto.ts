@@ -19,6 +19,14 @@ export class CreateUserDto {
   email: string;
 
   @ApiProperty({
+    description: 'Role id',
+    example: 1,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  roleId: number;
+
+  @ApiProperty({
     description: 'Password',
     example: 'Password123!',
   })
@@ -28,9 +36,14 @@ export class CreateUserDto {
   password: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  country: string;
+
+  @ApiProperty()
   @IsOptional()
   @IsString()
-  country?: string;
+  companyName?: string;
 
   @ApiProperty()
   @IsOptional()

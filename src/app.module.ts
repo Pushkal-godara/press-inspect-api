@@ -35,6 +35,7 @@ import { YearsModule } from './modules/years/years.module';
     CustomersModule,
     CheckpointsModule,
     ReportsModule,
+    
   ],
 })
 export class AppModule {}

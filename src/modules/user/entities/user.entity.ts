@@ -35,9 +35,23 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: true,
+    allowNull: false,
   })
   country: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    field: 'phone_number',
+  })
+  phoneNumber: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    field: 'company_name',
+  })
+  companyName: string;
 
   @Column({
     type: DataType.STRING,
@@ -77,5 +91,12 @@ export class User extends Model<User> {
     allowNull: true,
   })
   updated_at?: Date;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    defaultValue: true
+  })
+  is_active?: boolean;
 
 }

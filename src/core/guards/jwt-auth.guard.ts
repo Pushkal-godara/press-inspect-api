@@ -4,7 +4,8 @@ import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends 
+AuthGuard('jwt') {
   constructor(private reflector: Reflector) {
     super();
   }
@@ -20,11 +21,18 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       return true;
     }
 
+    const request = context.switchToHttp().getRequest();
+  const authHeader = request.headers.authorization;
+  // console.log('Authorization Header:', authHeader);
+
     return super.canActivate(context);
   }
 
   handleRequest(err: any, user: any, info: any) {
     if (err || !user) {
+      if (info instanceof Error) {
+        throw new UnauthorizedException(info.message);
+      }
       throw err || new UnauthorizedException('Authentication required');
     }
     return user;

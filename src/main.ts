@@ -6,9 +6,11 @@ import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './core/filters/http-exception.filter';
 import { TransformInterceptor } from './core/interceptors/transform.interceptor';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as passport from 'passport';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(passport.initialize());
   const configService = app.get(ConfigService);
   
   // Set global prefix
