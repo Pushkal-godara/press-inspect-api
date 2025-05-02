@@ -14,10 +14,7 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userService.findByEmail(email);
-    
-    console.log('user =========== >>>>> ', user);
-    
+    const user = await this.userService.findByEmail(email);    
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -32,19 +29,16 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
-    console.log('loginDto ========== >>>>> ', loginDto);
     const user = await this.validateUser(loginDto.email, loginDto.password);
-
+    
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
     // Get user with roles and permissions
     const userWithRoles = await this.userService.findByIdWithRolesAndPermissions(user.id);
-    console.log('userWithRoles =========== >>>>> ', userWithRoles);
     // Extract permissions from roles
     const permissions = this.extractPermissions(userWithRoles);
-    console.log('permissions =========== >>>>> ', permissions);
     
     return {
       access_token: this.jwtService.sign({
@@ -52,6 +46,7 @@ export class AuthService {
         email: user.email,
         roles: userWithRoles.roles.map(role => role.name),
         permissions,
+        country: user.country,
       }),
       user: {
         id: user.id,
@@ -62,25 +57,27 @@ export class AuthService {
     };
   }
 
-  async register(registerDto: RegisterDto) {
-    try {      
-      const user = await this.userService.create({
-        ...registerDto,
-      });
+
+  // async register(registerDto: RegisterDto, currentUser: any) {
+  //   try {
+  //     if (!currentUser) {
+  //       throw new UnauthorizedException('Invalid credentials');
+  //     }
+  //     const user = await this.userService.create({...registerDto}, currentUser);
       
-      // Return user info and token
-      return {
-        id: user.id,
-        name: user.username,
-        email: user.email,
-      };
-    } catch (error) {
-      if (error.name === 'SequelizeUniqueConstraintError' || error instanceof ConflictException) {
-        throw new ConflictException('Email or username already exists');
-      }
-      throw error;
-    }
-  }
+  //     // Return user info and token
+  //     return {
+  //       id: user.id,
+  //       name: user.username,
+  //       email: user.email,
+  //     };
+  //   } catch (error) {
+  //     if (error.name === 'SequelizeUniqueConstraintError' || error instanceof ConflictException) {
+  //       throw new ConflictException('Email or username already exists');
+  //     }
+  //     throw error;
+  //   }
+  // }
 
 
   private excludePassword(user: User) {

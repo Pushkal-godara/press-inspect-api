@@ -7,6 +7,7 @@ import { RegisterDto } from '../auth/dto/register.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { UpdateUserDto, UserWithGeneratedPassword } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
+import { Permission } from '../permissions/entities/permission.entity';
 
 @Injectable()
 export class UserService {
@@ -18,48 +19,52 @@ export class UserService {
     private roleModel: typeof Role,
   ) { }
 
-  async create(registerDto: RegisterDto, currentUser?: any): Promise<User> {
+  async create(registerDto: RegisterDto, currentUser: any): Promise<User> {
+    console.log('Current User =========== >>>>> ', currentUser);
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
     // Check if email or username already exists
     const existingUser = await this.findByEmail(registerDto.email);
     if (existingUser) {
       throw new UnauthorizedException('Email already exists');
     }
-  
+
     // Hash password
     const hashedPassword = await this.hashPassword(registerDto.password);
-  
+
     // If role is being assigned and currentUser exists (admin creating user)
     if (registerDto.roleId && currentUser) {
       // Get the role being assigned
       const role = await this.rolesService.findById(registerDto.roleId);
-      
+
       // Prevent assigning Super Admin role unless you're a Super Admin
       if (role.name === 'Super Admin' && !currentUser.roles.includes('Super Admin')) {
         throw new ForbiddenException('Only Super Admins can assign the Super Admin role');
       }
-      
+
       // Prevent Admins from creating users in other countries
       if (
-        currentUser.roles.includes('Admin') && 
-        !currentUser.roles.includes('Super Admin') && 
-        registerDto.country && 
+        currentUser.roles.includes('Admin') &&
+        !currentUser.roles.includes('Super Admin') &&
+        registerDto.country &&
         registerDto.country !== currentUser.country
       ) {
         throw new ForbiddenException('Cannot create users for other countries');
       }
     }
-  
+
     // Create user
     const user = await this.userModel.create({
       ...registerDto,
       password: hashedPassword,
     });
-  
+
     // Assign the role
     if (registerDto.roleId) {
       await this.addRole(user.id, { roleId: registerDto.roleId });
     }
-  
+
     return this.findById(user.id);
   }
 
@@ -83,9 +88,10 @@ export class UserService {
         {
           model: Role,
           attributes: ['name'],
+          through: { attributes: [] }, // This hides UserRole
         }
       ],
-      attributes: { exclude: ['password'] },
+      attributes: ['id', 'email', 'username', 'country'],
     });
 
     if (!user) {
@@ -140,21 +146,22 @@ export class UserService {
     }
 
     // Password change handling (for Engineers)
-    else if (updateUserDto.password && updateUserDto.oldPassword) {
+    else if (updateUserDto.newPassword && updateUserDto.oldPassword) {
       // Verify the old password is correct
-      const isPasswordValid = await this.validatePassword(user, updateUserDto.oldPassword);
+      const isPasswordValid = await this.validatePassword(updateUserDto.oldPassword, user);
       if (!isPasswordValid) {
         throw new UnauthorizedException('Current password is incorrect');
       }
 
       // Hash the new password
-      updateUserDto.password = await this.hashPassword(updateUserDto.password);
+      updateUserDto.password = await this.hashPassword(updateUserDto.newPassword);
 
       // Remove the oldPassword field to avoid storing it
       delete updateUserDto.oldPassword;
+      delete updateUserDto.newPassword;
     }
     // If just a password is provided without oldPassword or resetPassword flag
-    else if (updateUserDto.password && !updateUserDto.resetPassword) {
+    else if (updateUserDto.password && !updateUserDto.resetPassword && !updateUserDto.oldPassword) {
       throw new BadRequestException('Must provide old password to change password');
     }
 
@@ -196,8 +203,9 @@ export class UserService {
   }
 
   // Helper method to validate password
-  private async validatePassword(user: User, password: string): Promise<boolean> {
-    return bcrypt.compare(password, user.password);
+  private async validatePassword(password: string, user: User ): Promise<boolean> {
+    const hashedPassword = await this.userModel.findByPk(user.id);
+    return await bcrypt.compare(password, hashedPassword.password);
   }
 
   async findByIdWithRolesAndPermissions(id: number): Promise<User> {
@@ -206,15 +214,16 @@ export class UserService {
         {
           model: Role,
           attributes: ['id', 'name'],
-          through: { attributes: [] },
-          // include: [
-          //   {
-          //     model: Permission,
-          //     attributes: {
-          //       include: [ 'name', 'resource', 'action'],
-          //     },
-          //   },
-          // ],
+          through: { attributes: [] }, // Exclude user_roles join table
+          include: [
+            {
+              model: Permission,
+              attributes: {
+                include: [ 'name', 'resource', 'action'],
+              },
+              through: { attributes: [] }, // Exclude role_permissions join table
+            },
+          ],
         },
       ],
       attributes: ['id', 'email', 'username'],
@@ -260,7 +269,7 @@ export class UserService {
 
   // Method to find users by country filtering
 
-  async findByCountry(country: string): Promise<User[]> {
+  async findByCountry(country: string, currentUser): Promise<User[]> {
     return this.userModel.findAll({
       where: { country },
       include: [
