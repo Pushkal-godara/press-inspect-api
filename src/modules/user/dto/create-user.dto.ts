@@ -46,9 +46,9 @@ export class CreateUserDto {
   companyName?: string;
 
   @ApiProperty()
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  registrationId?: string;
+  registrationId: string;
 
   @ApiProperty()
   @IsOptional()

@@ -3,11 +3,6 @@ import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Public, Roles } from '../../core/decorators/public.decorator';
-import { RegisterDto } from './dto/register.dto';
-import { RequirePermissions } from 'src/core/decorators/permission.decorator';
-import { PermissionGuard } from 'src/core/guards/permission.guard';
-import { RolesGuard } from 'src/core/guards/roles.guard';
-import { JwtAuthGuard } from 'src/core/guards/jwt-auth.guard';
 
 @ApiTags('Auth')
 @ApiBearerAuth('access_token')
