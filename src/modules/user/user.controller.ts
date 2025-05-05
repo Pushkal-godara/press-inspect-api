@@ -37,8 +37,9 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Get all users' })
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  findAll(@Req() req) {
+    const currentUser = req.user;
+    return this.userService.findAll(currentUser);
   }
 
   @RequirePermissions('users:read')
@@ -46,8 +47,9 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Get user by ID' })
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findById(+id);
+  findOne(@Param('id') userId : string, @Req() req) {
+    const currentUser = req.user;
+    return this.userService.findById(+userId, currentUser);
   }
 
   @RequirePermissions('users:update')

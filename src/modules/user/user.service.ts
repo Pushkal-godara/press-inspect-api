@@ -3,11 +3,13 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { Role } from '../roles/entities/role.entity';
+import { UserRole } from '../roles/entities/user-role.entity';
 import { RegisterDto } from '../auth/dto/register.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { UpdateUserDto, UserWithGeneratedPassword } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
 import { Permission } from '../permissions/entities/permission.entity';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UserService {
@@ -17,10 +19,11 @@ export class UserService {
     private userModel: typeof User,
     @InjectModel(Role)
     private roleModel: typeof Role,
+    @InjectModel(UserRole)
+    private userRoleModel: typeof UserRole
   ) { }
 
   async create(registerDto: RegisterDto, currentUser: any): Promise<User> {
-    console.log('Current User =========== >>>>> ', currentUser);
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
@@ -38,15 +41,15 @@ export class UserService {
       // Get the role being assigned
       const role = await this.rolesService.findById(registerDto.roleId);
 
-      // Prevent assigning Super Admin role unless you're a Super Admin
-      if (role.name === 'Super Admin' && !currentUser.roles.includes('Super Admin')) {
-        throw new ForbiddenException('Only Super Admins can assign the Super Admin role');
+      // Prevent assigning Admin role unless you're a Super Admin
+      if (role.name === 'Admin' && !currentUser.roles.includes('SuperAdmin')) {
+        throw new ForbiddenException('Only Super Admins can assign the Admin role');
       }
 
       // Prevent Admins from creating users in other countries
       if (
         currentUser.roles.includes('Admin') &&
-        !currentUser.roles.includes('Super Admin') &&
+        !currentUser.roles.includes('SuperAdmin') &&
         registerDto.country &&
         registerDto.country !== currentUser.country
       ) {
@@ -68,8 +71,12 @@ export class UserService {
     return this.findById(user.id);
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userModel.findAll({
+  async findAll(currentUser?: any): Promise<User[]> {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    // Default query options
+    const queryOptions: any = {
       include: [
         {
           model: Role,
@@ -77,12 +84,73 @@ export class UserService {
           through: { attributes: [] }, // This hides UserRole
         }
       ],
-      attributes: ['id', 'email', 'username'],
+      attributes: [
+        'id', 
+        'email', 
+        'username', 
+        'country', 
+        'phone_number', 
+        'registration_id', 
+        'company_name', 
+        'cv_url', 
+        'work_experience'
+      ],
       order: [['id', 'ASC']],
-    });
+    };
+  
+    // Apply filters based on user role
+    if (currentUser) {
+      // For Admin users: filter by country and exclude SuperAdmin and Admin roles
+      if (currentUser.roles.includes('Admin') && !currentUser.roles.includes('SuperAdmin')) {
+        // Filter by country
+        queryOptions.where = { 
+          country: currentUser.country 
+        };
+  
+        // Filter out users with SuperAdmin and Admin roles using a subquery approach
+        const superAdminAndAdminRoleIds = await this.roleModel.findAll({
+          where: {
+            name: {
+              [Op.in]: ['SuperAdmin', 'Admin']
+            }
+          },
+          attributes: ['id']
+        });
+        
+        const roleIds = superAdminAndAdminRoleIds.map(role => role.id);
+        
+        // Find users with these roles to exclude them
+        if (roleIds.length > 0) {
+          const usersWithAdminRoles = await this.userRoleModel.findAll({
+            where: {
+              role_id: {
+                [Op.in]: roleIds
+              }
+            },
+          });
+                    
+          const userIdsToExclude = usersWithAdminRoles.map(ur => ur.userId);
+          
+          // If we found users to exclude, add them to the where clause
+          if (userIdsToExclude.length > 0) {
+            queryOptions.where.id = {
+              [Op.notIn]: userIdsToExclude
+            };
+          }
+        }
+      }
+      // For SuperAdmin: no filtering needed (they see everyone)
+    }
+    const user = await this.userModel.findAll(queryOptions);  
+    return user;
   }
 
-  async findById(id: number): Promise<User> {
+  async findById(id: number, currentUser?: any): Promise<User> {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+  
+    // Step 1: Get the user with their roles
     const user = await this.userModel.findByPk(id, {
       include: [
         {
@@ -91,13 +159,53 @@ export class UserService {
           through: { attributes: [] }, // This hides UserRole
         }
       ],
-      attributes: ['id', 'email', 'username', 'country'],
+      attributes: [
+        'id',
+        'email',
+        'username',
+        'country',
+        'phone_number',
+        'registration_id',
+        'company_name',
+        'cv_url',
+        'work_experience'
+      ],
     });
-
+  
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-
+  
+    // Step 2: Check access permissions based on roles
+    
+    // Get the user's roles as an array of strings
+    const userRoles = user.roles.map(role => role.name);
+    
+    // Case 1: SuperAdmin can see any user
+    if (currentUser.roles.includes('SuperAdmin')) {
+      return user;
+    }
+    
+    // Case 2: Admin can only see non-Admin, non-SuperAdmin users from their own country
+    if (currentUser.roles.includes('Admin')) {
+      // Check if the user has SuperAdmin or Admin role
+      if (userRoles.includes('SuperAdmin') || userRoles.includes('Admin')) {
+        throw new ForbiddenException('You do not have permission to view admin users');
+      }
+      
+      // Check if the user is from the same country
+      if (user.country !== currentUser.country) {
+        throw new ForbiddenException('You do not have permission to view users from other countries');
+      }
+      
+      return user;
+    }
+    
+    // Case 3: Any other role - can only see themselves
+    if (user.id !== currentUser.id) {
+      throw new ForbiddenException('You can only view your own profile');
+    }
+    
     return user;
   }
 
