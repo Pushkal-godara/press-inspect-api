@@ -65,10 +65,23 @@ export class UserService {
 
     // Assign the role
     if (registerDto.roleId) {
-      await this.addRole(user.id, { roleId: registerDto.roleId });
+      const data = await this.addRole(user.id, { roleId: registerDto.roleId });
+      if (!data) {
+        throw new BadRequestException('Failed to assign role');
+      }
     }
 
-    return this.findById(user.id);
+    const userData = await this.userModel.findByPk(user.id,
+      {
+        include: {
+          model: Role,
+          attributes: ['id', 'name'],
+          through: { attributes: [] }, // This hides UserRole
+        },
+        attributes: ['id', 'username', 'email', 'country', 'phone_number', 'company_name', 'registration_id']
+      }
+    );
+    return userData;
   }
 
   async findAll(currentUser?: any): Promise<User[]> {
@@ -350,7 +363,7 @@ export class UserService {
   }
 
   async addRole(id: number, addRoleDto: AddRoleDto): Promise<User> {
-    const user = await this.findById(id);
+    const user = await this.userModel.findByPk(id);
     const role = await this.roleModel.findByPk(addRoleDto.roleId);
 
     if (!role) {
