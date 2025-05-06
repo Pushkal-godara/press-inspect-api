@@ -22,33 +22,33 @@ import { ApiTags } from '@nestjs/swagger';
   export class YearsController {
     constructor(private readonly yearsService: YearsService) {}
   
-    @Post()
-    @RequirePermissions('models:create')  // Using models permission for simplicity
-    create(@Body() createYearDto: CreateYearDto) {
-      return this.yearsService.create(createYearDto);
-    }
+    // @Post()
+    // @RequirePermissions('models:create')  // Using models permission for simplicity
+    // create(@Body() createYearDto: CreateYearDto) {
+    //   return this.yearsService.create(createYearDto);
+    // }
   
-    @Get()
-    @RequirePermissions('models:read')  // Using models permission for simplicity
-    findAll() {
-      return this.yearsService.findAll();
-    }
+    // @Get()
+    // @RequirePermissions('models:read')  // Using models permission for simplicity
+    // findAll() {
+    //   return this.yearsService.findAll();
+    // }
   
-    @Get(':id')
-    @RequirePermissions('models:read')  // Using models permission for simplicity
-    findOne(@Param('id') id: string) {
-      return this.yearsService.findById(id);
-    }
+    // @Get(':id')
+    // @RequirePermissions('models:read')  // Using models permission for simplicity
+    // findOne(@Param('id') id: string) {
+    //   return this.yearsService.findById(id);
+    // }
   
-    @Patch(':id')
-    @RequirePermissions('models:update')  // Using models permission for simplicity
-    update(@Param('id') id: string, @Body() updateYearDto: UpdateYearDto) {
-      return this.yearsService.update(id, updateYearDto);
-    }
+    // @Patch(':id')
+    // @RequirePermissions('models:update')  // Using models permission for simplicity
+    // update(@Param('id') id: string, @Body() updateYearDto: UpdateYearDto) {
+    //   return this.yearsService.update(id, updateYearDto);
+    // }
   
-    @Delete(':id')
-    @RequirePermissions('models:delete')  // Using models permission for simplicity
-    remove(@Param('id') id: string) {
-      return this.yearsService.remove(id);
-    }
+    // @Delete(':id')
+    // @RequirePermissions('models:delete')  // Using models permission for simplicity
+    // remove(@Param('id') id: string) {
+    //   return this.yearsService.remove(id);
+    // }
   }

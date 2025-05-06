@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Group } from './entities/group.entity';
 import { ModelEntity } from '../models/entities/model.entity';
+import { Item } from '../items/entities/item.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
@@ -12,8 +13,27 @@ export class GroupsService {
     private groupModel: typeof Group,
   ) {}
 
-  async findAll(): Promise<Group[]> {
-    return this.groupModel.findAll();
+  async findAll(currentUser: any): Promise<Group[]> {
+    if (currentUser.roles.includes('Customer')) {
+      throw new NotFoundException('Customer cannot access groups');
+    }
+    const groups = await this.groupModel.findAll({
+      attributes: ['id', 'name'],
+      include: [
+        {
+          model: ModelEntity,
+          attributes: ['name'],
+          include: [
+            {
+              model: Item,
+              attributes: ['name'],
+            }
+          ]
+        },
+      ],
+    })
+    
+    return groups;
   }
 
   async findById(id: string): Promise<Group> {

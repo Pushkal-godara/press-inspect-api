@@ -22,39 +22,39 @@ import { ApiTags } from '@nestjs/swagger';
   export class ItemsController {
     constructor(private readonly itemsService: ItemsService) {}
   
-    @Post()
-    @RequirePermissions('items:create')
-    create(@Body() createItemDto: CreateItemDto) {
-      return this.itemsService.create(createItemDto);
-    }
+    // @Post()
+    // @RequirePermissions('items:create')
+    // create(@Body() createItemDto: CreateItemDto) {
+    //   return this.itemsService.create(createItemDto);
+    // }
   
-    @Get()
-    @RequirePermissions('items:read')
-    findAll() {
-      return this.itemsService.findAll();
-    }
+    // @Get()
+    // @RequirePermissions('items:read')
+    // findAll() {
+    //   return this.itemsService.findAll();
+    // }
   
-    @Get(':id')
-    @RequirePermissions('items:read')
-    findOne(@Param('id') id: string) {
-      return this.itemsService.findById(id);
-    }
+    // @Get(':id')
+    // @RequirePermissions('items:read')
+    // findOne(@Param('id') id: string) {
+    //   return this.itemsService.findById(id);
+    // }
   
-    @Get('model/:modelId')
-    @RequirePermissions('items:read')
-    findByModel(@Param('modelId') modelId: string) {
-      return this.itemsService.findByModelId(modelId);
-    }
+    // @Get('model/:modelId')
+    // @RequirePermissions('items:read')
+    // findByModel(@Param('modelId') modelId: string) {
+    //   return this.itemsService.findByModelId(modelId);
+    // }
   
-    @Patch(':id')
-    @RequirePermissions('items:update')
-    update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-      return this.itemsService.update(id, updateItemDto);
-    }
+    // @Patch(':id')
+    // @RequirePermissions('items:update')
+    // update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
+    //   return this.itemsService.update(id, updateItemDto);
+    // }
   
-    @Delete(':id')
-    @RequirePermissions('items:delete')
-    remove(@Param('id') id: string) {
-      return this.itemsService.remove(id);
-    }
+    // @Delete(':id')
+    // @RequirePermissions('items:delete')
+    // remove(@Param('id') id: string) {
+    //   return this.itemsService.remove(id);
+    // }
   }

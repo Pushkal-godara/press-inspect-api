@@ -39,77 +39,77 @@ import { ApiTags } from '@nestjs/swagger';
   export class ReportsController {
     constructor(private readonly reportsService: ReportsService) {}
   
-    @Post()
-    @RequirePermissions('reports:create')
-    create(@Body() createReportDto: CreateReportDto) {
-      return this.reportsService.create(createReportDto);
-    }
+    // @Post()
+    // @RequirePermissions('reports:create')
+    // create(@Body() createReportDto: CreateReportDto) {
+    //   return this.reportsService.create(createReportDto);
+    // }
   
-    @Get()
-    @RequirePermissions('reports:read')
-    findAll(@Query() filters: ReportFiltersQuery, @Req() req: Request) {
-      // If no specific inspectorId filter provided and user isn't admin,
-      // limit to reports created by the current user
-      if (!filters.inspectorId && !this.isAdmin(req)) {
-        filters.inspectorId = req.user['id'];
-      }
+    // @Get()
+    // @RequirePermissions('reports:read')
+    // findAll(@Query() filters: ReportFiltersQuery, @Req() req: Request) {
+    //   // If no specific inspectorId filter provided and user isn't admin,
+    //   // limit to reports created by the current user
+    //   if (!filters.inspectorId && !this.isAdmin(req)) {
+    //     filters.inspectorId = req.user['id'];
+    //   }
       
-      return this.reportsService.findAll(filters);
-    }
+    //   return this.reportsService.findAll(filters);
+    // }
   
-    @Get(':id')
-    @RequirePermissions('reports:read')
-    findOne(@Param('id') id: number) {
-      return this.reportsService.findById(id);
-    }
+    // @Get(':id')
+    // @RequirePermissions('reports:read')
+    // findOne(@Param('id') id: number) {
+    //   return this.reportsService.findById(id);
+    // }
   
-    @Patch(':id')
-    @RequirePermissions('reports:update')
-    update(@Param('id') id: number, @Body() updateReportDto: UpdateReportDto) {
-      return this.reportsService.update(id, updateReportDto);
-    }
+    // @Patch(':id')
+    // @RequirePermissions('reports:update')
+    // update(@Param('id') id: number, @Body() updateReportDto: UpdateReportDto) {
+    //   return this.reportsService.update(id, updateReportDto);
+    // }
   
-    @Delete(':id')
-    @RequirePermissions('reports:delete')
-    remove(@Param('id') id: number) {
-      return this.reportsService.remove(id);
-    }
+    // @Delete(':id')
+    // @RequirePermissions('reports:delete')
+    // remove(@Param('id') id: number) {
+    //   return this.reportsService.remove(id);
+    // }
   
-    @Post(':id/details')
-    @RequirePermissions('reports:update')
-    addDetail(
-      @Param('id') id: number, 
-      @Body() createReportDetailDto: CreateReportDetailDto
-    ) {
-      return this.reportsService.addDetail(id, createReportDetailDto);
-    }
+    // @Post(':id/details')
+    // @RequirePermissions('reports:update')
+    // addDetail(
+    //   @Param('id') id: number, 
+    //   @Body() createReportDetailDto: CreateReportDetailDto
+    // ) {
+    //   return this.reportsService.addDetail(id, createReportDetailDto);
+    // }
   
-    @Patch(':id/details/:detailId')
-    @RequirePermissions('reports:update')
-    updateDetail(
-      @Param('id') id: number, 
-      @Param('detailId') detailId: string,
-      @Body() updateReportDetailDto: UpdateReportDetailDto
-    ) {
-      return this.reportsService.updateDetail(id, detailId, updateReportDetailDto);
-    }
+    // @Patch(':id/details/:detailId')
+    // @RequirePermissions('reports:update')
+    // updateDetail(
+    //   @Param('id') id: number, 
+    //   @Param('detailId') detailId: string,
+    //   @Body() updateReportDetailDto: UpdateReportDetailDto
+    // ) {
+    //   return this.reportsService.updateDetail(id, detailId, updateReportDetailDto);
+    // }
   
-    @Delete(':id/details/:detailId')
-    @RequirePermissions('reports:update')
-    removeDetail(
-      @Param('id') id: number, 
-      @Param('detailId') detailId: string
-    ) {
-      return this.reportsService.removeDetail(id, detailId);
-    }
+    // @Delete(':id/details/:detailId')
+    // @RequirePermissions('reports:update')
+    // removeDetail(
+    //   @Param('id') id: number, 
+    //   @Param('detailId') detailId: string
+    // ) {
+    //   return this.reportsService.removeDetail(id, detailId);
+    // }
   
-    @Get(':id/export')
-    @RequirePermissions('reports:export')
-    exportReport(@Param('id') id: number) {
-      return this.reportsService.exportReport(id);
-    }
+    // @Get(':id/export')
+    // @RequirePermissions('reports:export')
+    // exportReport(@Param('id') id: number) {
+    //   return this.reportsService.exportReport(id);
+    // }
   
-    private isAdmin(req: Request): boolean {
-      return req.user && req.user['roles'] && req.user['roles'].includes('Admin');
-    }
+    // private isAdmin(req: Request): boolean {
+    //   return req.user && req.user['roles'] && req.user['roles'].includes('Admin');
+    // }
   }

@@ -22,39 +22,39 @@ import { ApiTags } from '@nestjs/swagger';
   export class CheckpointsController {
     constructor(private readonly checkpointsService: CheckpointsService) {}
   
-    @Post()
-    @RequirePermissions('models:create')  // Using models permission for simplicity
-    create(@Body() createCheckpointDto: CreateCheckpointDto) {
-      return this.checkpointsService.create(createCheckpointDto);
-    }
+    // @Post()
+    // @RequirePermissions('models:create')  // Using models permission for simplicity
+    // create(@Body() createCheckpointDto: CreateCheckpointDto) {
+    //   return this.checkpointsService.create(createCheckpointDto);
+    // }
   
-    @Get()
-    @RequirePermissions('models:read')  // Using models permission for simplicity
-    findAll() {
-      return this.checkpointsService.findAll();
-    }
+    // @Get()
+    // @RequirePermissions('models:read')  // Using models permission for simplicity
+    // findAll() {
+    //   return this.checkpointsService.findAll();
+    // }
   
-    @Get(':id')
-    @RequirePermissions('models:read')  // Using models permission for simplicity
-    findOne(@Param('id') id: string) {
-      return this.checkpointsService.findById(id);
-    }
+    // @Get(':id')
+    // @RequirePermissions('models:read')  // Using models permission for simplicity
+    // findOne(@Param('id') id: string) {
+    //   return this.checkpointsService.findById(id);
+    // }
   
-    @Get('unit/:unitId')
-    @RequirePermissions('models:read')  // Using models permission for simplicity
-    findByUnit(@Param('unitId') unitId: string) {
-      return this.checkpointsService.findByUnitId(unitId);
-    }
+    // @Get('unit/:unitId')
+    // @RequirePermissions('models:read')  // Using models permission for simplicity
+    // findByUnit(@Param('unitId') unitId: string) {
+    //   return this.checkpointsService.findByUnitId(unitId);
+    // }
   
-    @Patch(':id')
-    @RequirePermissions('models:update')  // Using models permission for simplicity
-    update(@Param('id') id: string, @Body() updateCheckpointDto: UpdateCheckpointDto) {
-      return this.checkpointsService.update(id, updateCheckpointDto);
-    }
+    // @Patch(':id')
+    // @RequirePermissions('models:update')  // Using models permission for simplicity
+    // update(@Param('id') id: string, @Body() updateCheckpointDto: UpdateCheckpointDto) {
+    //   return this.checkpointsService.update(id, updateCheckpointDto);
+    // }
   
-    @Delete(':id')
-    @RequirePermissions('models:delete')  // Using models permission for simplicity
-    remove(@Param('id') id: string) {
-      return this.checkpointsService.remove(id);
-    }
+    // @Delete(':id')
+    // @RequirePermissions('models:delete')  // Using models permission for simplicity
+    // remove(@Param('id') id: string) {
+    //   return this.checkpointsService.remove(id);
+    // }
   }

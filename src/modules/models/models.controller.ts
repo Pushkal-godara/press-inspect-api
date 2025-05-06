@@ -22,39 +22,39 @@ import { ApiTags } from '@nestjs/swagger';
   export class ModelsController {
     constructor(private readonly modelsService: ModelsService) {}
   
-    @Post()
-    @RequirePermissions('models:create')
-    create(@Body() createModelDto: CreateModelDto) {
-      return this.modelsService.create(createModelDto);
-    }
+    // @Post()
+    // @RequirePermissions('models:create')
+    // create(@Body() createModelDto: CreateModelDto) {
+    //   return this.modelsService.create(createModelDto);
+    // }
   
-    @Get()
-    @RequirePermissions('models:read')
-    findAll() {
-      return this.modelsService.findAll();
-    }
+    // @Get()
+    // @RequirePermissions('models:read')
+    // findAll() {
+    //   return this.modelsService.findAll();
+    // }
   
-    @Get(':id')
-    @RequirePermissions('models:read')
-    findOne(@Param('id') id: string) {
-      return this.modelsService.findById(id);
-    }
+    // @Get(':id')
+    // @RequirePermissions('models:read')
+    // findOne(@Param('id') id: string) {
+    //   return this.modelsService.findById(id);
+    // }
   
-    @Get('group/:groupId')
-    @RequirePermissions('models:read')
-    findByGroup(@Param('groupId') groupId: string) {
-      return this.modelsService.findByGroupId(groupId);
-    }
+    // @Get('group/:groupId')
+    // @RequirePermissions('models:read')
+    // findByGroup(@Param('groupId') groupId: string) {
+    //   return this.modelsService.findByGroupId(groupId);
+    // }
   
-    @Patch(':id')
-    @RequirePermissions('models:update')
-    update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
-      return this.modelsService.update(id, updateModelDto);
-    }
+    // @Patch(':id')
+    // @RequirePermissions('models:update')
+    // update(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto) {
+    //   return this.modelsService.update(id, updateModelDto);
+    // }
   
-    @Delete(':id')
-    @RequirePermissions('models:delete')
-    remove(@Param('id') id: string) {
-      return this.modelsService.remove(id);
-    }
+    // @Delete(':id')
+    // @RequirePermissions('models:delete')
+    // remove(@Param('id') id: string) {
+    //   return this.modelsService.remove(id);
+    // }
   }

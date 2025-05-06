@@ -14,33 +14,33 @@ import { RequirePermissions } from '../../core/decorators/permission.decorator';
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
 
-  @Post()
-  @RequirePermissions('permissions:create')
-  create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionsService.create(createPermissionDto);
-  }
+  // @Post()
+  // @RequirePermissions('permissions:create')
+  // create(@Body() createPermissionDto: CreatePermissionDto) {
+  //   return this.permissionsService.create(createPermissionDto);
+  // }
 
-  @Get()
-  @RequirePermissions('permissions:read')
-  findAll() {
-    return this.permissionsService.findAll();
-  }
+  // @Get()
+  // @RequirePermissions('permissions:read')
+  // findAll() {
+  //   return this.permissionsService.findAll();
+  // }
 
-  @Get(':id')
-  @RequirePermissions('permissions:read')
-  findOne(@Param('id') id: string) {
-    return this.permissionsService.findById(id);
-  }
+  // @Get(':id')
+  // @RequirePermissions('permissions:read')
+  // findOne(@Param('id') id: string) {
+  //   return this.permissionsService.findById(id);
+  // }
 
-  @Patch(':id')
-  @RequirePermissions('permissions:update')
-  update(@Param('id') id: string, @Body() updatePermissionDto: UpdatePermissionDto) {
-    return this.permissionsService.update(id, updatePermissionDto);
-  }
+  // @Patch(':id')
+  // @RequirePermissions('permissions:update')
+  // update(@Param('id') id: string, @Body() updatePermissionDto: UpdatePermissionDto) {
+  //   return this.permissionsService.update(id, updatePermissionDto);
+  // }
 
-  @Delete(':id')
-  @RequirePermissions('permissions:delete')
-  remove(@Param('id') id: string) {
-    return this.permissionsService.remove(id);
-  }
+  // @Delete(':id')
+  // @RequirePermissions('permissions:delete')
+  // remove(@Param('id') id: string) {
+  //   return this.permissionsService.remove(id);
+  // }
 }
