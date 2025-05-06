@@ -5,6 +5,7 @@ import { Permission } from '../permissions/entities/permission.entity';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { AddPermissionDto } from './dto/add-permission.dto';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class RolesService {
@@ -15,16 +16,40 @@ export class RolesService {
     private permissionModel: typeof Permission,
   ) {}
 
-  async findAll(): Promise<Role[]> {
-    return this.roleModel.findAll({
-      include: [
-        {
-          model: Permission,
-          through: { attributes: [] },
-        },
-      ],
+  async findAll(currentUser: any): Promise<Role[]> {
+    if (!currentUser) {
+      throw new NotFoundException('currentUser not found or token expired');
+    }
+   
+    // Default condition - no filtering
+    let whereCondition = {};
+   
+    // Apply role-based filtering
+    if (currentUser.roles.includes('SuperAdmin')) {
+      // SuperAdmin can see all roles except SuperAdmin
+      whereCondition = {
+        name: {
+          [Op.ne]: 'SuperAdmin'
+        }
+      };
+    } else if (currentUser.roles.includes('Admin')) {
+      // Admin can see all roles except SuperAdmin and Admin
+      whereCondition = {
+        name: {
+          [Op.notIn]: ['SuperAdmin', 'Admin']
+        }
+      };
+    }
+   
+    // Get the roles with the applied filters
+    const roles = await this.roleModel.findAll({
+      where: whereCondition,
+      attributes: ['id', 'name'],
+      order: [['id', 'ASC']],
     });
-  }
+   
+    return roles;
+   }
 
   async findById(id: number): Promise<Role> {
     const role = await this.roleModel.findByPk(id, {

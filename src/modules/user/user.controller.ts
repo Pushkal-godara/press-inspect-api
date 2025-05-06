@@ -57,9 +57,9 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user by ID' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto, @Req() req) {
+  update(@Param('id') userId: string, @Body() updateUserDto: UpdateUserDto, @Req() req) {
     const currentUser = req.user;
-    return this.userService.update(+id, updateUserDto, currentUser); 
+    return this.userService.update(+userId, updateUserDto, currentUser); 
   }
 
 
