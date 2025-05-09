@@ -229,7 +229,10 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto, currentUser?: any): Promise<User> {
-    const user = await this.findById(id);
+    if(!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const user = await this.findById(id, currentUser);
 
     // Variable to store generated password (if any)
     let plainTextPassword: string | undefined;
@@ -289,7 +292,8 @@ export class UserService {
     await user.update(updateUserDto);
 
     // Return the updated user (add plainTextPassword if it was a reset)
-    const updatedUser = await this.findById(id);
+    const updatedUser = await this.userModel.findByPk(id);
+    console.log(updatedUser);
 
     // If we generated a password, add it to the response
     if (plainTextPassword) {
@@ -319,7 +323,12 @@ export class UserService {
 
   // Helper method to check if user has a specific role
   private async hasRole(userId: number, roleName: string): Promise<boolean> {
-    const user = await this.findById(userId);
+    const user = await this.userModel.findByPk(userId, {
+      include: [
+        'roles'
+      ]
+    });
+    console.log('user =========== >>>>> ', user);
     return user.roles.some(role => role.name === roleName);
   }
 
