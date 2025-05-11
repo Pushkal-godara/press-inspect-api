@@ -6,7 +6,7 @@ export const getSequelizeConfig = (configService: ConfigService): SequelizeModul
   host: configService.get('DB_HOST', 'localhost'),
   port: configService.get<number>('DB_PORT', 5432),
   username: configService.get('DB_USERNAME', 'postgres'),
-  password: configService.get('DB_PASSWORD', 'postgres'),
+  password: configService.get('DB_PASSWORD', ''),
   database: configService.get('DB_DATABASE', 'printocare'),
   autoLoadModels: true,
   synchronize: false,
