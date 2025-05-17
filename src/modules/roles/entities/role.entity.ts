@@ -29,6 +29,13 @@ export class Role extends Model<Role> {
   description: string;
 
   @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: true
+  })
+  status: boolean;
+
+  @Column({
     type: DataType.DATE,
     allowNull: true,
   })

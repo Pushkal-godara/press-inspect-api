@@ -2,6 +2,7 @@ import { Table, Column, Model, DataType, BelongsTo, ForeignKey, BelongsToMany, H
 import { Role } from '../../roles/entities/role.entity';
 import { UserRole } from '../../roles/entities/user-role.entity';
 import { Report } from '../../report/entities/report.entity';
+import { Country } from 'src/modules/country/entities/country.entity';
 
 @Table({
   tableName: 'users',
@@ -13,6 +14,18 @@ export class User extends Model<User> {
     type: DataType.INTEGER,
   })
   id: number;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  firstName: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  lastName: string;
 
   @Column({
     type: DataType.STRING,
@@ -34,17 +47,31 @@ export class User extends Model<User> {
   password: string;
 
   @Column({
-    type: DataType.STRING,
+    type: DataType.DATE,
     allowNull: false,
+    defaultValue: DataType.NOW,
   })
-  country: string;
+  joiningDate: Date;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+  })
+  address: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: true,
-    field: 'phone_number',
+    allowNull: false,
   })
-  phoneNumber: string;
+  pincode: string;
+
+  @ForeignKey(() => Country)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  })
+  countryId: number;
 
   @Column({
     type: DataType.STRING,
