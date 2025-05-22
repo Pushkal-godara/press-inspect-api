@@ -31,7 +31,7 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
-  username: string;
+  passportNumber: string;
 
   @Column({
     type: DataType.STRING,
@@ -58,6 +58,18 @@ export class User extends Model<User> {
     allowNull: true,
   })
   address: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  city: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  state: string;
 
   @Column({
     type: DataType.STRING,
