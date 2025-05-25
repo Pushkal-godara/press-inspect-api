@@ -10,7 +10,7 @@ import {
     BelongsTo
   } from 'sequelize-typescript';
 import { Unit } from './unit.entity';
-import { ThingsToCheck } from './m-unit-things-to-check.entity';
+import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
 
   @Table({
     tableName: 'sub_units',
@@ -39,6 +39,6 @@ import { ThingsToCheck } from './m-unit-things-to-check.entity';
     @BelongsTo(() => Unit)
     unit: Unit
 
-    @HasMany(() => ThingsToCheck)
-    thingsToCheck: ThingsToCheck[]
+    @HasMany(() => ThingsToCheckUnits)
+    thingsToCheck: ThingsToCheckUnits[]
   }

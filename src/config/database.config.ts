@@ -9,7 +9,7 @@ export const getSequelizeConfig = (configService: ConfigService): SequelizeModul
   password: configService.get('DB_PASSWORD', ''),
   database: configService.get('DB_DATABASE', 'printocare'),
   autoLoadModels: true,
-  synchronize: true,
+  synchronize: false,
   logging: configService.get('NODE_ENV') !== 'production',
   define: {
     timestamps: true,

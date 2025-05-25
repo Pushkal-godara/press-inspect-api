@@ -15,7 +15,7 @@ import {
 
 @Table({ tableName: 'm_things_to_check_control_station' })
 
-export class ThingToCheck extends Model {
+export class ThingToCheckControlStation extends Model {
   @Column({ primaryKey: true, autoIncrement: true, type: DataType.INTEGER })
   id: number;
 

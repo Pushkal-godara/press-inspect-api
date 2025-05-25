@@ -9,7 +9,7 @@ import {
     HasOne
   } from 'sequelize-typescript';
   import { ControlStationTxns } from './control-station-txns.entity';
-  import { ThingToCheck } from './m-things-to-check.entity';
+  import { ThingToCheckControlStation } from './m-things-to-check.entity';
 
   @Table({
     tableName: 'm_control_station',
@@ -31,6 +31,6 @@ import {
     @HasMany(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns[]
 
-    @HasMany(() => ThingToCheck)
-    thingToChecks: ThingToCheck[]
+    @HasMany(() => ThingToCheckControlStation)
+    thingToChecks: ThingToCheckControlStation[]
   }

@@ -11,7 +11,7 @@ import {
     BelongsTo
   } from 'sequelize-typescript';
   import { Unit } from './unit.entity';
-import { ThingsToCheck } from './m-unit-things-to-check.entity';
+import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
 
   @Table({
     tableName: 'coating_system_unit',
@@ -77,6 +77,6 @@ import { ThingsToCheck } from './m-unit-things-to-check.entity';
     })
     additionalSpares: string;
 
-    @HasMany(() => ThingsToCheck)
-        thingsToCheck: ThingsToCheck[]
+    @HasMany(() => ThingsToCheckUnits)
+        thingsToCheck: ThingsToCheckUnits[]
   }

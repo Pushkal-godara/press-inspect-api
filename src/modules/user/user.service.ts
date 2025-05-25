@@ -207,7 +207,7 @@ export class UserService {
       }
       
       // Check if the user is from the same country
-      if (user.country !== currentUser.country) {
+      if (user.countryId !== currentUser.country) {
         throw new ForbiddenException('You do not have permission to view users from other countries');
       }
       
@@ -248,7 +248,7 @@ export class UserService {
       // Country-based restriction for regular Admins
       if (currentUser.roles.includes('Admin') &&
         !currentUser.roles.includes('SuperAdmin') &&
-        user.country !== currentUser.country) {
+        user.countryId !== currentUser.country) {
         throw new ForbiddenException('Cannot modify users from other countries');
       }
     }
@@ -399,9 +399,9 @@ export class UserService {
 
   // Method to find users by country filtering
 
-  async findByCountry(country: string, currentUser): Promise<User[]> {
+  async findByCountry(countryId: string, currentUser): Promise<User[]> {
     return this.userModel.findAll({
-      where: { country },
+      where: { countryId },
       include: [
         {
           model: Role,
@@ -412,7 +412,7 @@ export class UserService {
   }
 
   //  Method to find users by role and country
-  async findByRoleAndCountry(roleName: string, country: string): Promise<User[]> {
+  async findByRoleAndCountry(roleName: string, countryId: string): Promise<User[]> {
     const role = await this.roleModel.findOne({ where: { name: roleName } });
 
     if (!role) {
@@ -420,7 +420,7 @@ export class UserService {
     }
 
     return this.userModel.findAll({
-      where: { country },
+      where: { countryId },
       include: [
         {
           model: Role,

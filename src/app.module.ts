@@ -6,7 +6,6 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CheckpointsModule } from './modules/checkpoints/checkpoints.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { GroupsModule } from './modules/groups/groups.module';
-import { ItemsModule } from './modules/items/items.module';
 import { ModelsModule } from './modules/models/models.module';
 import { PermissionsModule } from './modules/permissions/permissions.module';
 import { ReportsModule } from './modules/report/reports.module';
@@ -29,13 +28,11 @@ import { YearsModule } from './modules/years/years.module';
     PermissionsModule,
     GroupsModule,
     ModelsModule,
-    ItemsModule,
     YearsModule,
     UnitsModule,
     CustomersModule,
     CheckpointsModule,
     ReportsModule,
-    
   ],
 })
 export class AppModule {}

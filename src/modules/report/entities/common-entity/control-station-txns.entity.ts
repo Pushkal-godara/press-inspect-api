@@ -12,6 +12,7 @@ import {
   } from 'sequelize-typescript';
   import { ControlStation } from './m-control-station.entity';
   import { ColorMeasurementTxns } from './color-measuring-txns.entity';
+  import { ThingToCheckControlStation } from './m-things-to-check.entity';
 
   @Table({
     tableName: 'control_station_txns',
@@ -41,11 +42,15 @@ import {
     })
     model: string; // Flash or USB
 
-    // @Column({
-    //     type: DataType.TEXT,
-    //     allowNull: false,
-    // })
-    // thingsToCheck: string
+    @ForeignKey(() => ThingToCheckControlStation)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    thingsToCheckId: number;
+
+    @BelongsTo(() => ThingToCheckControlStation)
+    thingsToCheck: ThingToCheckControlStation
 
     @HasMany(() => ColorMeasurementTxns)
     colorMeasurementTxns: ColorMeasurementTxns[]

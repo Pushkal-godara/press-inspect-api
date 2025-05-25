@@ -83,7 +83,6 @@ export class User extends Model<User> {
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
-    primaryKey: true,
   })
   countryId: number;
 

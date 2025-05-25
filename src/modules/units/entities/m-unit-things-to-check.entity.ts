@@ -14,11 +14,11 @@ import { SubUnitTxn } from './sub-unit-txns.entity';
 import { CoatingSystemUnit } from './coating-system-unit.entity';
 
 @Table({
-    tableName: 'things_to_check',
+    tableName: 'things_to_check_units',
     timestamps: true
 })
 
-export class ThingsToCheck extends Model {
+export class ThingsToCheckUnits extends Model {
     @Column({
         primaryKey: true,
         autoIncrement: true,

@@ -6,7 +6,6 @@ import { User } from '../user/entities/user.entity';
 import { Customer } from '../customers/entities/customer.entity';
 import { Group } from '../groups/entities/group.entity';
 import { ModelEntity } from '../models/entities/model.entity';
-import { Item } from '../items/entities/item.entity';
 import { Year } from '../years/entities/year.entity';
 import { Checkpoint } from '../checkpoints/entities/checkpoint.entity';
 import { CreateReportDto } from './dto/create-report.dto';
@@ -31,8 +30,6 @@ export class ReportsService {
     private groupModel: typeof Group,
     @InjectModel(ModelEntity)
     private modelModel: typeof ModelEntity,
-    @InjectModel(Item)
-    private itemModel: typeof Item,
     @InjectModel(Year)
     private yearModel: typeof Year,
     @InjectModel(Checkpoint)
@@ -82,7 +79,6 @@ export class ReportsService {
         { model: Customer },
         { model: Group },
         { model: ModelEntity, as: 'model' },
-        { model: Item },
         { model: Year },
       ],
       order: [['inspectionDate', 'DESC']],
@@ -96,7 +92,6 @@ export class ReportsService {
         { model: Customer },
         { model: Group },
         { model: ModelEntity, as: 'model' },
-        { model: Item },
         { model: Year },
         {
           model: ReportDetail,
@@ -254,14 +249,6 @@ export class ReportsService {
       const model = await this.modelModel.findByPk(reportData.modelId);
       if (!model) {
         throw new NotFoundException(`Model with ID ${reportData.modelId} not found`);
-      }
-    }
-
-    // Check if item exists
-    if (reportData.itemId) {
-      const item = await this.itemModel.findByPk(reportData.itemId);
-      if (!item) {
-        throw new NotFoundException(`Item with ID ${reportData.itemId} not found`);
       }
     }
 

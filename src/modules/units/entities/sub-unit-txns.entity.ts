@@ -9,7 +9,7 @@ import {
     ForeignKey,
     BelongsTo
   } from 'sequelize-typescript';
-  import { ThingsToCheck } from './m-unit-things-to-check.entity';
+  import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
   import { Condition } from 'src/modules/report/entities/common-entity/condition.entity';
   import { User } from 'src/modules/user/entities/user.entity';
 
@@ -31,15 +31,15 @@ import {
     })
     remarks: string;
 
-    @ForeignKey(() => ThingsToCheck)
+    @ForeignKey(() => ThingsToCheckUnits)
     @Column({
       type: DataType.INTEGER,
       allowNull: false,
     })
     thingsToCheckId: number;
 
-    @BelongsTo(() => ThingsToCheck) 
-    thingsToCheck: ThingsToCheck
+    @BelongsTo(() => ThingsToCheckUnits) 
+    thingsToCheck: ThingsToCheckUnits
 
     @ForeignKey(() => Condition)
     @Column({

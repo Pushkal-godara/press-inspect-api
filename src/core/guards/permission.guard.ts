@@ -46,7 +46,7 @@ export class PermissionGuard implements CanActivate {
         }
         
         // If countries don't match, deny access
-        if (targetUser.country !== user.country) {
+        if (targetUser.countryId !== user.country) {
           return false;
         }
       }

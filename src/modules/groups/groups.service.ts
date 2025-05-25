@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Group } from './entities/group.entity';
 import { ModelEntity } from '../models/entities/model.entity';
-import { Item } from '../items/entities/item.entity';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 
@@ -23,12 +22,6 @@ export class GroupsService {
         {
           model: ModelEntity,
           attributes: ['name'],
-          include: [
-            {
-              model: Item,
-              attributes: ['name'],
-            }
-          ]
         },
       ],
     })

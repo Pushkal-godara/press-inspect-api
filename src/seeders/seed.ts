@@ -5,7 +5,6 @@ import { RolesService } from '../modules/roles/roles.service';
 import { PermissionsService } from '../modules/permissions/permissions.service';
 import { GroupsService } from '../modules/groups/groups.service';
 import { ModelsService } from '../modules/models/models.service';
-import { ItemsService } from '../modules/items/items.service';
 import { YearsService } from '../modules/years/years.service';
 import { UnitsService } from '../modules/units/units.service';
 import * as bcrypt from 'bcrypt';
@@ -18,7 +17,6 @@ async function bootstrap() {
   const permissionsService = app.get(PermissionsService);
   const groupsService = app.get(GroupsService);
   const modelsService = app.get(ModelsService);
-  const itemsService = app.get(ItemsService);
   const yearsService = app.get(YearsService);
   const unitsService = app.get(UnitsService);
 
@@ -55,12 +53,6 @@ async function bootstrap() {
     { name: 'Read Models', resource: 'models', action: 'read', description: 'Read model information', created_at: new Date(), updated_at: new Date() },
     { name: 'Update Model', resource: 'models', action: 'update', description: 'Update model information', created_at: new Date(), updated_at: new Date() },
     { name: 'Delete Model', resource: 'models', action: 'delete', description: 'Delete a model', created_at: new Date(), updated_at: new Date() },
-
-    // Item permissions
-    { name: 'Create Item', resource: 'items', action: 'create', description: 'Create a new item', created_at: new Date(), updated_at: new Date() },
-    { name: 'Read Items', resource: 'items', action: 'read', description: 'Read item information', created_at: new Date(), updated_at: new Date() },
-    { name: 'Update Item', resource: 'items', action: 'update', description: 'Update item information', created_at: new Date(), updated_at: new Date() },
-    { name: 'Delete Item', resource: 'items', action: 'delete', description: 'Delete a item', created_at: new Date(), updated_at: new Date() },
 
     // Report permissions
     { name: 'Create Report', resource: 'reports', action: 'create', description: 'Create a new report', created_at: new Date(), updated_at: new Date() },

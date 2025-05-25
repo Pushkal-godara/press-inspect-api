@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ModelEntity } from './entities/model.entity';
 import { Group } from '../groups/entities/group.entity';
-import { Item } from '../items/entities/item.entity';
 import { CreateModelDto } from './dto/create-model.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 
@@ -23,7 +22,7 @@ export class ModelsService {
 
   async findById(id: string): Promise<ModelEntity> {
     const model = await this.modelModel.findByPk(id, {
-      include: [Group, Item],
+      include: [Group],
     });
     
     if (!model) {

@@ -11,7 +11,6 @@ import {
   HasOne
 } from 'sequelize-typescript';
 import { Group } from '../../groups/entities/group.entity';
-// import { Item } from '../../items/entities/item.entity';
 import { Report } from '../../report/entities/report.entity';
 import { GeneralInfoTxn } from './general-info-txn.entity'
 import { TechnicalSpecification } from '../../report/entities/tech-specification.entity';
@@ -73,9 +72,6 @@ export class ModelEntity extends Model {
   @BelongsTo(() => Group)
   group: Group;
 
-  // @HasMany(() => Item)
-  // items: Item[];
-
   @HasMany(() => Report)
   reports: Report[];
 
@@ -85,9 +81,23 @@ export class ModelEntity extends Model {
   @HasOne(() => TechnicalSpecification)
   technicalSpecification: TechnicalSpecification
 
+  @ForeignKey(() => Seller)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  sellerId: number;
+
   @BelongsTo(() => Seller)
   seller: Seller
 
+  @ForeignKey(() => Buyer)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  buyerId: number;
+  
   @BelongsTo(() => Buyer)
   buyer: Buyer
 
