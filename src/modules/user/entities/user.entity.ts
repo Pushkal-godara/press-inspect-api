@@ -3,6 +3,8 @@ import { Role } from '../../roles/entities/role.entity';
 import { UserRole } from '../../roles/entities/user-role.entity';
 import { Report } from '../../report/entities/report.entity';
 import { Country } from 'src/modules/country/entities/country.entity';
+import { GeneralInfoTxn } from 'src/modules/models/entities/general-info-txn.entity';
+import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
 
 @Table({
   tableName: 'users',
@@ -118,6 +120,12 @@ export class User extends Model<User> {
 
   @HasMany(() => Report, 'inspector_id')
   reports: Report[];
+
+  @HasMany(() => GeneralInfoTxn)
+  generalInfoTxns: GeneralInfoTxn[]
+
+  @HasMany(() => SubUnitTxn)
+  subUnitTxns: SubUnitTxn[]
 
   @Column({
     type: DataType.DATE,

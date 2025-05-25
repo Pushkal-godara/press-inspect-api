@@ -8,6 +8,8 @@ import {
   HasMany
 } from 'sequelize-typescript';
 import { Checkpoint } from '../../checkpoints/entities/checkpoint.entity';
+import { SubUnit } from './sub-unit.entity';
+import { CoatingSystemUnit } from './coating-system-unit.entity';
 
 @Table({
   tableName: 'units',
@@ -27,8 +29,14 @@ export class Unit extends Model {
   })
   name: string;
 
+  @HasMany(() => SubUnit)
+  subUnits: SubUnit[];
+
   @HasMany(() => Checkpoint)
   checkpoints: Checkpoint[];
+
+  @HasMany(() => CoatingSystemUnit)
+  coatingSystemUnits: CoatingSystemUnit[];
 
   @Column({
     type: DataType.DATE,

@@ -1,0 +1,40 @@
+import {
+    Table,
+    Column,
+    Model,
+    DataType,
+    CreatedAt,
+    UpdatedAt,
+    ForeignKey,
+    BelongsTo,
+    HasMany
+  } from 'sequelize-typescript';
+import { ModelEntity } from '../../models/entities/model.entity';
+
+  @Table({
+    tableName: 'sellers',
+  })
+
+  export class Seller extends Model {
+    @Column({
+      primaryKey: true,
+      autoIncrement: true,
+      type: DataType.INTEGER
+    })
+    id: number;
+
+    @Column({
+      type: DataType.STRING,
+      allowNull: false,
+    })
+    companyName: string;
+
+    @Column({
+        type: DataType.TEXT,
+        allowNull: false,
+    })
+    address: string;
+
+    @HasMany(() => ModelEntity)
+    models: ModelEntity[]
+}
