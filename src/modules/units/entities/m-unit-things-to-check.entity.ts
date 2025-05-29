@@ -11,7 +11,8 @@ import {
 } from 'sequelize-typescript';
 import { SubUnit } from './sub-unit.entity';
 import { SubUnitTxn } from './sub-unit-txns.entity';
-import { CoatingSystemUnit } from './coating-system-unit.entity';
+import { CoatingSystemUnit } from './m-coating-system-unit.entity';
+import { CoatingSystemTxn } from './coating-system-txn.entity';
 
 @Table({
     tableName: 'things_to_check_units',
@@ -40,7 +41,7 @@ export class ThingsToCheckUnits extends Model {
     subUnitId: number;
 
     @BelongsTo(() => SubUnit)
-    subUnit: SubUnit
+    subUnit: SubUnit;
     
     @ForeignKey(() => CoatingSystemUnit)
     @Column({
@@ -60,4 +61,7 @@ export class ThingsToCheckUnits extends Model {
 
     @HasMany(() => SubUnitTxn)
     subUnitTxns: SubUnitTxn[]
+
+    @HasMany(() => CoatingSystemTxn)
+    coatingSystemTxns: CoatingSystemTxn[]
 }

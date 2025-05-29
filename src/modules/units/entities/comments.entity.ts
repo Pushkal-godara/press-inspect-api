@@ -5,16 +5,18 @@ import {
   DataType,
   CreatedAt,
   UpdatedAt,
-  HasMany
+  HasMany,
+  ForeignKey,
+  BelongsTo
 } from 'sequelize-typescript';
-import { Checkpoint } from '../../checkpoints/entities/checkpoint.entity';
+
 import { SubUnit } from './sub-unit.entity';
-import { CoatingSystemUnit } from './m-coating-system-unit.entity';
+import { User } from 'src/modules/user/entities/user.entity';
 
 @Table({
-  tableName: 'units',
+  tableName: 'comments',
 })
-export class Unit extends Model {
+export class Comments extends Model {
   @Column({
     primaryKey: true,
     autoIncrement: true,
@@ -32,17 +34,21 @@ export class Unit extends Model {
   @HasMany(() => SubUnit)
   subUnits: SubUnit[];
 
-  @HasMany(() => Checkpoint)
-  checkpoints: Checkpoint[];
+  @ForeignKey(() => User)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  userId: number;
 
-  @HasMany(() => CoatingSystemUnit)
-  coatingSystemUnits: CoatingSystemUnit[];
-
+  @BelongsTo(() => User)
+  user: User;
+  
   @Column({
     type: DataType.DATE,
     allowNull: true,
   })
-  created_at: Date;
+  dateOfInspection: Date;
 
   @Column({
     type: DataType.DATE,

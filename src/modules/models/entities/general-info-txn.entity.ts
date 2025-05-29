@@ -61,6 +61,12 @@ import {
     user: User
 
     @Column({
+      type: DataType.STRING,
+      allowNull: false,
+    })
+    inspectionPlace: string
+
+    @Column({
       type: DataType.DATE,
       allowNull: false,
     })

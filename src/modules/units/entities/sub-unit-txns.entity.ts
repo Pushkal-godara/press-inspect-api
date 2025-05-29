@@ -66,11 +66,4 @@ import {
       allowNull: false,
     })
     txnsDate: Date;
-
-    @Column({
-        type: DataType.TEXT,
-        allowNull: false,
-    })
-    comments: string;
-
 }

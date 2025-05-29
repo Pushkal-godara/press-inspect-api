@@ -5,6 +5,9 @@ import { Report } from '../../report/entities/report.entity';
 import { Country } from 'src/modules/country/entities/country.entity';
 import { GeneralInfoTxn } from 'src/modules/models/entities/general-info-txn.entity';
 import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
+import { ControlStationTxns } from 'src/modules/report/entities/common-entity/control-station-txns.entity';
+import { CoatingSystemTxn } from 'src/modules/units/entities/coating-system-txn.entity';
+import { DeliveryTypeCategory } from 'src/modules/units/entities/delivery-type-category.entity';
 
 @Table({
   tableName: 'users',
@@ -117,6 +120,12 @@ export class User extends Model<User> {
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
 
+  @HasMany(() => CoatingSystemTxn)
+  coatingSystemTxns: CoatingSystemTxn[]
+
+  @HasMany(() => DeliveryTypeCategory)
+  deliveryTypeCategories: DeliveryTypeCategory[]
+
   @HasMany(() => Report, 'inspector_id')
   reports: Report[];
 
@@ -125,6 +134,9 @@ export class User extends Model<User> {
 
   @HasMany(() => SubUnitTxn)
   subUnitTxns: SubUnitTxn[]
+
+  @HasMany(() => ControlStationTxns)
+  controlStationTxns: ControlStationTxns[]
 
   @Column({
     type: DataType.DATE,
