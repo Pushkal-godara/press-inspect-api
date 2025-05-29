@@ -1,0 +1,37 @@
+{
+    "stations": [
+        {
+            "stationName": "Prinect press center"
+        },
+        {
+            "stationName": "Print center"
+        },
+        {
+            "stationName": "CPC with classic center"
+        },
+        {
+            "stationName": "Control Panel"
+        },
+        {
+            "stationName": "CP2000 center"
+        },
+        {
+            "stationName": "CPC 1.01"
+        },
+        {
+            "stationName": "CPC 1.02"
+        },
+        {
+            "stationName": "CPC 1.03 & CP Tronic"
+        },
+        {
+            "stationName": "CPC 1.04 & CP Tronic"
+        },
+        {
+            "stationName": "CPC compact"
+        },
+        {
+            "stationName": "CP Tronic"
+        }
+    ]
+}

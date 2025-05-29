@@ -1,0 +1,40 @@
+{
+    "sub-unit": [
+        {
+            "subUnitName": "Standard feeder"
+        },
+        {
+            "subUnitName": "PreSet Feeder"
+        },
+        {
+            "subUnitName": "PreSet plus Feeder"
+        },
+        {
+            "subUnitName": "Feeder with logistic"
+        },
+        {
+            "subUnitName": "Feeder with cut-star"
+        },
+        {
+            "subUnitName": "Printing Unit1"
+        },
+        {
+            "subUnitName": "Printing Unit2"
+        },
+        {
+            "subUnitName": "Printing Unit3"
+        },
+        {
+            "subUnitName": "Printing Unit4"
+        },
+        {
+            "subUnitName": "Standard delivery"
+        },
+        {
+            "subUnitName": "Preset delivery"
+        },
+        {
+            "subUnitName": "Preset plus delivery"
+        }
+    ]
+}

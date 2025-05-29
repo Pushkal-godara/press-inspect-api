@@ -202,6 +202,16 @@ async function bootstrap() {
       created_at: new Date(),
       updated_at: new Date()
     },
+    {
+      name: 'Engineer',
+      description: 'Engineer with access to all reports',
+      permissions: [
+        createdPermissions['reports:read'],
+        createdPermissions['groups:read'],
+        createdPermissions['models:read'],
+        createdPermissions['items:read'],
+      ]
+    }
   ];
 
   const createdRoles = {};

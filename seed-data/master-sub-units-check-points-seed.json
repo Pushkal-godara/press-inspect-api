@@ -1,0 +1,149 @@
+{
+    "thingsToCheck": [
+        {
+            "checkpoint": "Lifting Suckers"
+        },
+        {
+            "checkpoint": "Forwarding Suckers"
+        },
+        {
+            "checkpoint": "Sheet Separation Fingers"
+        },
+        {
+            "checkpoint": "Rotary Valve"
+        },
+        {
+            "checkpoint": "Forwarding Flap"
+        },
+        {
+            "checkpoint": "Suction head"
+        },
+        {
+            "checkpoint": "Feeder Belt and its conditions"
+        },
+        {
+            "checkpoint": "OS - Pull lay test for 50, 220 & 350 GSM substrates"
+        },
+        {
+            "checkpoint": "DS - Pull lay test for 50, 220 & 350 GSM substrates"
+        },
+        {
+            "checkpoint": "Front lay Condition"
+        },
+        {
+            "checkpoint": "Forwarding runners in feed board"
+        },
+        {
+            "checkpoint": "Forwarding Runner movement to sheet size "
+        },
+        {
+            "checkpoint": "Suction Head height adjustment "
+        },
+        {
+            "checkpoint": "Suction Head front ward adjustment"
+        },
+        {
+            "checkpoint": "Suction Head backward adjustment"
+        },
+        {
+            "checkpoint": "Governor foot adjustment"
+        },
+        {
+            "checkpoint": "Overall Pull lay condition"
+        },
+        {
+            "checkpoint": "Hand Wheel"
+        },
+        {
+            "checkpoint": "Clutching and De Clutching"
+        },
+        {
+            "checkpoint": "Buttons in Feeder"
+        },
+        {
+            "checkpoint": "Front lay sensor"
+        },
+        {
+            "checkpoint": "Earlier Sheet detector "
+        },
+        {
+            "checkpoint": "Late Sheet detector"
+        },
+        {
+            "checkpoint": "Cross Sheet detector"
+        },
+        {
+            "checkpoint": "Pile Alignment"
+        },
+        {
+            "checkpoint": "Automatic format setting"
+        },
+        {
+            "checkpoint": "Pile chain"
+        },
+        {
+            "checkpoint": "Pile support frame"
+        },
+        {
+            "checkpoint": "Pile height sensor"
+        },
+        {
+            "checkpoint": "Universal Joint by visual"
+        },
+        {
+            "checkpoint": "Tape driving roller"
+        },
+        {
+            "checkpoint": "Pull lay sensor OS"
+        },
+        {
+            "checkpoint": "Pull lay sensor DS"
+        },
+        {
+            "checkpoint": "Sheet stop finger OS"
+        },
+        {
+            "checkpoint": "Sheet stop finger DS"
+        },
+
+        {
+            "checkpoint": "Stream feeder"
+        },
+        {
+            "checkpoint": "Non-Stop feeder with ramps"
+        },
+        {
+            "checkpoint": "Display for monitoring sheet travel"
+        },
+        {
+            "checkpoint": "Stream feeder with belt"
+        },
+        {
+            "checkpoint": "Electronic double sheet detection"
+        },
+        {
+            "checkpoint": "Mechanic double sheet detection"
+        },
+        {
+            "checkpoint": "Rear edge blowers"
+        },
+        {
+            "checkpoint": "Pull Lay - OS"
+        },
+        {
+            "checkpoint": "Pull Lay - DS"
+        },
+        {
+            "checkpoint": "Front Lay - OS"
+        },
+        {
+            "checkpoint": "Forwarding Sucker" 
+        },
+        {
+            "checkpoint": "Rotary Valve"
+        },
+        {
+            "checkpoint": "Universal Joint"
+        }
+    ]
+}

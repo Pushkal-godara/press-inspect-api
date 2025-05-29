@@ -10,6 +10,7 @@ import {
     ForeignKey,
     BelongsTo
   } from 'sequelize-typescript';
+  import { Unit } from './unit.entity';
   @Table({
     tableName: 'coating_system_unit',
   })
@@ -27,5 +28,15 @@ import {
       allowNull: false,
     })
     coatingSystem: string;
+
+    @ForeignKey(() => Unit)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    unitId: number;
+  
+    @BelongsTo(() => Unit)
+    unit: Unit
 
   }

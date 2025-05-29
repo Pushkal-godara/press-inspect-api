@@ -12,6 +12,8 @@ import {
   } from 'sequelize-typescript';
 
 import { User } from 'src/modules/user/entities/user.entity';
+import { Condition } from 'src/modules/report/entities/common-entity/condition.entity';
+import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
 
   @Table({
     tableName: 'coating_system_txns',
@@ -24,6 +26,26 @@ import { User } from 'src/modules/user/entities/user.entity';
       type: DataType.INTEGER,
     })
     id: number;
+
+    @ForeignKey(() => Condition)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    conditionId: number;
+  
+    @BelongsTo(() => Condition)
+    condition: Condition
+
+    @ForeignKey(() => ThingsToCheckUnits)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    thingsToCheckId: number;
+  
+    @BelongsTo(() => ThingsToCheckUnits)
+    thingsToCheck: ThingsToCheckUnits
 
     @Column({
         type: DataType.STRING,

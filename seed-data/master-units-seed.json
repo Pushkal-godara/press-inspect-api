@@ -1,0 +1,19 @@
+{
+    "units": [
+        {
+            "name": "Feeder Unit"
+        },
+        {
+            "name": "Printing Unit"
+        },
+        {
+            "name": "Coating Unit"
+        },
+        {
+            "name": "Delivery Unit"
+        },
+        {
+            "name": "Peripheral Equipment"
+        }
+    ]
+}

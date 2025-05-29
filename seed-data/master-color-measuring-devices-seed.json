@@ -1,0 +1,22 @@
+{
+    "colorMeasuringDevices": [
+        {
+            "name": "Easy control"
+        },
+        {
+            "name": "Axis control old"
+        },
+        {
+            "name": "Axis control new"
+        },
+        {
+            "name": "image control"
+        },
+        {
+            "name": "Retro fitted by Third party"
+        },
+        {
+            "name": "Not available"
+        }
+    ]
+}

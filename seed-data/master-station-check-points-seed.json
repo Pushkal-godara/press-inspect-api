@@ -1,0 +1,19 @@
+{
+    "thingsToCheck": [
+        {
+            "checkpoint": "Condition of Light Pen"
+        },
+        {
+            "checkpoint": "Memory Card available"
+        },
+        {
+            "checkpoint": "Day light lamp condition"
+        },
+        {
+            "checkpoint": "Storage drawers condition"
+        },
+        {
+            "checkpoint": "Condition of Display"
+        }
+    ]
+}

@@ -1,0 +1,46 @@
+{
+    "info" : [
+        {
+            "question": "How many shifts per day does machine run?"
+        },
+        {
+            "question": "Does machine run on same sheet size?"
+        },
+        {
+            "question": "Any general running noise?"
+        },
+        {
+            "question": "Current Impression Count?"
+        },
+        {
+            "question": "Has counter been replaced?"
+        },
+        {
+            "question": "Print Samples available?"
+        },
+        {
+            "questioin": "Breakaway solids available?"
+        },
+        {
+            "question": "Is press a 'Drupa' version?"
+        },
+        {
+            "question": "Perfection Systems?"
+        },
+        {
+            "question": "Purchased New or Used?"
+        },
+        {
+            "question": "European or US press?"
+        },
+        {
+            "question": "Maintenance records available?"
+        },
+        {
+            "question": "Control labeling language?"
+        },
+        {
+            "question": "Original installation done by?"
+        }
+    ]
+}

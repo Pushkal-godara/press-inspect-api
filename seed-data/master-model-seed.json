@@ -1,0 +1,97 @@
+{
+    "models": [
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "QM46"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SM52"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "PM52"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "GTO52"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SM66"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SM72"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SM74"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SX74"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "PM74"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "CD74"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SORS"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SORD"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SORS Z"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SORS ZP"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOE"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOZ"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOV"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOVP"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOF"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "MOFP"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "XL 75"
+        },
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "CD102"
+        },
+        
+        {
+          "Manufacturer": "HEIDELBERG",
+          "Model": "SM102"
+        }
+      ]
+}   
