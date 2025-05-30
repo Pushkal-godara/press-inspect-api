@@ -10,7 +10,7 @@ import {
     BelongsTo
   } from 'sequelize-typescript';
   import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
-  import { Condition } from 'src/modules/report/entities/common-entity/condition.entity';
+  import { Condition } from '../../report/entities/common-entity/condition.entity';
   import { User } from 'src/modules/user/entities/user.entity';
 
   @Table({

@@ -4,7 +4,7 @@ import * as bcrypt from 'bcrypt';
 import { User } from './entities/user.entity';
 import { Role } from '../roles/entities/role.entity';
 import { UserRole } from '../roles/entities/user-role.entity';
-import { RegisterDto } from '../auth/dto/register.dto';
+import { CreateUserDto } from './dto/create-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { UpdateUserDto, UserWithGeneratedPassword } from './dto/update-user.dto';
 import { RolesService } from '../roles/roles.service';
@@ -23,23 +23,23 @@ export class UserService {
     private userRoleModel: typeof UserRole
   ) { }
 
-  async create(registerDto: RegisterDto, currentUser: any): Promise<User> {
+  async create(createUserDto: CreateUserDto, currentUser: any): Promise<User> {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
     // Check if email or username already exists
-    const existingUser = await this.findByEmail(registerDto.email);
+    const existingUser = await this.findByEmail(createUserDto.email);
     if (existingUser) {
       throw new UnauthorizedException('Email already exists');
     }
 
     // Hash password
-    const hashedPassword = await this.hashPassword(registerDto.password);
+    const hashedPassword = await this.hashPassword(createUserDto.password);
 
     // If role is being assigned and currentUser exists (admin creating user)
-    if (registerDto.roleId && currentUser) {
+    if (createUserDto.roleId && currentUser) {
       // Get the role being assigned
-      const role = await this.rolesService.findById(registerDto.roleId);
+      const role = await this.rolesService.findById(createUserDto.roleId);
 
       // Prevent assigning Admin role unless you're a Super Admin
       if (role.name === 'Admin' && !currentUser.roles.includes('SuperAdmin')) {
@@ -50,8 +50,8 @@ export class UserService {
       if (
         currentUser.roles.includes('Admin') &&
         !currentUser.roles.includes('SuperAdmin') &&
-        registerDto.country &&
-        registerDto.country !== currentUser.country
+        createUserDto.countryId &&
+        createUserDto.countryId !== currentUser.country
       ) {
         throw new ForbiddenException('Cannot create users for other countries');
       }
@@ -59,13 +59,13 @@ export class UserService {
 
     // Create user
     const user = await this.userModel.create({
-      ...registerDto,
+      ...createUserDto,
       password: hashedPassword,
     });
 
     // Assign the role
-    if (registerDto.roleId) {
-      const data = await this.addRole(user.id, { roleId: registerDto.roleId });
+    if (createUserDto.roleId) {
+      const data = await this.addRole(user.id, { roleId: createUserDto.roleId });
       if (!data) {
         throw new BadRequestException('Failed to assign role');
       }
@@ -78,7 +78,23 @@ export class UserService {
           attributes: ['id', 'name'],
           through: { attributes: [] }, // This hides UserRole
         },
-        attributes: ['id', 'username', 'email', 'country', 'phone_number', 'company_name', 'registration_id']
+        attributes: [
+          'id', 
+          'first_name', 
+          'last_name', 
+          'email', 
+          'country_id', 
+          'passport_number', 
+          'joining_date',
+          'address',
+          'city', 
+          'state', 
+          'pin_code', 
+          'company_name', 
+          'registration_id',
+          'cv_url',
+          'work_experience'
+        ]
       }
     );
     return userData;
@@ -356,7 +372,7 @@ export class UserService {
           ],
         },
       ],
-      attributes: ['id', 'email', 'username'],
+      attributes: ['id', 'email', 'first_name', 'last_name', 'country_id'],
     });
 
     if (!user) {

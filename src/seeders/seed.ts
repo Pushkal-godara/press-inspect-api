@@ -7,6 +7,7 @@ import { GroupsService } from '../modules/groups/groups.service';
 import { ModelsService } from '../modules/models/models.service';
 import { YearsService } from '../modules/years/years.service';
 import { UnitsService } from '../modules/units/units.service';
+import { User } from 'src/modules/user/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
@@ -16,6 +17,7 @@ async function bootstrap() {
   const rolesService = app.get(RolesService);
   const permissionsService = app.get(PermissionsService);
   const groupsService = app.get(GroupsService);
+
   const modelsService = app.get(ModelsService);
   const yearsService = app.get(YearsService);
   const unitsService = app.get(UnitsService);
@@ -232,48 +234,33 @@ async function bootstrap() {
     }
   }
 
-//   // Create admin user
-//   console.log('Creating admin user...');
+  // Create user
+  console.log('Creating admin user...');
+  // Create a function to hash the password
+  const hashPassword = async (password: string) => {
+    const salt = await bcrypt.genSalt();
+    return bcrypt.hash(password, salt);
+  }
+  try {
+    const adminUser = await User.create({
+      firstName: 'Super Admin',
+      lastName: 'User',
+      passportNumber: '1234567890',
+      city: 'Super Admin City',
+      pincode: '123456',
+      email: 'super_admin@printocare.com',
+      password: await hashPassword('Superadmin123'),
+      countryId: 1,
+      created_at: new Date(),
+      updated_at: new Date()
+    });
 
-//   try {
-//     const adminUser = await usersService.create({
-//       username: 'Admin User',
-//       email: 'admin@printocare.com',
-//       roleId: 2,
-//       password: 'admin123',
-//       country: 'UAE',
-//       created_at: new Date(),
-//       updated_at: new Date()
-//     });
+    // await usersService.addRole(adminUser.id, { roleId: createdRoles['Admin'] });
 
-//     await usersService.addRole(adminUser.id, { roleId: createdRoles['Admin'] });
-
-//     console.log('Admin user created successfully');
-//   } catch (error) {
-//     console.log('Error creating admin user:', error.message);
-//   }
-
-
-//   // Create super admin user
-//   console.log('Creating super admin user...');
-
-//   try {
-//     const superAdminUser = await usersService.create({
-//       username: 'Super Admin',
-//       email: 'superadmin@printocare.com',
-//       roleId: 1,
-//       country: 'UAE',
-//       password: 'superadmin123',
-//       created_at: new Date(),
-//       updated_at: new Date()
-//     });
-
-//     await usersService.addRole(superAdminUser.id, { roleId: createdRoles['Super Admin'] });
-
-//     console.log('Super Admin user created successfully');
-//   } catch (error) {
-//     console.log('Error creating super admin user:', error.message);
-//   }
+    console.log('User created successfully');
+  } catch (error) {
+    console.log('Error creating user:', error.message);
+  }
 
   // Create groups
   console.log('Creating groups...');
@@ -381,6 +368,7 @@ async function bootstrap() {
     { name: 'Printing Unit', created_at: new Date(), updated_at: new Date() },
     { name: 'Coating Unit', created_at: new Date(), updated_at: new Date() },
     { name: 'Delivery Unit', created_at: new Date(), updated_at: new Date() },
+    { name: 'Peripheral Equipment', created_at: new Date(), updated_at: new Date() },
   ];
 
   const createdUnits = {};

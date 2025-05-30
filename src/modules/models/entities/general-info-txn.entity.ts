@@ -11,7 +11,7 @@ import {
   } from 'sequelize-typescript';
   import { GeneralInfo } from './m-general-info.entity';
   import { ModelEntity } from './model.entity';
-  import { User } from 'src/modules/user/entities/user.entity';
+  import { User } from '../../user/entities/user.entity';
 
   @Table({
     tableName: 'general_info_txn',

@@ -4,7 +4,6 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { LoginDto } from './dto/login.dto';
 import { User } from '../user/entities/user.entity';
-import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -39,48 +38,30 @@ export class AuthService {
     const userWithRoles = await this.userService.findByIdWithRolesAndPermissions(user.id);
     // Extract permissions from roles
     const permissions = this.extractPermissions(userWithRoles);
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      roles: userWithRoles.roles.map(role => role.name),
+      permissions,
+      country: user.countryId,
+    };
+    const token = this.jwtService.sign(payload);
+
+    console.log('Generated token payload:', payload);
+    console.log('Generated token:', token);
     
     return {
-      access_token: this.jwtService.sign({
-        sub: user.id,
-        email: user.email,
-        roles: userWithRoles.roles.map(role => role.name),
-        permissions,
-        country: user.country,
-      }),
+      access_token: token,
       user: {
         id: user.id,
-        name: user.username,
+        name: user.firstName,
         email: user.email,
         roles: userWithRoles.roles[0].name,
         registrationId: user.registrationId,
-        country: user.country
+        country: user.countryId
       },
     };
   }
-
-
-  // async register(registerDto: RegisterDto, currentUser: any) {
-  //   try {
-  //     if (!currentUser) {
-  //       throw new UnauthorizedException('Invalid credentials');
-  //     }
-  //     const user = await this.userService.create({...registerDto}, currentUser);
-      
-  //     // Return user info and token
-  //     return {
-  //       id: user.id,
-  //       name: user.username,
-  //       email: user.email,
-  //     };
-  //   } catch (error) {
-  //     if (error.name === 'SequelizeUniqueConstraintError' || error instanceof ConflictException) {
-  //       throw new ConflictException('Email or username already exists');
-  //     }
-  //     throw error;
-  //   }
-  // }
-
 
   private excludePassword(user: User) {
     const { password, ...result } = user['dataValues'] || user;

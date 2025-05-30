@@ -16,14 +16,4 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
-
-  // @RequirePermissions('users:create')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(JwtAuthGuard, PermissionGuard, RolesGuard)
-  // @Post('register')
-  // @ApiOperation({ summary: 'User registration' })
-  // async register(@Body() registerDto: RegisterDto, @Req() req) {
-  //   const currentUser = req.user;
-  //   return this.authService.register(registerDto, currentUser);
-  // }
 }

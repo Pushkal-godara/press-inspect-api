@@ -3,12 +3,37 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
   @ApiProperty({
-    description: 'Username',
-    example: 'johndoe',
+    description: 'First name',
+    example: 'John',
   })
   @IsString()
   @IsNotEmpty()
-  username: string;
+  firstName: string;
+
+  @ApiProperty({
+    description: 'Last name',
+    example: 'Doe',
+  })
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
+
+  @ApiProperty({
+    description: 'Role id',
+    example: 1,
+    required: true
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  roleId: number;
+
+  @ApiProperty({
+    description: 'Passport number',
+    example: 'A12345678',
+  })
+  @IsString()
+  @IsNotEmpty()
+  passportNumber: string;
 
   @ApiProperty({
     description: 'Email address',
@@ -17,14 +42,6 @@ export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @ApiProperty({
-    description: 'Role id',
-    example: 1,
-  })
-  @IsNumber()
-  @IsNotEmpty()
-  roleId: number;
 
   @ApiProperty({
     description: 'Password (must be at least 8 characters long and include uppercase, lowercase, number, and special character)',
@@ -42,27 +59,80 @@ export class CreateUserDto {
   )
   password: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Address',
+    example: '123 Main Street, Apartment 4B',
+    required: false,
+  })
+  @IsOptional()
   @IsString()
-  country: string;
+  address?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'City',
+    example: 'New York',
+  })
+  @IsString()
+  @IsNotEmpty()
+  city: string;
+
+  @ApiProperty({
+    description: 'State',
+    example: 'NY',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  state?: string;
+
+  @ApiProperty({
+    description: 'Pincode/ZIP code',
+    example: '10001',
+  })
+  @IsString()
+  @IsNotEmpty()
+  pincode: string;
+
+  @ApiProperty({
+    description: 'Country ID',
+    example: 1,
+  })
+  @IsNumber()
+  @IsNotEmpty()
+  countryId: number;
+
+  @ApiProperty({
+    description: 'Company name',
+    example: 'Acme Corporation',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   companyName?: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Registration ID',
+    example: 'REG123456',
+    required: false,
+  })
+  @IsOptional()
   @IsString()
-  registrationId: string;
+  registrationId?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'CV URL',
+    example: 'https://example.com/cv/johndoe.pdf',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   cvUrl?: string;
 
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Work experience details',
+    example: '5 years of experience in software development',
+    required: false,
+  })
   @IsOptional()
   @IsString()
   workExperience?: string;
