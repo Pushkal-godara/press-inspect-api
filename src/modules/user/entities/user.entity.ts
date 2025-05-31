@@ -155,6 +155,6 @@ export class User extends Model<User> {
     allowNull: true,
     defaultValue: true
   })
-  is_active?: boolean;
+  is_active: boolean;
 
 }

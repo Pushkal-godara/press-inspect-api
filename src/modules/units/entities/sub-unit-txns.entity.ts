@@ -12,6 +12,7 @@ import {
   import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
   import { Condition } from '../../report/entities/common-entity/condition.entity';
   import { User } from 'src/modules/user/entities/user.entity';
+  import { ModelEntity } from 'src/modules/models/entities/model.entity';
 
   @Table({
     tableName: 'sub_unit_txns',
@@ -30,6 +31,16 @@ import {
       allowNull: false,
     })
     remarks: string;
+
+    @ForeignKey(() => ModelEntity)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    modelId: number;
+
+    @BelongsTo(() => ModelEntity)
+    model: ModelEntity
 
     @ForeignKey(() => ThingsToCheckUnits)
     @Column({

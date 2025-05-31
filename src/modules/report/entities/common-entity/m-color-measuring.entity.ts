@@ -30,4 +30,5 @@ import {
 
     @HasMany(() => ColorMeasurementTxns)
     colorMeasurementTxns: ColorMeasurementTxns[]
+
   }

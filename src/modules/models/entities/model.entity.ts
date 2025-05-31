@@ -11,11 +11,11 @@ import {
   HasOne
 } from 'sequelize-typescript';
 import { Group } from '../../groups/entities/group.entity';
-import { Report } from '../../report/entities/report.entity';
-import { GeneralInfoTxn } from './general-info-txn.entity'
+import { GeneralInfoTxn } from './general-info-txn.entity';
 import { TechnicalSpecification } from '../../report/entities/tech-specification.entity';
 import { Seller } from '../../report/entities/seller.entity';
 import { Buyer } from '../../report/entities/buyer.entity';
+import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
 
 @Table({
   tableName: 'models',
@@ -72,11 +72,11 @@ export class ModelEntity extends Model {
   @BelongsTo(() => Group)
   group: Group;
 
-  @HasMany(() => Report)
-  reports: Report[];
-
   @HasMany(() => GeneralInfoTxn)
   generalInfoTxns: GeneralInfoTxn[]
+
+  @HasMany(() => SubUnitTxn)
+  subUnitTxns: SubUnitTxn[]
 
   @HasOne(() => TechnicalSpecification)
   technicalSpecification: TechnicalSpecification

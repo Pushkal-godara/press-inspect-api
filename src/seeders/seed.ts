@@ -134,7 +134,6 @@ async function bootstrap() {
         createdPermissions['reports:read'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
         createdPermissions['reports:view-own'],
       ],
       created_at: new Date(),
@@ -150,7 +149,6 @@ async function bootstrap() {
         createdPermissions['reports:export'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
         createdPermissions['inspection:prepress'],
       ],
       created_at: new Date(),
@@ -166,7 +164,6 @@ async function bootstrap() {
         createdPermissions['reports:export'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
         createdPermissions['inspection:press'],
       ],
       created_at: new Date(),
@@ -182,7 +179,6 @@ async function bootstrap() {
         createdPermissions['reports:export'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
         createdPermissions['inspection:postpress'],
       ],
       created_at: new Date(),
@@ -198,7 +194,6 @@ async function bootstrap() {
         createdPermissions['reports:export'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
         createdPermissions['inspection:packaging'],
       ],
       created_at: new Date(),
@@ -208,10 +203,12 @@ async function bootstrap() {
       name: 'Engineer',
       description: 'Engineer with access to all reports',
       permissions: [
+        createdPermissions['reports:create'],
         createdPermissions['reports:read'],
+        createdPermissions['reports:update'],
+        createdPermissions['reports:export'],
         createdPermissions['groups:read'],
         createdPermissions['models:read'],
-        createdPermissions['items:read'],
       ]
     }
   ];
