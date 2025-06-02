@@ -11,8 +11,8 @@ import {
   HasOne
 } from 'sequelize-typescript';
 import { Group } from '../../groups/entities/group.entity';
-import { GeneralInfoTxn } from './general-info-txn.entity';
-import { TechnicalSpecification } from '../../report/entities/tech-specification.entity';
+import { GeneralInfoTxn } from '../../report/entities/general-info-txn.entity';
+import { TechnicalSpecification } from './tech-specification.entity';
 import { Seller } from '../../report/entities/seller.entity';
 import { Buyer } from '../../report/entities/buyer.entity';
 import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
@@ -39,6 +39,12 @@ export class ModelEntity extends Model {
     allowNull: false,
   })
   serialNumber: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  totalImpressions: string;
 
   @Column({
     type: DataType.STRING,
