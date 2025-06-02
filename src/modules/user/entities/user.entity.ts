@@ -3,7 +3,7 @@ import { Role } from '../../roles/entities/role.entity';
 import { UserRole } from '../../roles/entities/user-role.entity';
 import { Report } from '../../report/entities/report.entity';
 import { Country } from 'src/modules/country/entities/country.entity';
-import { GeneralInfoTxn } from 'src/modules/models/entities/general-info-txn.entity';
+import { GeneralInfoTxn } from 'src/modules/report/entities/general-info-txn.entity';
 import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
 import { ControlStationTxns } from 'src/modules/report/entities/common-entity/control-station-txns.entity';
 import { CoatingSystemTxn } from 'src/modules/units/entities/coating-system-txn.entity';
@@ -88,6 +88,9 @@ export class User extends Model<User> {
     allowNull: false,
   })
   countryId: number;
+
+  @BelongsTo(() => Country)
+  country: Country;
 
   @Column({
     type: DataType.STRING,

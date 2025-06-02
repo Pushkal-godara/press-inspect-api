@@ -10,6 +10,7 @@ import { UpdateUserDto, UserWithGeneratedPassword } from './dto/update-user.dto'
 import { RolesService } from '../roles/roles.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { Op } from 'sequelize';
+import { Country } from '../country/entities/country.entity';
 
 @Injectable()
 export class UserService {
@@ -111,7 +112,11 @@ export class UserService {
           model: Role,
           attributes: ['id', 'name'],
           through: { attributes: [] }, // This hides UserRole
-        }
+        },
+        {
+          model: Country,
+          attributes: ['id', 'name'],
+        },
       ],
       attributes: [
         'id', 
@@ -121,10 +126,15 @@ export class UserService {
         'passport_number', 
         'joining_date',
         'country_id', 
-        'registration_id', 
+        'registration_id',
+        'address',
+        'city', 
+        'state', 
+        'pincode',
         'company_name', 
         'cv_url', 
-        'work_experience'
+        'work_experience',
+        'is_active'
       ],
       order: [['id', 'ASC']],
     };
@@ -188,7 +198,11 @@ export class UserService {
           model: Role,
           attributes: ['name'],
           through: { attributes: [] }, // This hides UserRole
-        }
+        },
+        {
+          model: Country,
+          attributes: ['id', 'name'],
+        },
       ],
       attributes: [
         'id',
