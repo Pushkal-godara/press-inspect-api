@@ -49,6 +49,12 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
+  mobile: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
   password: string;
 
   @Column({
@@ -119,6 +125,27 @@ export class User extends Model<User> {
     field: 'work_experience',
   })
   workExperience: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    field: 'passport_expiry_date',
+  })
+  passportExpiryDate: Date;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    field: 'passport_attachment',
+  })
+  passportAttachment: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    field: 'photo_of_engineer',
+  })
+  photoOfEngineer: string;
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];

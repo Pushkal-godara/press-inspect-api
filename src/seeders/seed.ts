@@ -240,16 +240,21 @@ async function bootstrap() {
     }
   }
 
-  // Create countries
-  const countries = ['India', 'Singapore'];
-  for (const name of countries) {
+  // Create countries with code and phoneCode
+  const countries = [
+    { name: 'India', code: 'IN', phoneCode: '+91' },
+    { name: 'Singapore', code: 'SG', phoneCode: '+65' }
+  ];
+
+  for (const country of countries) {
     try {
-      await Country.create({ name });
-      console.log(`Created country: ${name}`);
+      await Country.create(country);
+      console.log(`Created country: ${country.name}`);
     } catch (error) {
-      console.log(`Error creating country: ${name}`, error.message);
+      console.log(`Error creating country: ${country.name}`, error.message);
     }
   }
+
 
   // Create user
   console.log('Creating admin user...');
@@ -265,6 +270,7 @@ async function bootstrap() {
       passportNumber: '1234567890',
       city: 'Super Admin City',
       pincode: '123456',
+      mobile: '65823816781',
       email: 'super_admin@printocare.com',
       password: await hashPassword('Superadmin123'),
       countryId: 1,

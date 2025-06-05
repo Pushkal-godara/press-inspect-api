@@ -20,6 +20,18 @@ export class Country extends Model<Country> {
     })
     name: string;
 
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    code: string;
+
+    @Column({
+        type: DataType.STRING,
+        allowNull: false,
+    })
+    phoneCode: string;
+
     @HasMany(() => User)
     users: User[];
 

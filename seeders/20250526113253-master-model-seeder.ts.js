@@ -17,7 +17,7 @@ module.exports = {
       }));
 
       // Use bulkInsert with ignoreDuplicates to prevent duplicate entries
-      await queryInterface.bulkInsert('Models', modelsToInsert, {
+      await queryInterface.bulkInsert('models', modelsToInsert, {
         ignoreDuplicates: true, // This prevents duplicate errors
         validate: true,
       });
