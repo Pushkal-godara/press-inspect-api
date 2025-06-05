@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateUserDto {
@@ -42,6 +42,14 @@ export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
+
+  @ApiProperty({
+    description: 'Phone number',
+    example: '1234567890',
+  })
+  @IsString()
+  @IsNotEmpty()
+  mobile: string;
 
   @ApiProperty({
     description: 'Password (must be at least 8 characters long and include uppercase, lowercase, number, and special character)',
@@ -136,4 +144,43 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   workExperience?: string;
+
+  @ApiProperty({
+    description: 'Date of joining',
+    example: '2022-01-01',
+  })
+  @IsString()
+  @IsNotEmpty()
+  joiningDate: Date;
+
+  @ApiProperty({
+    description: 'Date of passport expiry',
+    example: '2023-01-01',
+  })
+  @IsString()
+  @IsNotEmpty()
+  passportExpiryDate: Date;
+
+  @ApiProperty({
+    description: 'Passport attachment',
+    example: 'https://example.com/passport.jpg',
+  })
+  @IsString()
+  @IsNotEmpty()
+  passportAttachment: string;
+
+  @ApiProperty({
+    description: 'Photo of engineer',
+    example: 'https://example.com/engineer.jpg',
+  })
+  @IsString()
+  @IsNotEmpty()
+  photoOfEngineer: string;
+
+  @ApiProperty({
+    description: 'Is active',
+    example: true,
+  })
+  @IsBoolean()
+  is_active: boolean;
 }
