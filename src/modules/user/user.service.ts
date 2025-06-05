@@ -80,21 +80,26 @@ export class UserService {
           through: { attributes: [] }, // This hides UserRole
         },
         attributes: [
-          'id', 
-          'first_name', 
-          'last_name', 
-          'email', 
-          'country_id', 
-          'passport_number', 
+          'id',
+          'first_name',
+          'last_name',
+          'email',
+          'country_id',
+          'passport_number',
           'joining_date',
           'address',
-          'city', 
-          'state', 
-          'pincode', 
-          'company_name', 
+          'mobile',
+          'city',
+          'state',
+          'pincode',
+          'company_name',
           'registration_id',
           'cv_url',
-          'work_experience'
+          'work_experience',
+          'passport_expiry_date',
+          'passport_attachment',
+          'photo_of_engineer',
+          'is_active'
         ]
       }
     );
@@ -119,35 +124,39 @@ export class UserService {
         },
       ],
       attributes: [
-        'id', 
-        'email', 
-        'first_name', 
-        'last_name', 
-        'passport_number', 
+        'id',
+        'first_name',
+        'last_name',
+        'email',
+        'country_id',
+        'passport_number',
         'joining_date',
-        'country_id', 
-        'registration_id',
         'address',
-        'city', 
-        'state', 
+        'mobile',
+        'city',
+        'state',
         'pincode',
-        'company_name', 
-        'cv_url', 
+        'company_name',
+        'registration_id',
+        'cv_url',
         'work_experience',
+        'passport_expiry_date',
+        'passport_attachment',
+        'photo_of_engineer',
         'is_active'
       ],
       order: [['id', 'ASC']],
     };
-  
+
     // Apply filters based on user role
     if (currentUser) {
       // For Admin users: filter by country and exclude SuperAdmin and Admin roles
       if (currentUser.roles.includes('Admin') && !currentUser.roles.includes('SuperAdmin')) {
         // Filter by country
-        queryOptions.where = { 
-          country: currentUser.country 
+        queryOptions.where = {
+          country: currentUser.country
         };
-  
+
         // Filter out users with SuperAdmin and Admin roles using a subquery approach
         const superAdminAndAdminRoleIds = await this.roleModel.findAll({
           where: {
@@ -157,9 +166,9 @@ export class UserService {
           },
           attributes: ['id']
         });
-        
+
         const roleIds = superAdminAndAdminRoleIds.map(role => role.id);
-        
+
         // Find users with these roles to exclude them
         if (roleIds.length > 0) {
           const usersWithAdminRoles = await this.userRoleModel.findAll({
@@ -169,9 +178,9 @@ export class UserService {
               }
             },
           });
-                    
+
           const userIdsToExclude = usersWithAdminRoles.map(ur => ur.userId);
-          
+
           // If we found users to exclude, add them to the where clause
           if (userIdsToExclude.length > 0) {
             queryOptions.where.id = {
@@ -182,7 +191,7 @@ export class UserService {
       }
       // For SuperAdmin: no filtering needed (they see everyone)
     }
-    const user = await this.userModel.findAll(queryOptions);  
+    const user = await this.userModel.findAll(queryOptions);
     return user;
   }
 
@@ -190,7 +199,7 @@ export class UserService {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
-  
+
     // Step 1: Get the user with their roles
     const user = await this.userModel.findByPk(id, {
       include: [
@@ -218,41 +227,41 @@ export class UserService {
         'work_experience'
       ],
     });
-  
+
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-  
+
     // Step 2: Check access permissions based on roles
-    
+
     // Get the user's roles as an array of strings
     const userRoles = user.roles.map(role => role.name);
-    
+
     // Case 1: SuperAdmin can see any user
     if (currentUser.roles.includes('SuperAdmin')) {
       return user;
     }
-    
+
     // Case 2: Admin can only see non-Admin, non-SuperAdmin users from their own country
     if (currentUser.roles.includes('Admin')) {
       // Check if the user has SuperAdmin or Admin role
       if (userRoles.includes('SuperAdmin') || userRoles.includes('Admin')) {
         throw new ForbiddenException('You do not have permission to view admin users');
       }
-      
+
       // Check if the user is from the same country
       if (user.countryId !== currentUser.country) {
         throw new ForbiddenException('You do not have permission to view users from other countries');
       }
-      
+
       return user;
     }
-    
+
     // Case 3: Any other role - can only see themselves
     if (user.id !== currentUser.id) {
       throw new ForbiddenException('You can only view your own profile');
     }
-    
+
     return user;
   }
 
@@ -263,7 +272,7 @@ export class UserService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto, currentUser?: any): Promise<User> {
-    if(!currentUser) {
+    if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
     const user = await this.findById(id, currentUser);
@@ -367,7 +376,7 @@ export class UserService {
   }
 
   // Helper method to validate password
-  private async validatePassword(password: string, user: User ): Promise<boolean> {
+  private async validatePassword(password: string, user: User): Promise<boolean> {
     const hashedPassword = await this.userModel.findByPk(user.id);
     return await bcrypt.compare(password, hashedPassword.password);
   }
@@ -383,7 +392,7 @@ export class UserService {
             {
               model: Permission,
               attributes: {
-                include: [ 'name', 'resource', 'action'],
+                include: ['name', 'resource', 'action'],
               },
               through: { attributes: [] }, // Exclude role_permissions join table
             },
