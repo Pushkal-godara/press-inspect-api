@@ -42,7 +42,7 @@ export class UnitsController {
   constructor(private readonly unitsService: UnitsService) { }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/units')
   create(@Body() createUnitDto: CreateUnitDto, @Req() req) {
@@ -51,7 +51,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/units')
   findAll(@Req() req) {
@@ -60,7 +60,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/units/:id')
   update(@Param('id') id: string, @Body() updateUnitDto: UpdateUnitDto, @Req() req) {
@@ -69,7 +69,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/sub-units')
   createSubUnit(@Body() createSubUnitDto: CreateSubUnitDto, @Req() req) {
@@ -87,7 +87,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/sub-units/:id')
   updateSubUnit(@Param('id') id: string, @Body() updateSubUnitDto: UpdateSubUnitDto, @Req() req) {
@@ -96,7 +96,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/sub-unit-txns')
   createSubUnitTxn(@Body() createSubUnitTxnDto: CreateSubUnitTxnDto, @Req() req) {
@@ -105,7 +105,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/sub-unit-txns')
   findAllSubUnitTxns(@Req() req) {
@@ -115,7 +115,7 @@ export class UnitsController {
 
   // TODO : Update sub unit txn
   // @RequirePermissions('units:update')
-  // @Roles('Engineer')
+  // @Roles('Engineer', 'Admin', 'SuperAdmin')
   // @UseGuards(PermissionGuard, RolesGuard)
   // @Patch('update/sub-unit-txns/:id')
   // updateSubUnitTxn(@Param('id') id: string, @Body() updateSubUnitTxnDto: UpdateSubUnitTxnDto, @Req() req) {
@@ -124,7 +124,7 @@ export class UnitsController {
   // }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/things-to-check-units')
   createThingsToCheckUnits(@Body() createThingsToCheckUnitsDto: CreateThingsToCheckUnitsDto, @Req() req) {
@@ -133,7 +133,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/things-to-check-units')
   findAllThingsToCheckUnits(@Req() req) {
@@ -142,7 +142,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/coating-system-units')
   createCoatingSystemUnits(@Body() createCoatingSystemUnitsDto: CreateCoatingSystemUnitDto, @Req() req) {
@@ -151,7 +151,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/coating-system-units')
   findAllCoatingSystemUnits(@Req() req) {
@@ -160,7 +160,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/coating-system-txns')
   createCoatingSystemTxn(@Body() createCoatingSystemTxnDto: CreateCoatingSystemTxnDto, @Req() req) {
@@ -169,7 +169,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/coating-system-txns')
   findAllCoatingSystemTxns(@Req() req) {
@@ -178,7 +178,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/delivery-types')
   createDeliveryType(@Body() createDeliveryTypeDto: CreateDeliveryTypeDto, @Req() req) {
@@ -187,7 +187,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/delivery-types')
   findAllDeliveryTypes(@Req() req) {
@@ -196,7 +196,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/delivery-type-categories')
   createDeliveryTypeCategory(@Body() createDeliveryTypeCategoryDto: CreateDeliveryTypeCategoryDto, @Req() req) {
@@ -205,7 +205,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/delivery-type-categories')
   findAllDeliveryTypeCategories(@Req() req) {
@@ -214,7 +214,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/comments')
   createComments(@Body() createCommentsDto: CreateCommentsDto, @Req() req) {
@@ -223,7 +223,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/comments')
   findAllComments(@Req() req) {

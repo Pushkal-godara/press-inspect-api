@@ -35,7 +35,7 @@ export class GroupsController {
   // }
 
   @RequirePermissions('groups:read')
-  @Roles('Admin', 'SuperAdmin', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
+  @Roles('Admin', 'SuperAdmin', 'Engineer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get()
   findAll(@Req() req) {

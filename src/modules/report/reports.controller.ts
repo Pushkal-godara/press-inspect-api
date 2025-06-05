@@ -38,7 +38,7 @@ export class ReportsController {
   constructor(private readonly reportsService: ReportsService) { }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/buyer')
   create(@Body() createBuyerSellerDto: CreateBuyerSellerDto, @Req() req) {
@@ -47,7 +47,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/seller')
   createSeller(@Body() createBuyerSellerDto: CreateBuyerSellerDto, @Req() req) {
@@ -74,7 +74,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('updateBuyerById/:id')
   updateBuyer(@Param('id') id: string, @Body() updateBuyerSellerDto: UpdateBuyerSellerDto, @Req() req) {
@@ -83,7 +83,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('updateSellerById/:id')
   updateSeller(@Param('id') id: string, @Body() updateBuyerSellerDto: UpdateBuyerSellerDto, @Req() req) {
@@ -92,7 +92,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/generalInfoQuestion')
   createQuestion(@Body() generalInfoQuestionDto: GeneralInfoQuestionsDto, @Req() req) {
@@ -101,7 +101,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/generalInfoTxn')
   createGeneralInfo(@Body() generalInfoDto: GeneralInfoDto, @Req() req) {
@@ -128,7 +128,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/controlStationTxns')
   createControlStationTxns(@Body() controlStationTxnsDto: ControlStationTxnDto, @Req() req) {
@@ -146,7 +146,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/controlStation')
   createControlStation(@Body() controlStationDto: ControlStationDto, @Req() req) {
@@ -164,7 +164,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/controlStation/:id')
   updateControlStation(@Param('id') id: string, @Body() controlStationDto: ControlStationDto, @Req() req) {
@@ -175,7 +175,7 @@ export class ReportsController {
   // TODO api to get control stations by id or model id as required
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/controlStationThingsToCheck')
   createControlStationThingsToCheck(@Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
@@ -193,7 +193,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/controlStationThingsToCheck/:id')
   updateControlStationThingsToCheck(@Param('id') id: string, @Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
@@ -202,7 +202,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/colorMeasurments')
   createColorMeasurments(@Body() colorMeasurmentsDto: ColorMeasuringDeviceDto, @Req() req) {
@@ -220,7 +220,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/colorMeasuringDevice/:id')
   updateColorMeasurments(@Param('id') id: string, @Body() colorMeasurmentsDto: ColorMeasuringDeviceDto, @Req() req) {
@@ -229,7 +229,7 @@ export class ReportsController {
   }
 
   @RequirePermissions('reports:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/colorMeasurmentsTxn')
   createColorMeasuringTxn(@Body() colorMeasuringTxnDto: ColorMeasuringTxnDto, @Req() req) {
