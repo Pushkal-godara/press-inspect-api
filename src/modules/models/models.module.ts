@@ -5,12 +5,11 @@ import { ModelsController } from './models.controller';
 import { ModelEntity } from './entities/model.entity';
 import { Group } from '../groups/entities/group.entity';
 import { UserModule } from '../user/user.module';
-import { GeneralInfo } from './entities/m-general-info.entity';
-import { GeneralInfoTxn } from './entities/general-info-txn.entity';
+import { TechnicalSpecification } from './entities/tech-specification.entity';
 
 @Module({
   imports: [
-    SequelizeModule.forFeature([ModelEntity, Group, GeneralInfo, GeneralInfoTxn]),
+    SequelizeModule.forFeature([ModelEntity, Group, TechnicalSpecification]),
     forwardRef(() => UserModule),
   ],
   providers: [ModelsService],

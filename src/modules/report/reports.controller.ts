@@ -1,115 +1,249 @@
-// src/modules/reports/reports.controller.ts
-import { 
-    Controller, 
-    Get, 
-    Post, 
-    Body, 
-    Patch, 
-    Param, 
-    Delete, 
-    UseGuards,
-    Query,
-    Req,
-  } from '@nestjs/common';
-  import { ReportsService } from './reports.service';
-  import { CreateReportDto } from './dto/create-report.dto';
-  import { UpdateReportDto } from './dto/update-report.dto';
-  import { CreateReportDetailDto } from './dto/create-report-detail.dto';
-  import { UpdateReportDetailDto } from './dto/update-report-detail.dto';
-  import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
-  import { PermissionGuard } from '../../core/guards/permission.guard';
-  import { RequirePermissions } from '../../core/decorators/permission.decorator';
-  import { Request } from 'express';
-import { ApiTags } from '@nestjs/swagger';
-  
-  interface ReportFiltersQuery {
-    inspectorId?: string;
-    customerId?: string;
-    groupId?: string;
-    modelId?: string;
-    itemId?: string;
-    status?: string;
-    startDate?: string;
-    endDate?: string;
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+  Req,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
+import { ReportsService } from './reports.service';
+
+import { GeneralInfoDto } from './dto/general-info-txn.dto';
+import { GeneralInfoQuestionsDto } from './dto/questions-general-info.dto';
+import { CreateBuyerSellerDto } from './dto/create-buyer-seller.dto';
+import { UpdateBuyerSellerDto } from './dto/update-buyer-seller.dto';
+import { ControlStationDto } from './dto/control-station.dto';
+import { ControlStationTxnDto } from './dto/control-station-txn.dto';
+import { ControlStationThingsToCheckDto } from './dto/control-station-things-to-check.dto';
+import { ColorMeasuringTxnDto } from './dto/color-measuring-txn.dto';
+import { ColorMeasuringDeviceDto } from './dto/color-measuring.dto';
+
+import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
+import { PermissionGuard } from '../../core/guards/permission.guard';
+import { RequirePermissions } from '../../core/decorators/permission.decorator';
+import { Roles } from 'src/core/decorators/public.decorator';
+import { RolesGuard } from 'src/core/guards/roles.guard';
+
+@ApiTags('Reports')
+@ApiBearerAuth('access_token')
+@UseGuards(JwtAuthGuard)
+@Controller('reports')
+export class ReportsController {
+  constructor(private readonly reportsService: ReportsService) { }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/buyer')
+  create(@Body() createBuyerSellerDto: CreateBuyerSellerDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createBuyer(createBuyerSellerDto, currentUser);
   }
-  
-  @ApiTags('Reports')
-  @Controller('reports')
-  @UseGuards(JwtAuthGuard, PermissionGuard)
-  export class ReportsController {
-    constructor(private readonly reportsService: ReportsService) {}
-  
-    // @Post()
-    // @RequirePermissions('reports:create')
-    // create(@Body() createReportDto: CreateReportDto) {
-    //   return this.reportsService.create(createReportDto);
-    // }
-  
-    // @Get()
-    // @RequirePermissions('reports:read')
-    // findAll(@Query() filters: ReportFiltersQuery, @Req() req: Request) {
-    //   // If no specific inspectorId filter provided and user isn't admin,
-    //   // limit to reports created by the current user
-    //   if (!filters.inspectorId && !this.isAdmin(req)) {
-    //     filters.inspectorId = req.user['id'];
-    //   }
-      
-    //   return this.reportsService.findAll(filters);
-    // }
-  
-    // @Get(':id')
-    // @RequirePermissions('reports:read')
-    // findOne(@Param('id') id: number) {
-    //   return this.reportsService.findById(id);
-    // }
-  
-    // @Patch(':id')
-    // @RequirePermissions('reports:update')
-    // update(@Param('id') id: number, @Body() updateReportDto: UpdateReportDto) {
-    //   return this.reportsService.update(id, updateReportDto);
-    // }
-  
-    // @Delete(':id')
-    // @RequirePermissions('reports:delete')
-    // remove(@Param('id') id: number) {
-    //   return this.reportsService.remove(id);
-    // }
-  
-    // @Post(':id/details')
-    // @RequirePermissions('reports:update')
-    // addDetail(
-    //   @Param('id') id: number, 
-    //   @Body() createReportDetailDto: CreateReportDetailDto
-    // ) {
-    //   return this.reportsService.addDetail(id, createReportDetailDto);
-    // }
-  
-    // @Patch(':id/details/:detailId')
-    // @RequirePermissions('reports:update')
-    // updateDetail(
-    //   @Param('id') id: number, 
-    //   @Param('detailId') detailId: string,
-    //   @Body() updateReportDetailDto: UpdateReportDetailDto
-    // ) {
-    //   return this.reportsService.updateDetail(id, detailId, updateReportDetailDto);
-    // }
-  
-    // @Delete(':id/details/:detailId')
-    // @RequirePermissions('reports:update')
-    // removeDetail(
-    //   @Param('id') id: number, 
-    //   @Param('detailId') detailId: string
-    // ) {
-    //   return this.reportsService.removeDetail(id, detailId);
-    // }
-  
-    // @Get(':id/export')
-    // @RequirePermissions('reports:export')
-    // exportReport(@Param('id') id: number) {
-    //   return this.reportsService.exportReport(id);
-    // }
-  
-    // private isAdmin(req: Request): boolean {
-    //   return req.user && req.user['roles'] && req.user['roles'].includes('Admin');
-    // }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/seller')
+  createSeller(@Body() createBuyerSellerDto: CreateBuyerSellerDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createSeller(createBuyerSellerDto, currentUser);
   }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('all/buyer')
+  findAll(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllBuyer(currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('all/seller')
+  findAllSeller(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllSeller(currentUser);
+  }
+
+  @RequirePermissions('reports:update')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('updateBuyerById/:id')
+  updateBuyer(@Param('id') id: string, @Body() updateBuyerSellerDto: UpdateBuyerSellerDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.updateBuyer(+id, updateBuyerSellerDto, currentUser);
+  }
+
+  @RequirePermissions('reports:update')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('updateSellerById/:id')
+  updateSeller(@Param('id') id: string, @Body() updateBuyerSellerDto: UpdateBuyerSellerDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.updateSeller(+id, updateBuyerSellerDto, currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/generalInfoQuestion')
+  createQuestion(@Body() generalInfoQuestionDto: GeneralInfoQuestionsDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createQuestion(generalInfoQuestionDto, currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/generalInfoTxn')
+  createGeneralInfo(@Body() generalInfoDto: GeneralInfoDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createGeneralInfo(generalInfoDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/questions')
+  findAllQuestions(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllQuestions(currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/generalInfoTxn')
+  findAllGeneralInfo(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllGeneralInfo(currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/controlStationTxns')
+  createControlStationTxns(@Body() controlStationTxnsDto: ControlStationTxnDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createControlStationTxns(controlStationTxnsDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/controlStationTxns')
+  findAllControlStationTxns(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllControlStationTxns(currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/controlStation')
+  createControlStation(@Body() controlStationDto: ControlStationDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createControlStation(controlStationDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/controlStations')
+  findAllControlStations(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllControlStations(currentUser);
+  }
+
+  @RequirePermissions('reports:update')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('update/controlStation/:id')
+  updateControlStation(@Param('id') id: string, @Body() controlStationDto: ControlStationDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.updateControlStation(+id, controlStationDto, currentUser);
+  }
+
+  // TODO api to get control stations by id or model id as required
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/controlStationThingsToCheck')
+  createControlStationThingsToCheck(@Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createControlStationThingsToCheck(controlStationThingsToCheckDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/controlStationThingsToCheck')
+  findAllControlStationThingsToCheck(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllControlStationThingsToCheck(currentUser);
+  }
+
+  @RequirePermissions('reports:update')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('update/controlStationThingsToCheck/:id')
+  updateControlStationThingsToCheck(@Param('id') id: string, @Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.updateControlStationThingsToCheck(+id, controlStationThingsToCheckDto, currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/colorMeasurments')
+  createColorMeasurments(@Body() colorMeasurmentsDto: ColorMeasuringDeviceDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createColorMeasurments(colorMeasurmentsDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/colorMeasurments')
+  findAllColorMeasurments(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllColorMeasurments(currentUser);
+  }
+
+  @RequirePermissions('reports:update')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('update/colorMeasuringDevice/:id')
+  updateColorMeasurments(@Param('id') id: string, @Body() colorMeasurmentsDto: ColorMeasuringDeviceDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.updateColorMeasurments(+id, colorMeasurmentsDto, currentUser);
+  }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create/colorMeasurmentsTxn')
+  createColorMeasuringTxn(@Body() colorMeasuringTxnDto: ColorMeasuringTxnDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createColorMeasuringTxn(colorMeasuringTxnDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('getAll/colorMeasurmentsTxn')
+  findAllColorMeasuringTxn(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllColorMeasuringTxn(currentUser);
+  }
+
+}

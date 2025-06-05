@@ -7,7 +7,10 @@ import { GroupsService } from '../modules/groups/groups.service';
 import { ModelsService } from '../modules/models/models.service';
 import { YearsService } from '../modules/years/years.service';
 import { UnitsService } from '../modules/units/units.service';
+
+import { Unit } from 'src/modules/units/entities/unit.entity';
 import { User } from 'src/modules/user/entities/user.entity';
+import { Country } from 'src/modules/country/entities/country.entity';
 import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
@@ -62,6 +65,12 @@ async function bootstrap() {
     { name: 'Update Report', resource: 'reports', action: 'update', description: 'Update report information', created_at: new Date(), updated_at: new Date() },
     { name: 'Delete Report', resource: 'reports', action: 'delete', description: 'Delete a report', created_at: new Date(), updated_at: new Date() },
     { name: 'Export Report', resource: 'reports', action: 'export', description: 'Export a report', created_at: new Date(), updated_at: new Date() },
+
+    // Unit permissions
+    { name: 'Create Unit', resource: 'units', action: 'create', description: 'Create a new unit', created_at: new Date(), updated_at: new Date() },
+    { name: 'Read Units', resource: 'units', action: 'read', description: 'Read unit information', created_at: new Date(), updated_at: new Date() },
+    { name: 'Update Unit', resource: 'units', action: 'update', description: 'Update unit information', created_at: new Date(), updated_at: new Date() },
+    { name: 'Delete Unit', resource: 'units', action: 'delete', description: 'Delete a unit', created_at: new Date(), updated_at: new Date() },
 
     // Domain-specific permissions
     { name: 'PrePress Inspection', resource: 'inspection', action: 'prepress', description: 'Conduct PrePress inspections', created_at: new Date(), updated_at: new Date() },
@@ -231,6 +240,17 @@ async function bootstrap() {
     }
   }
 
+  // Create countries
+  const countries = ['India', 'Singapore'];
+  for (const name of countries) {
+    try {
+      await Country.create({ name });
+      console.log(`Created country: ${name}`);
+    } catch (error) {
+      console.log(`Error creating country: ${name}`, error.message);
+    }
+  }
+
   // Create user
   console.log('Creating admin user...');
   // Create a function to hash the password
@@ -284,79 +304,6 @@ async function bootstrap() {
     }
   }
 
-//   // Create Pre Press models
-//   console.log('Creating Pre Press models...');
-
-//   const prePressModels = [
-//     { name: 'Suprasetter', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Software', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Topsetter', groupId: createdGroups['Pre Press'], created_at: new Date(), updated_at: new Date() },
-//   ];
-
-//   const createdModels = {};
-
-//   for (const model of prePressModels) {
-//     try {
-//       const created = await modelsService.create(model);
-//       createdModels[model.name] = created.id;
-//       console.log(`Created model: ${model.name}`);
-//     } catch (error) {
-//       console.log(`Error creating model: ${model.name}`, error.message);
-//     }
-//   }
-
-//   // Create Suprasetter items
-//   console.log('Creating Suprasetter items...');
-
-//   const suprasetterItems = [
-//     { name: 'Suprasetter 52', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter 74', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter 75', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter 105', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter 106', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter A52', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter A74', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter A75', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter A105', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//     { name: 'Suprasetter A106', modelId: createdModels['Suprasetter'], created_at: new Date(), updated_at: new Date() },
-//   ];
-
-//   for (const item of suprasetterItems) {
-//     try {
-//       await itemsService.create(item);
-//       console.log(`Created item: ${item.name}`);
-//     } catch (error) {
-//       console.log(`Error creating item: ${item.name}`, error.message);
-//     }
-//   }
-
-//   // Create years
-//   console.log('Creating years...');
-
-//   const years = [
-//     { range: '1960 - 1965', created_at: new Date(), updated_at: new Date() },
-//     { range: '1966 - 1970', created_at: new Date(), updated_at: new Date() },
-//     { range: '1971 - 1975', created_at: new Date(), updated_at: new Date() },
-//     { range: '1976 - 1980', created_at: new Date(), updated_at: new Date() },
-//     { range: '1981 - 1985', created_at: new Date(), updated_at: new Date() },
-//     { range: '1986 - 1990', created_at: new Date(), updated_at: new Date() },
-//     { range: '1991 - 1995', created_at: new Date(), updated_at: new Date() },
-//     { range: '1996 - 2000', created_at: new Date(), updated_at: new Date() },
-//     { range: '2001 - 2005', created_at: new Date(), updated_at: new Date() },
-//     { range: '2006 - 2010', created_at: new Date(), updated_at: new Date() },
-//     { range: '2011 - 2015', created_at: new Date(), updated_at: new Date() },
-//     { range: '2020 - 2024', created_at: new Date(), updated_at: new Date() },
-//   ];
-
-//   for (const year of years) {
-//     try {
-//       await yearsService.create(year);
-//       console.log(`Created year range: ${year.range}`);
-//     } catch (error) {
-//       console.log(`Error creating year range: ${year.range}`, error.message);
-//     }
-//   }
-
   // Create units
   console.log('Creating units...');
 
@@ -372,7 +319,7 @@ async function bootstrap() {
 
   for (const unit of units) {
     try {
-      const created = await unitsService.create(unit);
+      const created = await Unit.create(unit);
       createdUnits[unit.name] = created.id;
       console.log(`Created unit: ${unit.name}`);
     } catch (error) {

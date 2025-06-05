@@ -1,326 +1,278 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Report } from './entities/report.entity';
-import { ReportDetail } from './entities/report-detail.entity';
-import { User } from '../user/entities/user.entity';
-import { Customer } from '../customers/entities/customer.entity';
-import { Group } from '../groups/entities/group.entity';
+
+import { Seller } from './entities/seller.entity';
+import { Buyer } from './entities/buyer.entity';
 import { ModelEntity } from '../models/entities/model.entity';
-import { Year } from '../years/entities/year.entity';
-import { Checkpoint } from '../checkpoints/entities/checkpoint.entity';
-import { CreateReportDto } from './dto/create-report.dto';
-import { UpdateReportDto } from './dto/update-report.dto';
-import { CreateReportDetailDto } from './dto/create-report-detail.dto';
-import { UpdateReportDetailDto } from './dto/update-report-detail.dto';
-import { Op } from 'sequelize';
-import { Unit } from '../units/entities/unit.entity';
+import { GeneralInfoTxn } from './entities/general-info-txn.entity';
+import { GeneralInfoQuestion } from './entities/m-general-info.entity';
+import { ControlStationTxns } from 'src/modules/report/entities/common-entity/control-station-txns.entity';
+import { ControlStation } from 'src/modules/report/entities/common-entity/m-control-station.entity';
+import { ThingToCheckControlStation } from 'src/modules/report/entities/common-entity/m-things-to-check.entity';
+import { ColorMeasurments } from 'src/modules/report/entities/common-entity/m-color-measuring.entity';
+import { ColorMeasurementTxns } from 'src/modules/report/entities/common-entity/color-measuring-txns.entity';
+
+import { ControlStationThingsToCheckDto } from './dto/control-station-things-to-check.dto';
+import { CreateBuyerSellerDto } from './dto/create-buyer-seller.dto';
+import { UpdateBuyerSellerDto } from './dto/update-buyer-seller.dto';
+import { GeneralInfoDto } from './dto/general-info-txn.dto';
+import { GeneralInfoQuestionsDto } from './dto/questions-general-info.dto';
+import { ControlStationDto } from './dto/control-station.dto';
+import { ControlStationTxnDto } from './dto/control-station-txn.dto';
+import { ColorMeasuringDeviceDto } from './dto/color-measuring.dto';
+import { ColorMeasuringTxnDto } from './dto/color-measuring-txn.dto';
+
 
 @Injectable()
 export class ReportsService {
   constructor(
-    @InjectModel(Report)
-    private reportModel: typeof Report,
-    @InjectModel(ReportDetail)
-    private reportDetailModel: typeof ReportDetail,
-    @InjectModel(User)
-    private userModel: typeof User,
-    @InjectModel(Customer)
-    private customerModel: typeof Customer,
-    @InjectModel(Group)
-    private groupModel: typeof Group,
+    @InjectModel(Buyer)
+    private buyerModel: typeof Buyer,
+    @InjectModel(Seller)
+    private sellerModel: typeof Seller,
+    @InjectModel(GeneralInfoTxn)
+    private generalInfoTxnModel: typeof GeneralInfoTxn,
+    @InjectModel(GeneralInfoQuestion)
+    private generalInfoQuestionModel: typeof GeneralInfoQuestion,
+    @InjectModel(ControlStationTxns)
+    private controlStationTxnsModel: typeof ControlStationTxns,
+    @InjectModel(ControlStation)
+    private controlStationModel: typeof ControlStation,
+    @InjectModel(ThingToCheckControlStation)
+    private thingToCheckControlStationModel: typeof ThingToCheckControlStation,
+    @InjectModel(ColorMeasurments)
+    private colorMeasurmentsModel: typeof ColorMeasurments,
+    @InjectModel(ColorMeasurementTxns)
+    private colorMeasurementTxnsModel: typeof ColorMeasurementTxns,
     @InjectModel(ModelEntity)
-    private modelModel: typeof ModelEntity,
-    @InjectModel(Year)
-    private yearModel: typeof Year,
-    @InjectModel(Checkpoint)
-    private checkpointModel: typeof Checkpoint,
+    private machineModel: typeof ModelEntity
   ) { }
 
-  async findAll(filters?: any): Promise<Report[]> {
-    let whereClause = {};
-
-    // Apply filters if provided
-    if (filters) {
-      if (filters.inspectorId) {
-        whereClause['inspectorId'] = filters.inspectorId;
-      }
-
-      if (filters.customerId) {
-        whereClause['customerId'] = filters.customerId;
-      }
-
-      if (filters.groupId) {
-        whereClause['groupId'] = filters.groupId;
-      }
-
-      if (filters.modelId) {
-        whereClause['modelId'] = filters.modelId;
-      }
-
-      if (filters.itemId) {
-        whereClause['itemId'] = filters.itemId;
-      }
-
-      if (filters.status) {
-        whereClause['status'] = filters.status;
-      }
-
-      if (filters.startDate && filters.endDate) {
-        whereClause['inspectionDate'] = {
-          [Op.between]: [filters.startDate, filters.endDate],
-        };
-      }
+  async createBuyer(createBuyerSellerDto: CreateBuyerSellerDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
-
-    return this.reportModel.findAll({
-      where: whereClause,
-      include: [
-        { model: User, as: 'inspector' },
-        { model: Customer },
-        { model: Group },
-        { model: ModelEntity, as: 'model' },
-        { model: Year },
-      ],
-      order: [['inspectionDate', 'DESC']],
+    const report = await this.buyerModel.create({
+      ...createBuyerSellerDto
     });
+    return report;
   }
 
-  async findById(id: number): Promise<Report> {
-    const report = await this.reportModel.findByPk(id, {
-      include: [
-        { model: User, as: 'inspector' },
-        { model: Customer },
-        { model: Group },
-        { model: ModelEntity, as: 'model' },
-        { model: Year },
-        {
-          model: ReportDetail,
-          include: [{ model: Checkpoint, include: [{ model: Unit }] }]
-        },
-      ],
+  async createSeller(createBuyerSellerDto: CreateBuyerSellerDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.sellerModel.create({
+      ...createBuyerSellerDto
     });
+    return report;
+  }
 
+  async findAllBuyer(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    // TODO use buyer's id instead of current user id
+    const reports = await this.buyerModel.findAll();
+    return reports;
+  }
+
+  async findAllSeller(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    // TODO use seller's id instead of current user id
+    const reports = await this.sellerModel.findAll();
+    return reports;
+  }
+
+  async updateBuyer(id: number, updateBuyerSellerDto: UpdateBuyerSellerDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.buyerModel.findByPk(id);
     if (!report) {
       throw new NotFoundException(`Report with ID ${id} not found`);
     }
-
+    await report.update(updateBuyerSellerDto);
     return report;
   }
 
-  async create(createReportDto: CreateReportDto): Promise<Report> {
-    // Validate all foreign keys
-    await this.validateReportEntities(createReportDto);
-
-    // Create the report
-    const report = await this.reportModel.create(createReportDto as any);
-
-    return this.findById(report.id);
-  }
-
-  async update(id: number, updateReportDto: UpdateReportDto): Promise<Report> {
-    const report = await this.findById(id);
-
-    // Validate foreign keys if they're being updated
-    if (updateReportDto.customerId ||
-      updateReportDto.inspectorId ||
-      updateReportDto.groupId ||
-      updateReportDto.modelId ||
-      updateReportDto.itemId ||
-      updateReportDto.yearId) {
-      await this.validateReportEntities({
-        ...report.toJSON(),
-        ...updateReportDto,
-      });
+  async updateSeller(id: number, updateBuyerSellerDto: UpdateBuyerSellerDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
-
-    await report.update(updateReportDto);
-
-    return this.findById(id);
-  }
-
-  async remove(id: number): Promise<void> {
-    const report = await this.findById(id);
-
-    // First remove all related report details
-    await this.reportDetailModel.destroy({
-      where: { reportId: id }
-    });
-
-    // Then remove the report
-    await report.destroy();
-  }
-
-  async addDetail(reportId: number, createReportDetailDto: CreateReportDetailDto): Promise<ReportDetail> {
-    const report = await this.findById(reportId);
-
-    // Check if checkpoint exists
-    const checkpoint = await this.checkpointModel.findByPk(createReportDetailDto.checkpointId);
-    if (!checkpoint) {
-      throw new NotFoundException(`Checkpoint with ID ${createReportDetailDto.checkpointId} not found`);
+    const report = await this.sellerModel.findByPk(id);
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
     }
-
-    // Create the report detail
-    const reportDetail = await this.reportDetailModel.create({
-      ...createReportDetailDto,
-      reportId,
-    } as any);
-
-    // Update the report's score based on all details
-    await this.updateReportScore(reportId);
-
-    return reportDetail;
-  }
-
-  async updateDetail(reportId: number, detailId: string, updateReportDetailDto: UpdateReportDetailDto): Promise<ReportDetail> {
-    const reportDetail = await this.reportDetailModel.findOne({
-      where: { id: detailId, reportId },
-    });
-
-    if (!reportDetail) {
-      throw new NotFoundException(`Report detail with ID ${detailId} not found for report ${reportId}`);
-    }
-
-    // If changing checkpoint, validate it exists
-    if (updateReportDetailDto.checkpointId) {
-      const checkpoint = await this.checkpointModel.findByPk(updateReportDetailDto.checkpointId);
-      if (!checkpoint) {
-        throw new NotFoundException(`Checkpoint with ID ${updateReportDetailDto.checkpointId} not found`);
-      }
-    }
-
-    await reportDetail.update(updateReportDetailDto);
-
-    // Update the report's score
-    await this.updateReportScore(reportId);
-
-    return reportDetail;
-  }
-
-  async removeDetail(reportId: number, detailId: string): Promise<void> {
-    const reportDetail = await this.reportDetailModel.findOne({
-      where: { id: detailId, reportId },
-    });
-
-    if (!reportDetail) {
-      throw new NotFoundException(`Report detail with ID ${detailId} not found for report ${reportId}`);
-    }
-
-    await reportDetail.destroy();
-
-    // Update the report's score
-    await this.updateReportScore(reportId);
-  }
-
-  async exportReport(id: number): Promise<any> {
-    const report = await this.findById(id);
-
-    // For now, just return the full report with all related data
-    // In a real implementation, you would format this for PDF/Excel export
+    await report.update(updateBuyerSellerDto);
     return report;
   }
 
-  private async validateReportEntities(reportData: any): Promise<void> {
-    // Check if customer exists
-    if (reportData.customerId) {
-      const customer = await this.customerModel.findByPk(reportData.customerId);
-      if (!customer) {
-        throw new NotFoundException(`Customer with ID ${reportData.customerId} not found`);
-      }
+  async createQuestion(generalInfoQuestionDto: GeneralInfoQuestionsDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
-
-    // Check if inspector (user) exists
-    if (reportData.inspectorId) {
-      const inspector = await this.userModel.findByPk(reportData.inspectorId);
-      if (!inspector) {
-        throw new NotFoundException(`Inspector with ID ${reportData.inspectorId} not found`);
-      }
-    }
-
-    // Check if group exists
-    if (reportData.groupId) {
-      const group = await this.groupModel.findByPk(reportData.groupId);
-      if (!group) {
-        throw new NotFoundException(`Group with ID ${reportData.groupId} not found`);
-      }
-    }
-
-    // Check if model exists
-    if (reportData.modelId) {
-      const model = await this.modelModel.findByPk(reportData.modelId);
-      if (!model) {
-        throw new NotFoundException(`Model with ID ${reportData.modelId} not found`);
-      }
-    }
-
-    // Check if year exists
-    if (reportData.yearId) {
-      const year = await this.yearModel.findByPk(reportData.yearId);
-      if (!year) {
-        throw new NotFoundException(`Year with ID ${reportData.yearId} not found`);
-      }
-    }
+    const report = await this.generalInfoQuestionModel.create({
+      ...generalInfoQuestionDto
+    });
+    return report;
   }
 
-  private async updateReportScore(reportId: number): Promise<void> {
-    // Get all details for this report
-    const details = await this.reportDetailModel.findAll({
-      where: { reportId },
+  async createGeneralInfo(generalInfoDto: GeneralInfoDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.generalInfoTxnModel.create({
+      ...generalInfoDto
     });
+    return report;
+  }
 
-    if (details.length === 0) {
-      // No details, set score to null
-      await this.reportModel.update({
-        overallScore: null,
-        status: null,
-      }, {
-        where: { id: reportId },
-      });
-      return;
+  async findAllQuestions(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
+    const reports = await this.generalInfoQuestionModel.findAll();
+    return reports;
+  }
 
-    // Calculate score based on ratings
-    let totalScore = 0;
-    let totalCheckpoints = details.length;
-
-    for (const detail of details) {
-      switch (detail.rating) {
-        case 'Excellent':
-          totalScore += 1;
-          break;
-        case 'Good':
-          totalScore += 0.8;
-          break;
-        case 'Average':
-          totalScore += 0.6;
-          break;
-        case 'Bad':
-          totalScore += 0.3;
-          break;
-      }
+  async findAllGeneralInfo(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
+    const reports = await this.generalInfoTxnModel.findAll();
+    return reports;
+  }
 
-    const overallScore = (totalScore / totalCheckpoints) * 100;
 
-    // Determine status based on score
-    let status: string;
-    if (overallScore > 90) {
-      status = 'Excellent';
-    } else if (overallScore >= 80 && overallScore <= 90) {
-      status = 'Excellent';
-    } else if (overallScore >= 65 && overallScore < 80) {
-      status = 'Good';
-    } else if (overallScore >= 50 && overallScore < 65) {
-      status = 'Average';
-    } else {
-      status = 'Bad';
+  // TODO get info by id or model id as needed
+
+
+  async createControlStationTxns(controlStationTxnsDto: ControlStationTxnDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
     }
-
-    // Update the report
-    await this.reportModel.update({
-      overallScore,
-      status,
-    }, {
-      where: { id: reportId },
+    const report = await this.controlStationTxnsModel.create({
+      ...controlStationTxnsDto
     });
+    return report;
+  }
+
+  async findAllControlStationTxns(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.controlStationTxnsModel.findAll();
+    return reports;
+  }
+
+  async createControlStation(controlStationDto: ControlStationDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.controlStationModel.create({
+      ...controlStationDto
+    });
+    return report;
+  }
+
+  async findAllControlStations(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.controlStationModel.findAll();
+    return reports;
+  }
+
+  async updateControlStation(id: number, controlStationDto: ControlStationDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.controlStationModel.findByPk(id);
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
+    }
+    await report.update(controlStationDto);
+    return report;
+  }
+
+  async createControlStationThingsToCheck(controlStationThingsToCheckDto: ControlStationThingsToCheckDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.thingToCheckControlStationModel.create({
+      ...controlStationThingsToCheckDto
+    });
+    return report;
+  }
+
+  async findAllControlStationThingsToCheck(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.thingToCheckControlStationModel.findAll();
+    return reports;
+  }
+
+  async updateControlStationThingsToCheck(id: number, controlStationThingsToCheckDto: ControlStationThingsToCheckDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.thingToCheckControlStationModel.findByPk(id);
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
+    }
+    await report.update(controlStationThingsToCheckDto);
+    return report;
+  }
+
+  async createColorMeasurments(colorMeasurmentsDto: ColorMeasuringDeviceDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.colorMeasurmentsModel.create({
+      ...colorMeasurmentsDto
+    });
+    return report;
+  }
+
+  async findAllColorMeasurments(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.colorMeasurmentsModel.findAll();
+    return reports;
+  }
+
+  async updateColorMeasurments(id: number, colorMeasurmentsDto: ColorMeasuringDeviceDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.colorMeasurmentsModel.findByPk(id);
+    if (!report) {
+      throw new NotFoundException(`Report with ID ${id} not found`);
+    }
+    await report.update(colorMeasurmentsDto);
+    return report;
+  }
+  
+  async createColorMeasuringTxn(colorMeasuringTxnDto: ColorMeasuringTxnDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.colorMeasurementTxnsModel.create({
+      ...colorMeasuringTxnDto
+    });
+    return report;
+  }
+
+  async findAllColorMeasuringTxn(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.colorMeasurementTxnsModel.findAll();
+    return reports;
   }
 }

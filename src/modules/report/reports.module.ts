@@ -19,7 +19,9 @@ import { ControlStation } from './entities/common-entity/m-control-station.entit
 import { ThingToCheckControlStation } from './entities/common-entity/m-things-to-check.entity';
 import { Buyer } from './entities/buyer.entity';
 import { Seller } from './entities/seller.entity';
-import { TechnicalSpecification } from './entities/tech-specification.entity';
+import { TechnicalSpecification } from '../models/entities/tech-specification.entity';
+import { GeneralInfoTxn } from './entities/general-info-txn.entity';
+import { GeneralInfoQuestion } from './entities/m-general-info.entity';
 
 @Module({
   imports: [
@@ -40,7 +42,9 @@ import { TechnicalSpecification } from './entities/tech-specification.entity';
       ThingToCheckControlStation,
       Buyer,
       Seller,
-      TechnicalSpecification
+      TechnicalSpecification,
+      GeneralInfoTxn,
+      GeneralInfoQuestion
     ]),
     forwardRef(() => UserModule),
   ],
