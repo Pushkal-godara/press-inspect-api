@@ -66,7 +66,7 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.TEXT,
-    allowNull: true,
+    allowNull: false,
   })
   address: string;
 
@@ -107,14 +107,14 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: true,
+    allowNull: false,
     field: 'registration_id',
   })
   registrationId: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: true,
+    allowNull: false,
     field: 'cv_url',
   })
   cvUrl: string;

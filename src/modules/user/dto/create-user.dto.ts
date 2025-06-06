@@ -1,5 +1,6 @@
 import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Is } from 'sequelize-typescript';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -72,9 +73,9 @@ export class CreateUserDto {
     example: '123 Main Street, Apartment 4B',
     required: false,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  address?: string;
+  address: string;
 
   @ApiProperty({
     description: 'City',
@@ -123,18 +124,18 @@ export class CreateUserDto {
     example: 'REG123456',
     required: false,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  registrationId?: string;
+  registrationId: string;
 
   @ApiProperty({
     description: 'CV URL',
     example: 'https://example.com/cv/johndoe.pdf',
     required: false,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  cvUrl?: string;
+  cvUrl: string;
 
   @ApiProperty({
     description: 'Work experience details',
@@ -158,29 +159,30 @@ export class CreateUserDto {
     example: '2023-01-01',
   })
   @IsString()
-  @IsNotEmpty()
-  passportExpiryDate: Date;
+  @IsOptional()
+  passportExpiryDate?: Date;
 
   @ApiProperty({
     description: 'Passport attachment',
     example: 'https://example.com/passport.jpg',
   })
   @IsString()
-  @IsNotEmpty()
-  passportAttachment: string;
+  @IsOptional()
+  passportAttachment?: string;
 
   @ApiProperty({
     description: 'Photo of engineer',
     example: 'https://example.com/engineer.jpg',
   })
   @IsString()
-  @IsNotEmpty()
-  photoOfEngineer: string;
+  @IsOptional()
+  photoOfEngineer?: string;
 
   @ApiProperty({
     description: 'Is active',
     example: true,
   })
   @IsBoolean()
-  is_active: boolean;
+  @IsOptional()
+  is_active?: boolean;
 }

@@ -10,6 +10,7 @@ import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 import { Roles } from '../../core/decorators/public.decorator';
 import { RolesService } from '../roles/roles.service';
+import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth('access_token')
@@ -20,6 +21,32 @@ export class UserController {
     private readonly userService: UserService,
     private readonly roleService: RolesService
   ) { }
+
+  @RequirePermissions('users:update')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Update user status' })
+  @Patch(':id')
+  async updateUserStatus(
+    @Param('id') userId: number,
+    @Body() updateUserStatusDto: UpdateUserStatusDto,
+    @Req() req
+  ) {
+    const currentUser = req.user;
+    const updatedUser = await this.userService.updateUserStatus(userId, updateUserStatusDto, currentUser);
+    
+    return {
+      success: true,
+      message: 'User status updated successfully',
+      data: {
+        id: updatedUser.id,
+        is_active: updatedUser.is_active,
+        firstName: updatedUser.firstName,
+        lastName: updatedUser.lastName,
+        email: updatedUser.email,
+      },
+    };
+  }
 
   @RequirePermissions('users:create')
   @Roles('SuperAdmin', 'Admin')

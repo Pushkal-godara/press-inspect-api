@@ -11,6 +11,7 @@ import { RolesService } from '../roles/roles.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { Op } from 'sequelize';
 import { Country } from '../country/entities/country.entity';
+import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,25 @@ export class UserService {
     @InjectModel(UserRole)
     private userRoleModel: typeof UserRole
   ) { }
+
+  async updateUserStatus(id: number, updateUserStatusDto: UpdateUserStatusDto, currentUser: any): Promise<User> {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const { is_active } = updateUserStatusDto;
+
+    // Check if user exists
+    const user = await this.userModel.findByPk(id);
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+
+    // Update the is_active status
+    await user.update({ is_active });
+
+    // Return updated user
+    return user.reload();
+  }
 
   async create(createUserDto: CreateUserDto, currentUser: any): Promise<User> {
     if (!currentUser) {
