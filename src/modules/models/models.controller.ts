@@ -15,20 +15,21 @@ import { UpdateModelDto } from './dto/update-model.dto';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { PermissionGuard } from '../../core/guards/permission.guard';
 import { RequirePermissions } from '../../core/decorators/permission.decorator';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { RolesGuard } from 'src/core/guards/roles.guard';
 import { Roles } from 'src/core/decorators/public.decorator';
 
 @ApiTags('Models')
+@ApiBearerAuth('access_token')
+@UseGuards(JwtAuthGuard)
 @Controller('models')
-@UseGuards(JwtAuthGuard, PermissionGuard)
 export class ModelsController {
   constructor(private readonly modelsService: ModelsService) { }
 
   @RequirePermissions('models:create')
   @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
-  @Post('create/model')
+  @Post('create')
   createModel(@Body() createModelDto: CreateModelDto, @Req() req) {
     const currentUser = req.user;
     return this.modelsService.createModel(createModelDto, currentUser);
@@ -37,7 +38,7 @@ export class ModelsController {
   @RequirePermissions('models:read')
   @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
-  @Get('models')
+  @Get('all')
   findAll(@Req() req) {
     const currentUser = req.user;
     return this.modelsService.findAll(currentUser);
@@ -46,7 +47,7 @@ export class ModelsController {
   @RequirePermissions('models:update')
   @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
-  @Patch('update/model/:id')
+  @Patch('update/:id')
   updateModel(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto, @Req() req) {
     const currentUser = req.user;
     return this.modelsService.updateModel(+id, updateModelDto, currentUser);
