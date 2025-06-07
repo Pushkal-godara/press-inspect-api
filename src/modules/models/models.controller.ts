@@ -26,7 +26,7 @@ export class ModelsController {
   constructor(private readonly modelsService: ModelsService) { }
 
   @RequirePermissions('models:create')
-  @Roles('Engineer')
+  @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/model')
   createModel(@Body() createModelDto: CreateModelDto, @Req() req) {
@@ -35,7 +35,7 @@ export class ModelsController {
   }
 
   @RequirePermissions('models:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('models')
   findAll(@Req() req) {
@@ -44,7 +44,7 @@ export class ModelsController {
   }
 
   @RequirePermissions('models:update')
-  @Roles('Engineer')
+  @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/model/:id')
   updateModel(@Param('id') id: string, @Body() updateModelDto: UpdateModelDto, @Req() req) {
