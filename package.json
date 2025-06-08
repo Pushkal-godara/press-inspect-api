@@ -1,5 +1,4 @@
 {
-  "$schema": "https://json.schemastore.org/package.json",
   "name": "press-inspect-api",
   "version": "0.0.1",
   "description": "Press Inspection Software Backend",
