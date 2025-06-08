@@ -11,7 +11,6 @@ import {
     BelongsTo
 } from 'sequelize-typescript';
 import { DeliveryType } from './m-delivery-type.entity';
-import { SubUnit } from './sub-unit.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 
 @Table({
@@ -54,6 +53,4 @@ export class DeliveryTypeCategory extends Model {
     })
     dateOfInspection: Date;
 
-    // @HasMany(() => SubUnit)
-    // subUnits: SubUnit[];
 }

@@ -274,6 +274,9 @@ async function bootstrap() {
       email: 'super_admin@printocare.com',
       password: await hashPassword('Superadmin123'),
       countryId: 1,
+      address: 'Super Admin Address',
+      registrationId: 'P1',
+      cvUrl: 'https://www.printocare.com',
       created_at: new Date(),
       updated_at: new Date()
     });

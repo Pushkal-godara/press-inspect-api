@@ -31,9 +31,6 @@ export class Comments extends Model {
   })
   name: string;
 
-  // @HasMany(() => SubUnit)
-  // subUnits: SubUnit[];
-
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
