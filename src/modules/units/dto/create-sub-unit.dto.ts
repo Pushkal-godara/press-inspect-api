@@ -12,13 +12,4 @@ export class CreateSubUnitDto {
     @IsInt()
     unitId: number;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsInt()
-    commentId: number;
-
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsInt()
-    deliveryTypeCategoryId: number;
 }
