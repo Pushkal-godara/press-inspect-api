@@ -89,7 +89,14 @@ export class UnitsService {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
-    return this.subUnitModel.findAll();
+    return this.subUnitModel.findAll({
+      include: [
+        {
+          model: Unit,
+          attributes: ['id', 'name'],
+        }
+      ]
+    });
   }
 
   async updateSubUnit(id: number, updateSubUnitDto: UpdateSubUnitDto, currentUser: any): Promise<SubUnit> {

@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsJSON, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsJSON, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
 import { Is } from 'sequelize-typescript';
 
 export class CreateModelDto {
@@ -29,9 +29,9 @@ export class CreateModelDto {
   year: number;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsJSON()
-  metadata: object;
+  metadata?: object;
 
   @ApiProperty()
   @IsNotEmpty()
