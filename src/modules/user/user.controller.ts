@@ -26,7 +26,7 @@ export class UserController {
   @Roles('SuperAdmin', 'Admin')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user status' })
-  @Patch(':id')
+  @Patch('update/user/status/:id')
   async updateUserStatus(
     @Param('id') userId: number,
     @Body() updateUserStatusDto: UpdateUserStatusDto,
