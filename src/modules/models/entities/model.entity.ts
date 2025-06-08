@@ -66,7 +66,7 @@ export class ModelEntity extends Model {
     type: DataType.JSON,
     allowNull: true
   })
-  metadata: any;
+  metadata?: any;
 
   @ForeignKey(() => Group)
   @Column({

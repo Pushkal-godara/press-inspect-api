@@ -11,8 +11,8 @@ import {
   } from 'sequelize-typescript';
 import { Unit } from './unit.entity';
 import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
-import { Comments } from './comments.entity';
-import { DeliveryTypeCategory } from './delivery-type-category.entity';
+// import { Comments } from './comments.entity';
+// import { DeliveryTypeCategory } from './delivery-type-category.entity';
 
   @Table({
     tableName: 'sub_units',
@@ -31,15 +31,15 @@ import { DeliveryTypeCategory } from './delivery-type-category.entity';
     })
     subUnitName: string;
 
-    @ForeignKey(() => Comments)
-    @Column({
-      type: DataType.INTEGER,
-      allowNull: false,
-    })
-    commentsId: number;
+    // @ForeignKey(() => Comments)
+    // @Column({
+    //   type: DataType.INTEGER,
+    //   allowNull: false,
+    // })
+    // commentsId: number;
 
-    @BelongsTo(() => Comments)
-    comments: Comments
+    // @BelongsTo(() => Comments)
+    // comments: Comments
   
     @ForeignKey(() => Unit)
     @Column({
@@ -51,15 +51,15 @@ import { DeliveryTypeCategory } from './delivery-type-category.entity';
     @BelongsTo(() => Unit)
     unit: Unit
 
-    @ForeignKey(() => DeliveryTypeCategory)
-    @Column({
-      type: DataType.INTEGER,
-      allowNull: false,
-    })
-    deliveryTypeCategoryId: number;
+    // @ForeignKey(() => DeliveryTypeCategory)
+    // @Column({
+    //   type: DataType.INTEGER,
+    //   allowNull: false,
+    // })
+    // deliveryTypeCategoryId: number;
 
-    @BelongsTo(() => DeliveryTypeCategory)
-    deliveryTypeCategory: DeliveryTypeCategory
+    // @BelongsTo(() => DeliveryTypeCategory)
+    // deliveryTypeCategory: DeliveryTypeCategory
 
     @HasMany(() => ThingsToCheckUnits)
     thingsToCheck: ThingsToCheckUnits[]

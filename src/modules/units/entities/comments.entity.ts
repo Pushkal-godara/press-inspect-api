@@ -31,8 +31,8 @@ export class Comments extends Model {
   })
   name: string;
 
-  @HasMany(() => SubUnit)
-  subUnits: SubUnit[];
+  // @HasMany(() => SubUnit)
+  // subUnits: SubUnit[];
 
   @ForeignKey(() => User)
   @Column({

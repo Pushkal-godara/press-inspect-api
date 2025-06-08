@@ -54,6 +54,6 @@ export class DeliveryTypeCategory extends Model {
     })
     dateOfInspection: Date;
 
-    @HasMany(() => SubUnit)
-    subUnits: SubUnit[];
+    // @HasMany(() => SubUnit)
+    // subUnits: SubUnit[];
 }

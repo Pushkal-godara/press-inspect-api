@@ -78,7 +78,7 @@ export class UnitsController {
   }
 
   @RequirePermissions('units:read')
-  @Roles('Engineer')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Get('read/sub-units')
   findAllSubUnits(@Req() req) {
