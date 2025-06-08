@@ -4,9 +4,9 @@ import { SequelizeModuleOptions } from '@nestjs/sequelize';
 export const getSequelizeConfig = (configService: ConfigService): SequelizeModuleOptions => ({
   dialect: configService.get('DB_DIALECT', 'postgres') as any,
   host: configService.get('DB_HOST', 'localhost'),
-  port: configService.get<number>('DB_PORT', 5432),
+  port: configService.get<number>('DB_PORT', 5435),
   username: configService.get('DB_USERNAME', 'postgres'),
-  password: configService.get('DB_PASSWORD', ''),
+  password: configService.get('DB_PASSWORD', 'root'),
   database: configService.get('DB_DATABASE', 'printocare'),
   autoLoadModels: true,
   synchronize: false,
