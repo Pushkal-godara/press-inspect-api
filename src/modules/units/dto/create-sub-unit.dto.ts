@@ -5,7 +5,7 @@ export class CreateSubUnitDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    name: string;
+    subUnitName: string;
 
     @ApiProperty()
     @IsNotEmpty()
