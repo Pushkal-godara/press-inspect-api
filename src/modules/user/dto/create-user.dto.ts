@@ -133,9 +133,9 @@ export class CreateUserDto {
     example: 'https://example.com/cv/johndoe.pdf',
     required: false,
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  cvUrl: string;
+  cvUrl?: string;
 
   @ApiProperty({
     description: 'Work experience details',
