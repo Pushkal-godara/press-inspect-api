@@ -1,16 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ForbiddenException, Req, Query } from '@nestjs/common';
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AddRoleDto } from './dto/add-role.dto';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, UploadedFiles, UseInterceptors,  Req, Query } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody, ApiParam  } from '@nestjs/swagger';
+import { Response } from 'express';
+
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { RolesGuard } from '../../core/guards/roles.guard';
 import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 import { Roles } from '../../core/decorators/public.decorator';
+
+import { s3UploadConfig } from '../../config/multer.config';
+
 import { RolesService } from '../roles/roles.service';
+import { UserService } from './user.service';
+import { S3Service } from '../../services/s3.service';
+
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { AddRoleDto } from './dto/add-role.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth('access_token')
@@ -19,7 +26,8 @@ import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly roleService: RolesService
+    private readonly roleService: RolesService,
+    private readonly s3Service: S3Service
   ) { }
 
   @RequirePermissions('users:update')
@@ -84,9 +92,9 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user by ID' })
   @Patch(':id')
-  update(@Param('id') userId: string, @Body() updateUserDto: UpdateUserDto, @Req() req) {
+  updatePassword(@Param('id') userId: string, @Body() updateUserPasswordDto: UpdateUserPasswordDto, @Req() req) {
     const currentUser = req.user;
-    return this.userService.update(+userId, updateUserDto, currentUser); 
+    return this.userService.updatePassword(+userId, updateUserPasswordDto, currentUser); 
   }
 
 
