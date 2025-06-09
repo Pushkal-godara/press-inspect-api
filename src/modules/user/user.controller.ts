@@ -8,11 +8,11 @@ import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 import { Roles } from '../../core/decorators/public.decorator';
 
-import { s3UploadConfig } from '../../config/multer.config';
+// import { s3UploadConfig } from '../../config/multer.config';
 
 import { RolesService } from '../roles/roles.service';
 import { UserService } from './user.service';
-import { S3Service } from '../../services/s3.service';
+// import { S3Service } from '../../services/s3.service';
 
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -27,7 +27,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RolesService,
-    private readonly s3Service: S3Service
+    // private readonly s3Service: S3Service
   ) { }
 
   @RequirePermissions('users:update')
