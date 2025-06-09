@@ -6,7 +6,7 @@ import { Role } from '../roles/entities/role.entity';
 import { UserRole } from '../roles/entities/user-role.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
-import { UpdateUserDto, UserWithGeneratedPassword } from './dto/update-user.dto';
+import { UpdateUserPasswordDto, UserWithGeneratedPassword } from './dto/update-user-password.dto';
 import { RolesService } from '../roles/roles.service';
 import { Permission } from '../permissions/entities/permission.entity';
 import { Op } from 'sequelize';
@@ -291,7 +291,7 @@ export class UserService {
     });
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto, currentUser?: any): Promise<User> {
+  async updatePassword(id: number, updateUserDto: UpdateUserPasswordDto, currentUser?: any): Promise<User> {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
@@ -299,6 +299,7 @@ export class UserService {
 
     // Variable to store generated password (if any)
     let plainTextPassword: string | undefined;
+    let password: string | undefined;
 
     // Security checks for country and role hierarchy
     if (currentUser) {
@@ -317,12 +318,12 @@ export class UserService {
     }
 
     // Password reset handling (for Admins or Super Admins)
-    if (updateUserDto.resetPassword &&
+    if (updateUserDto.resetPassword && updateUserDto.newPassword &&
       (currentUser?.roles.includes('Admin') || currentUser?.roles.includes('SuperAdmin'))) {
 
       // Generate a new random password (or use the provided one)
       const newPassword = updateUserDto.newPassword || this.generateRandomPassword();
-      updateUserDto.password = await this.hashPassword(newPassword);
+      password = await this.hashPassword(newPassword);
 
       // Remove the temporary reset flags to avoid storing them in the database
       delete updateUserDto.resetPassword;
@@ -341,18 +342,18 @@ export class UserService {
       }
 
       // Hash the new password
-      updateUserDto.password = await this.hashPassword(updateUserDto.newPassword);
+      password = await this.hashPassword(updateUserDto.newPassword);
 
       // Remove the oldPassword field to avoid storing it
       delete updateUserDto.oldPassword;
       delete updateUserDto.newPassword;
     }
     // If just a password is provided without oldPassword or resetPassword flag
-    else if (updateUserDto.password && !updateUserDto.resetPassword && !updateUserDto.oldPassword) {
+    else if (updateUserDto.newPassword && !updateUserDto.resetPassword && (!updateUserDto.oldPassword || updateUserDto.oldPassword === '' || updateUserDto.oldPassword === null || updateUserDto.oldPassword === undefined)) {
       throw new BadRequestException('Must provide old password to change password');
     }
 
-    await user.update(updateUserDto);
+    await user.update({ password});
 
     // Return the updated user (add plainTextPassword if it was a reset)
     const updatedUser = await this.userModel.findByPk(id);
