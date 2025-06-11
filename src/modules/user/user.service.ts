@@ -1,22 +1,28 @@
 import { BadRequestException, ForbiddenException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import * as bcrypt from 'bcrypt';
+
 import { User } from './entities/user.entity';
 import { Role } from '../roles/entities/role.entity';
 import { UserRole } from '../roles/entities/user-role.entity';
+import { Permission } from '../permissions/entities/permission.entity';
+import { Country } from '../country/entities/country.entity';
+
 import { CreateUserDto } from './dto/create-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
-import { UpdateUserPasswordDto, UserWithGeneratedPassword } from './dto/update-user-password.dto';
-import { RolesService } from '../roles/roles.service';
-import { Permission } from '../permissions/entities/permission.entity';
-import { Op } from 'sequelize';
-import { Country } from '../country/entities/country.entity';
+import { UpdateUserDto } from './dto/update-user-dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { UpdateUserPasswordDto, UserWithGeneratedPassword } from './dto/update-user-password.dto';
+
+import { RolesService } from '../roles/roles.service';
+import { S3Service } from 'src/services/s3.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly rolesService: RolesService,
+    private readonly s3Service: S3Service,
     @InjectModel(User)
     private userModel: typeof User,
     @InjectModel(Role)
@@ -24,6 +30,15 @@ export class UserService {
     @InjectModel(UserRole)
     private userRoleModel: typeof UserRole
   ) { }
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> { // TODO : This doesn't include role & password updates
+    const user = await this.userModel.findByPk(id);                       // TODO: Also add condition who that both current user id & user id are same here 
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    await user.update(updateUserDto);
+    return user.reload();
+  }
 
   async updateUserStatus(id: number, updateUserStatusDto: UpdateUserStatusDto, currentUser: any): Promise<User> {
     if (!currentUser) {
@@ -353,7 +368,7 @@ export class UserService {
       throw new BadRequestException('Must provide old password to change password');
     }
 
-    await user.update({ password});
+    await user.update({ password });
 
     // Return the updated user (add plainTextPassword if it was a reset)
     const updatedUser = await this.userModel.findByPk(id);
@@ -432,6 +447,14 @@ export class UserService {
 
   async remove(id: number): Promise<void> {
     const user = await this.findById(id);
+
+    // Delete files from S3 before deleting user
+    const filesToDelete = [];
+    if (user.cvUrl) filesToDelete.push(this.s3Service.deleteFile(user.cvUrl));
+    if (user.passportAttachment) filesToDelete.push(this.s3Service.deleteFile(user.passportAttachment));
+    if (user.photoOfEngineer) filesToDelete.push(this.s3Service.deleteFile(user.photoOfEngineer));
+
+    await Promise.allSettled(filesToDelete);
     await user.destroy();
   }
 

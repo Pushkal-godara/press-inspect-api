@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, UploadedFiles, UseInterceptors,  Req, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, UploadedFiles, UseInterceptors,  Req, Query, Res } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody, ApiParam  } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -8,16 +8,18 @@ import { PermissionGuard } from 'src/core/guards/permission.guard';
 import { RequirePermissions } from 'src/core/decorators/permission.decorator';
 import { Roles } from '../../core/decorators/public.decorator';
 
-// import { s3UploadConfig } from '../../config/multer.config';
+import { s3UploadConfig } from '../../config/multer.config';
 
 import { RolesService } from '../roles/roles.service';
 import { UserService } from './user.service';
-// import { S3Service } from '../../services/s3.service';
+import { S3Service } from '../../services/s3.service';
 
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { AddRoleDto } from './dto/add-role.dto';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { UpdateUserDto } from './dto/update-user-dto';
 
 @ApiTags('Users')
 @ApiBearerAuth('access_token')
@@ -27,7 +29,7 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly roleService: RolesService,
-    // private readonly s3Service: S3Service
+    private readonly s3Service: S3Service
   ) { }
 
   @RequirePermissions('users:update')
@@ -59,13 +61,102 @@ export class UserController {
   @RequirePermissions('users:create')
   @Roles('SuperAdmin', 'Admin')
   @UseGuards(PermissionGuard, RolesGuard)
-  @ApiOperation({ summary: 'Create a new user' })
+  @ApiOperation({ summary: 'Create a new user (with optional file uploads)' })
+  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'cv', maxCount: 1 },
+        { name: 'passportAttachment', maxCount: 1 },
+        { name: 'photoOfEngineer', maxCount: 1 },
+      ],
+      s3UploadConfig,
+    ),
+  )
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        // Your existing DTO fields
+        email: { type: 'string', format: 'email' },
+        password: { type: 'string' },
+        first_name: { type: 'string' },
+        last_name: { type: 'string' },
+        passport_number: { type: 'string' },
+        mobile: { type: 'string' },
+        address: { type: 'string' },
+        city: { type: 'string' },
+        state: { type: 'string' },
+        pincode: { type: 'string' },
+        country_id: { type: 'number' },
+        company_name: { type: 'string' },
+        registration_id: { type: 'string' },
+        work_experience: { type: 'string' },
+        passport_expiry_date: { type: 'string', format: 'date' },
+        roleId: { type: 'number' },
+        // Optional file fields
+        cv: { type: 'string', format: 'binary', description: 'CV PDF file (optional)' },
+        passportAttachment: { type: 'string', format: 'binary', description: 'Passport PDF file (optional)' },
+        photoOfEngineer: { type: 'string', format: 'binary', description: 'Engineer photo JPG/PNG (optional)' },
+      },
+      required: ['email', 'password', 'first_name', 'last_name'], // Your existing required fields
+    },
+  })
   @Post('create')
-  create(@Body() createUserDto: CreateUserDto, @Req() req) {
+  async create(
+    @Body() createUserDto: CreateUserDto, 
+    @Req() req,
+    @UploadedFiles()
+    files?: {
+      cv?: Express.Multer.File[];
+      passportAttachment?: Express.Multer.File[];
+      photoOfEngineer?: Express.Multer.File[];
+    },
+  ) {
     const currentUser = req.user;
-    return this.userService.create(createUserDto, currentUser);
-  }
+    const uploadedFiles = {
+      cv: null,
+      passportAttachment: null,
+      photoOfEngineer: null,
+    };
 
+    try {
+      // Handle file uploads if present
+      if (files?.cv && files.cv[0]) {
+        const cvUrl = await this.s3Service.uploadFile(files.cv[0], 'cv-files');
+        createUserDto.cvUrl = cvUrl;
+        uploadedFiles.cv = cvUrl;
+      }
+
+      if (files?.passportAttachment && files.passportAttachment[0]) {
+        const passportUrl = await this.s3Service.uploadFile(files.passportAttachment[0], 'passport-files');
+        createUserDto.passportAttachment = passportUrl;
+        uploadedFiles.passportAttachment = passportUrl;
+      }
+
+      if (files?.photoOfEngineer && files.photoOfEngineer[0]) {
+        const photoUrl = await this.s3Service.uploadFile(files.photoOfEngineer[0], 'engineer-photos');
+        createUserDto.photoOfEngineer = photoUrl;
+        uploadedFiles.photoOfEngineer = photoUrl;
+      }
+
+      // Use your existing service method
+      const user = await this.userService.create(createUserDto, currentUser);
+
+      // Return response in your existing format or enhanced format
+      return {
+        success: true,
+        message: 'User created successfully',
+        data: user,
+        ...(files && { uploadedFiles }) // Only include uploadedFiles if files were sent
+      };
+
+    } catch (error) {
+      // Cleanup uploaded files if user creation fails
+      await this.cleanupUploadedFiles(uploadedFiles);
+      throw error;
+    }
+  }
 
   @RequirePermissions('users:read')
   @Roles('SuperAdmin', 'Admin')
@@ -90,7 +181,7 @@ export class UserController {
   @RequirePermissions('users:update')
   @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
   @UseGuards(PermissionGuard, RolesGuard)
-  @ApiOperation({ summary: 'Update user by ID' })
+  @ApiOperation({ summary: 'Update user password by ID' })
   @Patch(':id')
   updatePassword(@Param('id') userId: string, @Body() updateUserPasswordDto: UpdateUserPasswordDto, @Req() req) {
     const currentUser = req.user;
@@ -98,16 +189,205 @@ export class UserController {
   }
 
 
+  @RequirePermissions('users:update')
+  @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Update user by ID (with optional file uploads)' })
+  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'cv', maxCount: 1 },
+        { name: 'passportAttachment', maxCount: 1 },
+        { name: 'photoOfEngineer', maxCount: 1 },
+      ],
+      s3UploadConfig,
+    ),
+  )
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        email: { type: 'string', format: 'email' },
+        first_name: { type: 'string' },
+        last_name: { type: 'string' },
+        passport_number: { type: 'string' },
+        mobile: { type: 'string' },
+        address: { type: 'string' },
+        city: { type: 'string' },
+        state: { type: 'string' },
+        pincode: { type: 'string' },
+        company_name: { type: 'string' },
+        registration_id: { type: 'string' },
+        work_experience: { type: 'string' },
+        passport_expiry_date: { type: 'string', format: 'date' },
+        resetPassword: { type: 'boolean' },
+        newPassword: { type: 'string' },
+        oldPassword: { type: 'string' },
+        // Optional file fields
+        cv: { type: 'string', format: 'binary', description: 'CV PDF file (optional)' },
+        passportAttachment: { type: 'string', format: 'binary', description: 'Passport PDF file (optional)' },
+        photoOfEngineer: { type: 'string', format: 'binary', description: 'Engineer photo JPG/PNG (optional)' },
+      },
+    },
+  })
+  @Patch(':id')
+  async update(
+    @Param('id') userId: string, 
+    @Body() updateUserDto: UpdateUserDto, 
+    @Req() req,
+    @UploadedFiles()
+    files?: {
+      cv?: Express.Multer.File[];
+      passportAttachment?: Express.Multer.File[];
+      photoOfEngineer?: Express.Multer.File[];
+    },
+  ) {
+    const currentUser = req.user;
+    const id = +userId;
+    
+    // Get current user data for old file cleanup
+    const user = await this.userService.findById(id, currentUser);
+    const oldFiles = {
+      cv: user.cvUrl,
+      passportAttachment: user.passportAttachment,
+      photoOfEngineer: user.photoOfEngineer,
+    };
+
+    const newFiles = {
+      cv: null,
+      passportAttachment: null,
+      photoOfEngineer: null,
+    };
+
+    try {
+      // Handle file uploads if present
+      if (files?.cv && files.cv[0]) {
+        const cvUrl = await this.s3Service.uploadFile(files.cv[0], 'cv-files');
+        updateUserDto.cvUrl = cvUrl;
+        newFiles.cv = cvUrl;
+      }
+
+      if (files?.passportAttachment && files.passportAttachment[0]) {
+        const passportUrl = await this.s3Service.uploadFile(files.passportAttachment[0], 'passport-files');
+        updateUserDto.passportAttachment = passportUrl;
+        newFiles.passportAttachment = passportUrl;
+      }
+
+      if (files?.photoOfEngineer && files.photoOfEngineer[0]) {
+        const photoUrl = await this.s3Service.uploadFile(files.photoOfEngineer[0], 'engineer-photos');
+        updateUserDto.photoOfEngineer = photoUrl;
+        newFiles.photoOfEngineer = photoUrl;
+      }
+
+      // Use your existing service method
+      const updatedUser = await this.userService.update(id, updateUserDto);
+
+      // Delete old files from S3 if new files were uploaded
+      await this.cleanupOldFiles(oldFiles, newFiles);
+
+      // Return response in your existing format or enhanced format
+      return {
+        success: true,
+        message: 'User updated successfully',
+        data: updatedUser,
+        ...(files && { uploadedFiles: newFiles }) // Only include uploadedFiles if files were sent
+      };
+
+    } catch (error) {
+      // Cleanup new uploaded files if update fails
+      await this.cleanupUploadedFiles(newFiles);
+      throw error;
+    }
+  }
+
+  // ========== NEW FILE DOWNLOAD ENDPOINTS ==========
+
+  @RequirePermissions('users:read')
+  @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Download user CV' })
+  @Get('download/cv/:id')
+  async downloadCV(@Param('id') id: string, @Res() res: Response, @Req() req) {
+    const currentUser = req.user;
+    const userId = parseInt(id);
+    const user = await this.userService.findById(userId, currentUser);
+
+    if (!user || !user.cvUrl) {
+      throw new BadRequestException('CV not found for this user');
+    }
+
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.cvUrl);
+    res.redirect(signedUrl);
+  }
+
+  @RequirePermissions('users:read')
+  @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Download user passport attachment' })
+  @Get('download/passport/:id')
+  async downloadPassport(@Param('id') id: string, @Res() res: Response, @Req() req) {
+    const currentUser = req.user;
+    const userId = parseInt(id);
+    const user = await this.userService.findById(userId, currentUser);
+
+    if (!user || !user.passportAttachment) {
+      throw new BadRequestException('Passport attachment not found for this user');
+    }
+
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.passportAttachment);
+    res.redirect(signedUrl);
+  }
+
+  @RequirePermissions('users:read')
+  @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Download user photo' })
+  @Get('download/photo/:id')
+  async downloadPhoto(@Param('id') id: string, @Res() res: Response, @Req() req) {
+    const currentUser = req.user;
+    const userId = parseInt(id);
+    const user = await this.userService.findById(userId, currentUser);
+
+    if (!user || !user.photoOfEngineer) {
+      throw new BadRequestException('Engineer photo not found for this user');
+    }
+
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.photoOfEngineer);
+    res.redirect(signedUrl);
+  }
+
+// ========== HELPER METHODS ==========
+  private async cleanupUploadedFiles(files: { cv?: string; passportAttachment?: string; photoOfEngineer?: string }) {
+    const promises = [];
+    
+    if (files.cv) promises.push(this.s3Service.deleteFile(files.cv));
+    if (files.passportAttachment) promises.push(this.s3Service.deleteFile(files.passportAttachment));
+    if (files.photoOfEngineer) promises.push(this.s3Service.deleteFile(files.photoOfEngineer));
+
+    await Promise.allSettled(promises);
+  }
+
+  private async cleanupOldFiles(oldFiles: any, newFiles: any) {
+    const promises = [];
+    
+    if (newFiles.cv && oldFiles.cv) promises.push(this.s3Service.deleteFile(oldFiles.cv));
+    if (newFiles.passportAttachment && oldFiles.passportAttachment) promises.push(this.s3Service.deleteFile(oldFiles.passportAttachment));
+    if (newFiles.photoOfEngineer && oldFiles.photoOfEngineer) promises.push(this.s3Service.deleteFile(oldFiles.photoOfEngineer));
+
+    await Promise.allSettled(promises);
+  }
 
 
-  // @RequirePermissions('users:delete')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(PermissionGuard, RolesGuard)
-  // @ApiOperation({ summary: 'Delete user by ID' })
-  // @Delete(':id')
-  // removeUser(@Param('id') id: string) {
-  //   return this.userService.remove(+id); // TODO as per requirement 
-  // }
+
+  @RequirePermissions('users:delete')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Delete user by ID' })
+  @Delete(':id')
+  removeUser(@Param('id') id: string) {
+    return this.userService.remove(+id); 
+  }
  
 
   
