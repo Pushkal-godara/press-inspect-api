@@ -1,5 +1,7 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import { IsBoolean, IsDate, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString, Matches, MinLength } from 'class-validator';
+import { Transform } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
+import { Is } from 'sequelize-typescript';
 
 export class CreateUserDto {
   @ApiProperty({
@@ -23,6 +25,7 @@ export class CreateUserDto {
     example: 1,
     required: true
   })
+  @Transform(({ value }) => parseInt(value))
   @IsNumber()
   @IsNotEmpty()
   roleId: number;
@@ -105,6 +108,7 @@ export class CreateUserDto {
     description: 'Country ID',
     example: 1,
   })
+  @Transform(({ value }) => parseInt(value))
   @IsNumber()
   @IsNotEmpty()
   countryId: number;

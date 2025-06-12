@@ -12,11 +12,32 @@ export class S3Service {
   private readonly logger = new Logger(S3Service.name);
 
   constructor(private configService: ConfigService) {
-    this.s3Client = createS3Client(configService);
-    this.bucketName = this.configService.get('AWS_S3_BUCKET_NAME');
+    console.log('🚀 S3Service constructor started');
+    // this.s3Client = createS3Client(configService);
+    // this.bucketName = this.configService.get('AWS_S3_BUCKET_NAME');
+    try {
+      console.log('🔍 Environment variables:');
+      console.log('  AWS_REGION:', this.configService.get('AWS_REGION'));
+      console.log('  AWS_S3_BUCKET_NAME:', this.configService.get('AWS_S3_BUCKET_NAME'));
+      console.log('  AWS_ACCESS_KEY_ID:', this.configService.get('AWS_ACCESS_KEY_ID')?.substring(0, 8) + '...');
+
+      console.log('📡 Creating S3 client...');
+      this.s3Client = createS3Client(configService);
+      console.log('✅ S3 client created successfully');
+
+      this.bucketName = this.configService.get('AWS_S3_BUCKET_NAME');
+      console.log('✅ S3Service constructor completed');
+    } catch (error) {
+      console.error('❌ S3Service constructor failed:', error);
+      throw error;
+    }
   }
 
   async uploadFile(file: Express.Multer.File, folder: string): Promise<string> {
+     console.log('🔍 uploadFile called');
+  console.log('🔍 this.s3Client exists?', !!this.s3Client);
+
+
     const fileExtension = file.originalname.split('.').pop();
     const fileName = `${folder}/${uuidv4()}.${fileExtension}`;
 
@@ -27,11 +48,12 @@ export class S3Service {
       ContentType: file.mimetype,
       ContentDisposition: 'inline',
     });
-
+    
     try {
+      console.log('🔍 About to send command to S3...');
       await this.s3Client.send(command);
       const fileUrl = `https://${this.bucketName}.s3.${this.configService.get('AWS_REGION')}.amazonaws.com/${fileName}`;
-      
+
       this.logger.log(`File uploaded successfully: ${fileUrl}`);
       return fileUrl;
     } catch (error) {
@@ -44,7 +66,7 @@ export class S3Service {
     try {
       // Extract key from URL
       const key = fileUrl.split('.amazonaws.com/')[1];
-      
+
       const command = new DeleteObjectCommand({
         Bucket: this.bucketName,
         Key: key,
@@ -61,7 +83,7 @@ export class S3Service {
   async getSignedDownloadUrl(fileUrl: string, expiresIn: number = 3600): Promise<string> {
     try {
       const key = fileUrl.split('.amazonaws.com/')[1];
-      
+
       const command = new GetObjectCommand({
         Bucket: this.bucketName,
         Key: key,
