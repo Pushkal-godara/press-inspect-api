@@ -32,7 +32,7 @@ export class UserService {
   ) { }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> { // TODO : This doesn't include role & password updates
-    const user = await this.userModel.findByPk(id);                       // TODO: Also add condition who that both current user id & user id are same here 
+    const user = await this.userModel.findByPk(id);                       // TODO: Also add condition that both current user id & user id are same here 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
@@ -230,13 +230,13 @@ export class UserService {
     return user;
   }
 
-  async findById(id: number, currentUser?: any): Promise<User> {
+  async findById(id: number, currentUser: any): Promise<User> {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
 
     // Step 1: Get the user with their roles
-    const user = await this.userModel.findByPk(id, {
+    const existingUser = await this.userModel.findByPk(id, {
       include: [
         {
           model: Role,
@@ -259,9 +259,12 @@ export class UserService {
         'registration_id',
         'company_name',
         'cv_url',
+        'passport_attachment',
+        'photo_of_engineer',
         'work_experience'
       ],
     });
+    const user = existingUser.toJSON();
 
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
@@ -285,7 +288,7 @@ export class UserService {
       }
 
       // Check if the user is from the same country
-      if (user.countryId !== currentUser.country) {
+      if (user.country_id !== currentUser.country) {
         throw new ForbiddenException('You do not have permission to view users from other countries');
       }
 
@@ -327,7 +330,7 @@ export class UserService {
       // Country-based restriction for regular Admins
       if (currentUser.roles.includes('Admin') &&
         !currentUser.roles.includes('SuperAdmin') &&
-        user.countryId !== currentUser.country) {
+        user.country_id !== currentUser.country) {
         throw new ForbiddenException('Cannot modify users from other countries');
       }
     }
@@ -445,14 +448,14 @@ export class UserService {
     return user;
   }
 
-  async remove(id: number): Promise<void> {
-    const user = await this.findById(id);
+  async remove(id: number, currentUser: any): Promise<void> {
+    const user = await this.findById(id, currentUser);
 
     // Delete files from S3 before deleting user
     const filesToDelete = [];
-    if (user.cvUrl) filesToDelete.push(this.s3Service.deleteFile(user.cvUrl));
-    if (user.passportAttachment) filesToDelete.push(this.s3Service.deleteFile(user.passportAttachment));
-    if (user.photoOfEngineer) filesToDelete.push(this.s3Service.deleteFile(user.photoOfEngineer));
+    if (user.cv_url) filesToDelete.push(this.s3Service.deleteFile(user.cv_url));
+    if (user.passport_attachment) filesToDelete.push(this.s3Service.deleteFile(user.passport_attachment));
+    if (user.photo_of_engineer) filesToDelete.push(this.s3Service.deleteFile(user.photo_of_engineer));
 
     await Promise.allSettled(filesToDelete);
     await user.destroy();
@@ -471,8 +474,8 @@ export class UserService {
     return this.findByIdWithRolesAndPermissions(id);
   }
 
-  async removeRole(id: number, roleId: string): Promise<User> {
-    const user = await this.findById(id);
+  async removeRole(id: number, roleId: string, currentUser): Promise<User> {
+    const user = await this.findById(id, currentUser);
     const role = await this.roleModel.findByPk(roleId);
 
     if (!role) {
@@ -488,7 +491,7 @@ export class UserService {
 
   async findByCountry(countryId: string, currentUser): Promise<User[]> {
     return this.userModel.findAll({
-      where: { countryId },
+      where: { country_id: countryId },
       include: [
         {
           model: Role,
@@ -507,7 +510,7 @@ export class UserService {
     }
 
     return this.userModel.findAll({
-      where: { countryId },
+      where: { country_id: countryId },
       include: [
         {
           model: Role,

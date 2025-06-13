@@ -93,7 +93,7 @@ export class User extends Model<User> {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  countryId: number;
+  country_id: number;
 
   @BelongsTo(() => Country)
   country: Country;
@@ -117,7 +117,7 @@ export class User extends Model<User> {
     allowNull: false,
     field: 'cv_url',
   })
-  cvUrl: string;
+  cv_url: string;
 
   @Column({
     type: DataType.TEXT,
@@ -138,14 +138,14 @@ export class User extends Model<User> {
     allowNull: true,
     field: 'passport_attachment',
   })
-  passportAttachment: string;
+  passport_attachment: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
     field: 'photo_of_engineer',
   })
-  photoOfEngineer: string;
+  photo_of_engineer: string;
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];

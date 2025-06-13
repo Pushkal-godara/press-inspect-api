@@ -38,7 +38,7 @@ export class PermissionGuard implements CanActivate {
       // Get the target user ID from params
       const targetUserId = request.params.id;
       if (targetUserId) {
-        const targetUser = await this.userService.findById(+targetUserId);
+        const targetUser = await this.userService.findById(+targetUserId, user);
         
         // If target user is a Super Admin, deny access
         if (targetUser.roles.some(r => r.name === 'SuperAdmin')) {
@@ -46,7 +46,7 @@ export class PermissionGuard implements CanActivate {
         }
         
         // If countries don't match, deny access
-        if (targetUser.countryId !== user.country) {
+        if (targetUser.country_id !== user.country) {
           return false;
         }
       }

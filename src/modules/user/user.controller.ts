@@ -36,7 +36,7 @@ export class UserController {
   @Roles('SuperAdmin', 'Admin')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user status' })
-  @Patch('update/user/status/:id')
+  @Patch('update-user-status-by-id/:id')
   async updateUserStatus(
     @Param('id') userId: number,
     @Body() updateUserStatusDto: UpdateUserStatusDto,
@@ -182,7 +182,7 @@ export class UserController {
   @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user password by ID' })
-  @Patch(':id')
+  @Patch('password-update/:id')
   updatePassword(@Param('id') userId: string, @Body() updateUserPasswordDto: UpdateUserPasswordDto, @Req() req) {
     const currentUser = req.user;
     return this.userService.updatePassword(+userId, updateUserPasswordDto, currentUser); 
@@ -221,9 +221,6 @@ export class UserController {
         registrationId: { type: 'string' },
         workExperience: { type: 'string' },
         passportExpiryDate: { type: 'string', format: 'date' },
-        resetPassword: { type: 'boolean' },
-        newPassword: { type: 'string' },
-        oldPassword: { type: 'string' },
         // Optional file fields
         cv: { type: 'string', format: 'binary', description: 'CV PDF file (optional)' },
         passportAttachment: { type: 'string', format: 'binary', description: 'Passport PDF file (optional)' },
@@ -231,7 +228,7 @@ export class UserController {
       },
     },
   })
-  @Patch(':id')
+  @Patch('update-user-by-id/:id')
   async update(
     @Param('id') userId: string, 
     @Body() updateUserDto: UpdateUserDto, 
@@ -249,9 +246,9 @@ export class UserController {
     // Get current user data for old file cleanup
     const user = await this.userService.findById(id, currentUser);
     const oldFiles = {
-      cv: user.cvUrl,
-      passportAttachment: user.passportAttachment,
-      photoOfEngineer: user.photoOfEngineer,
+      cv: user.cv_url,
+      passportAttachment: user.passport_attachment,
+      photoOfEngineer: user.photo_of_engineer,
     };
 
     const newFiles = {
@@ -313,11 +310,11 @@ export class UserController {
     const userId = parseInt(id);
     const user = await this.userService.findById(userId, currentUser);
 
-    if (!user || !user.cvUrl) {
+    if (!user || !user.cv_url) {
       throw new BadRequestException('CV not found for this user');
     }
 
-    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.cvUrl);
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.cv_url);
     res.redirect(signedUrl);
   }
 
@@ -331,11 +328,11 @@ export class UserController {
     const userId = parseInt(id);
     const user = await this.userService.findById(userId, currentUser);
 
-    if (!user || !user.passportAttachment) {
+    if (!user || !user.passport_attachment) {
       throw new BadRequestException('Passport attachment not found for this user');
     }
 
-    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.passportAttachment);
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.passport_attachment);
     res.redirect(signedUrl);
   }
 
@@ -349,11 +346,11 @@ export class UserController {
     const userId = parseInt(id);
     const user = await this.userService.findById(userId, currentUser);
 
-    if (!user || !user.photoOfEngineer) {
+    if (!user || !user.photo_of_engineer) {
       throw new BadRequestException('Engineer photo not found for this user');
     }
 
-    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.photoOfEngineer);
+    const signedUrl = await this.s3Service.getSignedDownloadUrl(user.photo_of_engineer);
     res.redirect(signedUrl);
   }
 
@@ -385,10 +382,10 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Delete user by ID' })
   @Delete(':id')
-  removeUser(@Param('id') id: string) {
-    return this.userService.remove(+id); 
+  removeUser(@Param('id') id: string, @Req() req) {
+    const currentUser = req.user;
+    return this.userService.remove(+id, currentUser);
   }
- 
 
   
   // @RequirePermissions('users:update')
@@ -428,8 +425,9 @@ export class UserController {
   // @UseGuards(PermissionGuard, RolesGuard)
   // @ApiOperation({ summary: 'Remove role from user id' })
   // @Delete(':id/roles/:roleId')
-  // removeRole(@Param('id') id: number, @Param('roleId') roleId: string) {
-  //   return this.userService.removeRole(id, roleId);  // TODO as per requirement 
+  // removeRole(@Param('id') id: number, @Param('roleId') roleId: string, @Req() req) {
+  //   const currentUser = req.user;
+  //   return this.userService.removeRole(id, roleId, currentUser);
   // }
 
 
