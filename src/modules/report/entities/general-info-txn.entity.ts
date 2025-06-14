@@ -36,7 +36,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    questionId: number;
+    question_id: number;
 
     @BelongsTo(() => GeneralInfoQuestion)
     generalInfo: GeneralInfoQuestion
@@ -46,7 +46,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    modelId: number;
+    model_id: number;
 
     @BelongsTo(() => ModelEntity)
     model: ModelEntity
@@ -56,7 +56,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    inspectorId: number;
+    inspector_id: number;
 
     @BelongsTo(() => User)
     user: User
@@ -65,13 +65,13 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    inspectionPlace: string
+    inspection_place: string
 
     @Column({
       type: DataType.DATE,
       allowNull: false,
     })
-    inspectionDate: Date
+    inspection_date: Date
 
     @HasMany(() => Report)
     reports: Report[]

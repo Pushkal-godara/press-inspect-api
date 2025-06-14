@@ -27,7 +27,7 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    companyName: string;
+    company_name: string;
 
     @Column({
         type: DataType.TEXT,

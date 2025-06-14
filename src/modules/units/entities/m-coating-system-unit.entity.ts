@@ -29,7 +29,7 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    coatingSystem: string;
+    coating_system: string;
 
     @HasMany(() => SubUnitTxn)
     subUnitTxns: SubUnitTxn[]

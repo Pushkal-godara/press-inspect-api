@@ -34,7 +34,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    controlStationId: number;
+    control_station_id: number;
 
     @BelongsTo(() => ControlStation)
     controlStation: ControlStation
@@ -44,7 +44,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    conditionId: number;
+    condition_id: number;
 
     @BelongsTo(() => Condition)
     condition: Condition
@@ -60,7 +60,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    thingsToCheckId: number;
+    things_to_check_id: number;
 
     @BelongsTo(() => ThingToCheckControlStation)
     thingsToCheck: ThingToCheckControlStation
@@ -69,7 +69,7 @@ import {
       type: DataType.DATE,
       allowNull: true,
     })
-    dateOfInspection: Date;
+    date_of_inspection: Date;
 
     @Column({
       type: DataType.STRING,
@@ -82,7 +82,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    userId: number;
+    user_id: number;
 
     @BelongsTo(() => User)
     user: User

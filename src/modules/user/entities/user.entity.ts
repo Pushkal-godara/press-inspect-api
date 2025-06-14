@@ -24,19 +24,19 @@ export class User extends Model<User> {
     type: DataType.STRING,
     allowNull: false,
   })
-  firstName: string;
+  first_name: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  lastName: string;
+  last_name: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  passportNumber: string;
+  passport_number: string;
 
   @Column({
     type: DataType.STRING,
@@ -62,7 +62,7 @@ export class User extends Model<User> {
     allowNull: false,
     defaultValue: DataType.NOW,
   })
-  joiningDate: Date;
+  joining_date: Date;
 
   @Column({
     type: DataType.TEXT,
@@ -103,14 +103,14 @@ export class User extends Model<User> {
     allowNull: true,
     field: 'company_name',
   })
-  companyName: string;
+  company_name: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     field: 'registration_id',
   })
-  registrationId: string;
+  registration_id: string;
 
   @Column({
     type: DataType.STRING,
@@ -124,14 +124,14 @@ export class User extends Model<User> {
     allowNull: true,
     field: 'work_experience',
   })
-  workExperience: string;
+  work_experience: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
     field: 'passport_expiry_date',
   })
-  passportExpiryDate: Date;
+  passport_expiry_date: Date;
 
   @Column({
     type: DataType.STRING,

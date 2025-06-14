@@ -33,7 +33,7 @@ export class DeliveryTypeCategory extends Model {
         type: DataType.INTEGER,
         allowNull: false,
     })
-    userId: number;
+    user_id: number;
 
     @BelongsTo(() => User)
     user: User;
@@ -43,7 +43,7 @@ export class DeliveryTypeCategory extends Model {
         type: DataType.INTEGER,
         allowNull: false,
     })
-    deliveryTypeId: number;
+    delivery_type_id: number;
 
     @BelongsTo(() => DeliveryType)
     deliveryType: DeliveryType;
@@ -52,7 +52,7 @@ export class DeliveryTypeCategory extends Model {
         type: DataType.DATE,
         allowNull: true,
     })
-    dateOfInspection: Date;
+    date_of_inspection: Date;
 
     @HasMany(() => Report)
     reports: Report[];

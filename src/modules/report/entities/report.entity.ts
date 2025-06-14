@@ -142,7 +142,7 @@ export class Report extends Model {
     allowNull: false,
     defaultValue: DataType.NOW,
   })
-  inspectionDate: Date;
+  inspection_date: Date;
 
   @Column({
     type: DataType.FLOAT,

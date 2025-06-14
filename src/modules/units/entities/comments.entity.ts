@@ -36,7 +36,7 @@ export class Comments extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  userId: number;
+  user_id: number;
 
   @BelongsTo(() => User)
   user: User;
@@ -46,7 +46,7 @@ export class Comments extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  subUnitId: number;
+  sub_unit_id: number;
 
   @BelongsTo(() => SubUnit)
   subUnit: SubUnit
@@ -55,7 +55,7 @@ export class Comments extends Model {
     type: DataType.DATE,
     allowNull: true,
   })
-  dateOfInspection: Date;
+  date_of_inspection: Date;
 
   @Column({
     type: DataType.DATE,

@@ -13,7 +13,7 @@ export class UserRole extends Model {
     primaryKey: true,
     allowNull: false,
   })
-  userId: number;
+  user_id: number;
 
   @ForeignKey(() => Role)
   @Column({
@@ -21,7 +21,7 @@ export class UserRole extends Model {
     primaryKey: true,
     allowNull: false,
   })
-  roleId: number;
+  role_id: number;
 
   @Column({
     type: DataType.DATE,

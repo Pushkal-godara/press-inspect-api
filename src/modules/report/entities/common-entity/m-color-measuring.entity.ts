@@ -26,7 +26,7 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    deviceName: string;
+    device_name: string;
 
     @HasMany(() => ColorMeasurementTxns)
     colorMeasurementTxns: ColorMeasurementTxns[]

@@ -30,38 +30,38 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    versionOfDevice: string;
+    version_of_device: string;
 
     @Column({
       type: DataType.STRING,
       allowNull: false,
     })
-    deviceCondition: string;   //  working, not working
+    device_condition: string;   //  working, not working
 
     @Column({
       type: DataType.STRING,
       allowNull: false,
     })
-    commentsForDeviceCondition: string;
+    comments_for_device_condition: string;
 
     @Column({
       type: DataType.STRING,
       allowNull: false,
     })
-    expiryOfCalibrationCard: string;  //  Expired, Not Expired
+    expiry_of_calibration_card: string;  //  Expired, Not Expired
 
     @Column({
       type: DataType.STRING,
       allowNull: false,
     })
-    commentsForExpiryOfCalibrationCard: string;
+    comments_for_expiry_of_calibration_card: string;
 
     @ForeignKey(() => ColorMeasurments)
     @Column({
       type: DataType.INTEGER,
       allowNull: false,
     })
-    colorMeasurmentsId: number;
+    color_measurments_id: number;
 
     @BelongsTo(() => ColorMeasurments)
     colorMeasurments: ColorMeasurments
@@ -71,7 +71,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    controlStationTxnsId: number;
+    control_station_txns_id: number;
 
     @BelongsTo(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns

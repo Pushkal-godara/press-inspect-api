@@ -30,7 +30,7 @@ export class Country extends Model<Country> {
         type: DataType.STRING,
         allowNull: false,
     })
-    phoneCode: string;
+    phone_code: string;
 
     @HasMany(() => User)
     users: User[];

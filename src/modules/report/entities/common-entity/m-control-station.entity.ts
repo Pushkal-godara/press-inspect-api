@@ -26,7 +26,7 @@ import {
       type: DataType.STRING,
       allowNull: false,
     })
-    stationName: string;
+    station_name: string;
 
     @HasMany(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns[]

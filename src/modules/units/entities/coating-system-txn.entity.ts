@@ -34,7 +34,7 @@ import { Report } from 'src/modules/report/entities/report.entity';
       type: DataType.INTEGER,
       allowNull: false,
     })
-    conditionId: number;
+    condition_id: number;
   
     @BelongsTo(() => Condition)
     condition: Condition
@@ -44,7 +44,7 @@ import { Report } from 'src/modules/report/entities/report.entity';
       type: DataType.INTEGER,
       allowNull: false,
     })
-    coatingSystemUnitId: number;
+    coating_system_unit_id: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit;
@@ -54,7 +54,7 @@ import { Report } from 'src/modules/report/entities/report.entity';
       type: DataType.INTEGER,
       allowNull: false,
     })
-    thingsToCheckId: number;
+    things_to_check_id: number;
   
     @BelongsTo(() => ThingsToCheckUnits)
     thingsToCheck: ThingsToCheckUnits
@@ -69,39 +69,39 @@ import { Report } from 'src/modules/report/entities/report.entity';
         type: DataType.STRING,
         allowNull: false,
       })
-      makeOfUvDryer: string;
-  
+      make_of_uv_dryer: string;
+
       @Column({
         type: DataType.STRING,
         allowNull: false,
       })
-      noOfAniloxRoller: string;
-  
+      no_of_anilox_roller: string;
+
       @Column({
         type: DataType.STRING,
         allowNull: false,
       })
-      aniloxRollerSpec: string;
-  
+      anilox_roller_spec: string;
+
       @Column({
         type: DataType.STRING,
         allowNull: false,
       })
-      coatingRemoteControl: string;
-  
+      coating_remote_control: string;
+
       @Column({
         type: DataType.STRING,
         allowNull: false,
       })
-      additionalSpares: string;
+      additional_spares: string;
 
       @ForeignKey(() => User)
       @Column({
         type: DataType.INTEGER,
         allowNull: false,
       })
-      userId: number;
-  
+      user_id: number;
+
       @BelongsTo(() => User)
       user: User
 
@@ -109,7 +109,7 @@ import { Report } from 'src/modules/report/entities/report.entity';
         type: DataType.DATE,
         allowNull: false,
       })
-      dateOfInspection: Date;
+      date_of_inspection: Date;
 
       @HasMany(() => Report)
       reports: Report[]

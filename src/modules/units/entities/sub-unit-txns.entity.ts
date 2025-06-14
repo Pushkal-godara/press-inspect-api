@@ -40,7 +40,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    modelId: number;
+    model_id: number;
 
     @BelongsTo(() => ModelEntity)
     model: ModelEntity
@@ -50,7 +50,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    thingsToCheckId: number;
+    things_to_check_id: number;
 
     @BelongsTo(() => ThingsToCheckUnits) 
     thingsToCheck: ThingsToCheckUnits
@@ -60,7 +60,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    conditionId: number;
+    condition_id: number;
 
     @BelongsTo(() => Condition)
     condition: Condition
@@ -70,7 +70,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    userId: number;
+    user_id: number;
 
     @BelongsTo(() => User)
     user: User
@@ -80,7 +80,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    subUnitId: number;
+    sub_unit_id: number;
 
     @BelongsTo(() => SubUnit)
     subUnit: SubUnit
@@ -90,7 +90,7 @@ import {
       type: DataType.INTEGER,
       allowNull: false,
     })
-    coatingSystemUnitId: number;
+    coating_system_unit_id: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit
@@ -99,7 +99,7 @@ import {
       type: DataType.DATE,
       allowNull: false,
     })
-    txnsDate: Date;
+    txns_date: Date;
 
     @HasMany(() => Report)
     reports: Report[];
