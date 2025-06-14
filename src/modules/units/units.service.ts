@@ -16,7 +16,7 @@ import { UpdateUnitDto } from './dto/update-unit.dto';
 import { CreateSubUnitDto } from './dto/create-sub-unit.dto';
 import { UpdateSubUnitDto } from './dto/update-sub-unit.dto';
 import { CreateSubUnitTxnDto } from './dto/sub-unit-txn.dto';
-import { CreateThingsToCheckUnitsDto } from './dto/things-to-check-units.dto';
+import { CreateThingsToCheckUnitsDto, UpdateThingsToCheckUnitsDto } from './dto/things-to-check-units.dto';
 import { CreateDeliveryTypeDto } from './dto/delivery-type.dto';
 import { CreateCoatingSystemUnitDto } from './dto/coating-system-unit.dto';
 import { CreateDeliveryTypeCategoryDto } from './dto/delivery-type-cat.dto';
@@ -147,6 +147,18 @@ export class UnitsService {
     const thingsToCheck = await this.thingsToCheckUnitsModel.create({
       ...createThingsToCheckUnitsDto
     });
+    return thingsToCheck;
+  }
+
+  async updateThingsToCheckUnits(id: number, updateThingsToCheckUnitsDto: UpdateThingsToCheckUnitsDto, currentUser: any): Promise<ThingsToCheckUnits> {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const thingsToCheck = await this.thingsToCheckUnitsModel.findByPk(id);
+    if (!thingsToCheck) {
+      throw new NotFoundException(`ThingsToCheck with ID ${id} not found`);
+    }
+    await thingsToCheck.update(updateThingsToCheckUnitsDto);
     return thingsToCheck;
   }
 

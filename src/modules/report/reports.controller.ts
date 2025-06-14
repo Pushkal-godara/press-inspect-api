@@ -20,7 +20,10 @@ import { CreateBuyerSellerDto } from './dto/create-buyer-seller.dto';
 import { UpdateBuyerSellerDto } from './dto/update-buyer-seller.dto';
 import { ControlStationDto } from './dto/control-station.dto';
 import { ControlStationTxnDto } from './dto/control-station-txn.dto';
-import { ControlStationThingsToCheckDto } from './dto/control-station-things-to-check.dto';
+import {
+  CreateControlStationThingsToCheckDto,
+  UpdateControlStationThingsToCheckDto
+} from './dto/control-station-things-to-check.dto';
 import { ColorMeasuringTxnDto } from './dto/color-measuring-txn.dto';
 import { ColorMeasuringDeviceDto } from './dto/color-measuring.dto';
 
@@ -178,7 +181,7 @@ export class ReportsController {
   @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Post('create/controlStationThingsToCheck')
-  createControlStationThingsToCheck(@Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
+  createControlStationThingsToCheck(@Body() controlStationThingsToCheckDto: CreateControlStationThingsToCheckDto, @Req() req) {
     const currentUser = req.user;
     return this.reportsService.createControlStationThingsToCheck(controlStationThingsToCheckDto, currentUser);
   }
@@ -196,7 +199,7 @@ export class ReportsController {
   @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @Patch('update/controlStationThingsToCheck/:id')
-  updateControlStationThingsToCheck(@Param('id') id: string, @Body() controlStationThingsToCheckDto: ControlStationThingsToCheckDto, @Req() req) {
+  updateControlStationThingsToCheck(@Param('id') id: string, @Body() controlStationThingsToCheckDto: UpdateControlStationThingsToCheckDto, @Req() req) {
     const currentUser = req.user;
     return this.reportsService.updateControlStationThingsToCheck(+id, controlStationThingsToCheckDto, currentUser);
   }

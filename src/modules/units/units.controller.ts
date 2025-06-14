@@ -18,7 +18,7 @@ import { UpdateUnitDto } from './dto/update-unit.dto';
 import { UpdateSubUnitDto } from './dto/update-sub-unit.dto';
 import { CreateSubUnitDto } from './dto/create-sub-unit.dto';
 import { CreateSubUnitTxnDto } from './dto/sub-unit-txn.dto';
-import { CreateThingsToCheckUnitsDto } from './dto/things-to-check-units.dto';
+import { CreateThingsToCheckUnitsDto, UpdateThingsToCheckUnitsDto } from './dto/things-to-check-units.dto';
 import { CreateDeliveryTypeDto } from './dto/delivery-type.dto';
 import { CreateCoatingSystemUnitDto } from './dto/coating-system-unit.dto';
 import { CreateDeliveryTypeCategoryDto } from './dto/delivery-type-cat.dto';
@@ -130,6 +130,15 @@ export class UnitsController {
   createThingsToCheckUnits(@Body() createThingsToCheckUnitsDto: CreateThingsToCheckUnitsDto, @Req() req) {
     const currentUser = req.user;
     return this.unitsService.createThingsToCheckUnits(createThingsToCheckUnitsDto, currentUser);
+  }
+
+  @RequirePermissions('units:update')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Patch('update/things-to-check-units/:id')
+  updateThingsToCheckUnits(@Param('id') id: string, @Body() updateThingsToCheckUnitsDto: UpdateThingsToCheckUnitsDto, @Req() req) {
+    const currentUser = req.user;
+    return this.unitsService.updateThingsToCheckUnits(+id, updateThingsToCheckUnitsDto, currentUser);
   }
 
   @RequirePermissions('units:read')

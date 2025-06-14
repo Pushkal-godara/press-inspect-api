@@ -29,16 +29,19 @@ export class ThingsToCheckUnits extends Model {
 
     @Column({
         type: DataType.TEXT,
-        allowNull: false,
+        allowNull: true,
+        unique: true,
+        defaultValue: null
     })
-    thingsToCheck: string;
+    things_to_check?: string;
 
     @ForeignKey(() => SubUnit)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null
     })
-    subUnitId: number;
+    sub_unit_id: number;
 
     @BelongsTo(() => SubUnit)
     subUnit: SubUnit;
@@ -46,16 +49,18 @@ export class ThingsToCheckUnits extends Model {
     @ForeignKey(() => CoatingSystemUnit)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null
     })
-    coatingSystemUnitId: number;
+    coating_system_unit_id: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit
 
     @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: DataType.NOW
     })
     created_at: Date;
 

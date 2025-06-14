@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsInt, IsDate, IsString } from 'class-validator';
+import { IsNotEmpty, IsInt, IsDate, IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateThingsToCheckUnitsDto {
@@ -21,4 +21,26 @@ export class CreateThingsToCheckUnitsDto {
   @IsNotEmpty()
   @IsDate()
   created_at: Date;
+}
+
+export class UpdateThingsToCheckUnitsDto {
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  thingsToCheck: string;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  subUnitId: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  coatingSystemUnitId: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsDate()
+  updated_at: Date;
 }

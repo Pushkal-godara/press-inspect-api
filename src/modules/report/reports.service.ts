@@ -12,7 +12,10 @@ import { ThingToCheckControlStation } from 'src/modules/report/entities/common-e
 import { ColorMeasurments } from 'src/modules/report/entities/common-entity/m-color-measuring.entity';
 import { ColorMeasurementTxns } from 'src/modules/report/entities/common-entity/color-measuring-txns.entity';
 
-import { ControlStationThingsToCheckDto } from './dto/control-station-things-to-check.dto';
+import {
+  CreateControlStationThingsToCheckDto,
+  UpdateControlStationThingsToCheckDto
+} from './dto/control-station-things-to-check.dto';
 import { CreateBuyerSellerDto } from './dto/create-buyer-seller.dto';
 import { UpdateBuyerSellerDto } from './dto/update-buyer-seller.dto';
 import { GeneralInfoDto } from './dto/general-info-txn.dto';
@@ -198,7 +201,7 @@ export class ReportsService {
     return report;
   }
 
-  async createControlStationThingsToCheck(controlStationThingsToCheckDto: ControlStationThingsToCheckDto, currentUser: any) {
+  async createControlStationThingsToCheck(controlStationThingsToCheckDto: CreateControlStationThingsToCheckDto, currentUser: any) {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
@@ -216,13 +219,13 @@ export class ReportsService {
     return reports;
   }
 
-  async updateControlStationThingsToCheck(id: number, controlStationThingsToCheckDto: ControlStationThingsToCheckDto, currentUser: any) {
+  async updateControlStationThingsToCheck(id: number, controlStationThingsToCheckDto: UpdateControlStationThingsToCheckDto, currentUser: any) {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
     const report = await this.thingToCheckControlStationModel.findByPk(id);
     if (!report) {
-      throw new NotFoundException(`Report with ID ${id} not found`);
+      throw new NotFoundException(`Data with ID ${id} not found`);
     }
     await report.update(controlStationThingsToCheckDto);
     return report;
@@ -257,7 +260,7 @@ export class ReportsService {
     await report.update(colorMeasurmentsDto);
     return report;
   }
-  
+
   async createColorMeasuringTxn(colorMeasuringTxnDto: ColorMeasuringTxnDto, currentUser: any) {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
