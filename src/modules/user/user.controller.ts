@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, UploadedFiles, UseInterceptors,  Req, Query, Res } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody, ApiParam  } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, BadRequestException, UploadedFiles, UseInterceptors, Req, Query, Res, UnauthorizedException, Put } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiConsumes, ApiBody, ApiParam } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
@@ -44,15 +44,15 @@ export class UserController {
   ) {
     const currentUser = req.user;
     const updatedUser = await this.userService.updateUserStatus(userId, updateUserStatusDto, currentUser);
-    
+
     return {
       success: true,
       message: 'User status updated successfully',
       data: {
         id: updatedUser.id,
         is_active: updatedUser.is_active,
-        firstName: updatedUser.firstName,
-        lastName: updatedUser.lastName,
+        firstName: updatedUser.first_name,
+        lastName: updatedUser.last_name,
         email: updatedUser.email,
       },
     };
@@ -104,7 +104,7 @@ export class UserController {
   })
   @Post('create')
   async create(
-    @Body() createUserDto: CreateUserDto, 
+    @Body() createUserDto: CreateUserDto,
     @Req() req,
     @UploadedFiles()
     files?: {
@@ -173,7 +173,7 @@ export class UserController {
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Get user by ID' })
   @Get(':id')
-  findOne(@Param('id') userId : string, @Req() req) {
+  findOne(@Param('id') userId: string, @Req() req) {
     const currentUser = req.user;
     return this.userService.findById(+userId, currentUser);
   }
@@ -185,7 +185,7 @@ export class UserController {
   @Patch('password-update/:id')
   updatePassword(@Param('id') userId: string, @Body() updateUserPasswordDto: UpdateUserPasswordDto, @Req() req) {
     const currentUser = req.user;
-    return this.userService.updatePassword(+userId, updateUserPasswordDto, currentUser); 
+    return this.userService.updatePassword(+userId, updateUserPasswordDto, currentUser);
   }
 
 
@@ -230,8 +230,8 @@ export class UserController {
   })
   @Patch('update-user-by-id/:id')
   async update(
-    @Param('id') userId: string, 
-    @Body() updateUserDto: UpdateUserDto, 
+    @Param('id') userId: string,
+    @Body() updateUserDto: UpdateUserDto,
     @Req() req,
     @UploadedFiles()
     files?: {
@@ -242,7 +242,7 @@ export class UserController {
   ) {
     const currentUser = req.user;
     const id = +userId;
-    
+
     // Get current user data for old file cleanup
     const user = await this.userService.findById(id, currentUser);
     const oldFiles = {
@@ -354,10 +354,10 @@ export class UserController {
     res.redirect(signedUrl);
   }
 
-// ========== HELPER METHODS ==========
+  // ========== HELPER METHODS ==========
   private async cleanupUploadedFiles(files: { cv?: string; passportAttachment?: string; photoOfEngineer?: string }) {
     const promises = [];
-    
+
     if (files.cv) promises.push(this.s3Service.deleteFile(files.cv));
     if (files.passportAttachment) promises.push(this.s3Service.deleteFile(files.passportAttachment));
     if (files.photoOfEngineer) promises.push(this.s3Service.deleteFile(files.photoOfEngineer));
@@ -367,7 +367,7 @@ export class UserController {
 
   private async cleanupOldFiles(oldFiles: any, newFiles: any) {
     const promises = [];
-    
+
     if (newFiles.cv && oldFiles.cv) promises.push(this.s3Service.deleteFile(oldFiles.cv));
     if (newFiles.passportAttachment && oldFiles.passportAttachment) promises.push(this.s3Service.deleteFile(oldFiles.passportAttachment));
     if (newFiles.photoOfEngineer && oldFiles.photoOfEngineer) promises.push(this.s3Service.deleteFile(oldFiles.photoOfEngineer));
@@ -387,7 +387,7 @@ export class UserController {
     return this.userService.remove(+id, currentUser);
   }
 
-  
+
   // @RequirePermissions('users:update')
   // @Roles('Admin')
   // @UseGuards(PermissionGuard, RolesGuard)
@@ -419,7 +419,7 @@ export class UserController {
 
 
 
-  
+
   // @RequirePermissions('users:update')
   // @Roles('Admin')
   // @UseGuards(PermissionGuard, RolesGuard)
@@ -432,7 +432,7 @@ export class UserController {
 
 
 
-  
+
   // New API endpoint in user controller for country-based user filtering
   // @RequirePermissions('users:read')
   // @Roles('SuperAdmin', 'Admin')
@@ -444,4 +444,89 @@ export class UserController {
   //   const currentUser = req.user;
   //   return this.userService.findByCountry(country, currentUser);
   // }
+
+  // New API endpoints for role-permission management for users
+
+  // @RequirePermissions('users:update')
+  // @Roles('SuperAdmin', 'Admin')
+  // @UseGuards(PermissionGuard, RolesGuard)
+  // @ApiOperation({ summary: 'Assign role to user by user id' })
+  // @Post('roles/:id')
+  // async assignRole(
+  //   @Param('id') userId: number,
+  //   @Body() addRoleDto: AddRoleDto,
+  //   @Req() req
+  // ) {
+  //   const currentUser = req.user;
+  //   if (!currentUser) {
+  //         throw new UnauthorizedException('currentUser not found or token expired');
+  //       }
+  //   const result = await this.userService.assignRole(+userId, addRoleDto, currentUser);
+
+  //   return {
+  //     success: true,
+  //     message: 'Role assigned successfully',
+  //     data: result
+  //   };
+  // }
+
+  // @RequirePermissions('users:update')
+  // @Roles('SuperAdmin', 'Admin')
+  // @UseGuards(PermissionGuard, RolesGuard)
+  // @ApiOperation({ summary: 'Remove role from user' })
+  // @Delete(':id/roles/:roleId')
+  // async removeRole(
+  //   @Param('id') userId: number,
+  //   @Param('roleId') roleId: number,
+  //   @Req() req
+  // ) {
+  //   const currentUser = req.user;
+  //   const result = await this.userService.removeRole(+userId, +roleId, currentUser);
+
+  //   return {
+  //     success: true,
+  //     message: 'Role removed successfully',
+  //     data: result
+  //   };
+  // }
+
+  // @RequirePermissions('users:read')
+  // @Roles('SuperAdmin', 'Admin')
+  // @UseGuards(PermissionGuard, RolesGuard)
+  // @ApiOperation({ summary: 'Get user roles by user id' })
+  // @Get('roles/:id')
+  // async getUserRoles(
+  //   @Param('id') userId: number,
+  //   @Req() req
+  // ) {
+  //   const currentUser = req.user;
+  //   const roles = await this.userService.getUserRoles(+userId, currentUser);
+
+  //   return {
+  //     success: true,
+  //     message: 'User roles retrieved successfully',
+  //     data: roles
+  //   };
+  // }
+
+  // @RequirePermissions('users:update')
+  // @Roles('SuperAdmin', 'Admin')
+  // @UseGuards(PermissionGuard, RolesGuard)
+  // @ApiOperation({ summary: 'Replace all user roles' })
+  // @Put(':id/roles')
+  // async replaceUserRoles(
+  //   @Param('id') userId: string,
+  //   @Body() replaceRolesDto: ReplaceRolesDto,
+  //   @Req() req
+  // ) {
+  //   const currentUser = req.user;
+  //   const result = await this.userService.replaceUserRoles(+userId, replaceRolesDto, currentUser);
+
+  //   return {
+  //     success: true,
+  //     message: 'User roles updated successfully',
+  //     data: result
+  //   };
+  // }
+
 }
