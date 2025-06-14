@@ -114,7 +114,7 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     field: 'cv_url',
   })
   cv_url: string;

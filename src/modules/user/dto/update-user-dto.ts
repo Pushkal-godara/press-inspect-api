@@ -8,7 +8,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  firstName?: string;
+  first_name?: string;
 
   @ApiProperty({
     description: 'Last name',
@@ -16,7 +16,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  lastName?: string;
+  last_name?: string;
 
 //   @ApiProperty({
 //     description: 'Role id',     // While updating role id we need to update two entities when creating method !
@@ -24,7 +24,7 @@ export class UpdateUserDto {
 //   })
 //   @IsNumber()
 //   @IsOptional()
-//   roleId?: number;
+//   role_id?: number;
 
   @ApiProperty({
     description: 'Passport number',
@@ -32,7 +32,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  passportNumber?: string;
+  passport_number?: string;
 
   @ApiProperty({
     description: 'Email address',
@@ -106,7 +106,7 @@ export class UpdateUserDto {
   })
   @IsNumber()
   @IsOptional()
-  countryId?: number;
+  country_id?: number;
 
   @ApiProperty({
     description: 'Company name',
@@ -115,7 +115,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
-  companyName?: string;
+  company_name?: string;
 
   @ApiProperty({
     description: 'Registration ID',
@@ -124,7 +124,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
-  registrationId?: string;
+  registration_id?: string;
 
   @ApiProperty({
     description: 'CV URL',
@@ -133,7 +133,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
-  cvUrl?: string;
+  cv_url?: string;
 
   @ApiProperty({
     description: 'Work experience details',
@@ -142,7 +142,7 @@ export class UpdateUserDto {
   })
   @IsOptional()
   @IsString()
-  workExperience?: string;
+  work_experience?: string;
 
   @ApiProperty({
     description: 'Date of joining',
@@ -150,7 +150,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  joiningDate?: Date;
+  joining_date?: Date;
 
   @ApiProperty({
     description: 'Date of passport expiry',
@@ -158,7 +158,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  passportExpiryDate?: Date;
+  passport_expiry_date?: Date;
 
   @ApiProperty({
     description: 'Passport attachment',
@@ -166,7 +166,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  passportAttachment?: string;
+  passport_attachment?: string;
 
   @ApiProperty({
     description: 'Photo of engineer',
@@ -174,7 +174,7 @@ export class UpdateUserDto {
   })
   @IsString()
   @IsOptional()
-  photoOfEngineer?: string;
+  photo_of_engineer?: string;
 
   @ApiProperty({
     description: 'Is active',

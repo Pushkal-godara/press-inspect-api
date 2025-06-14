@@ -73,9 +73,9 @@ export class UserService {
     const hashedPassword = await this.hashPassword(createUserDto.password);
 
     // If role is being assigned and currentUser exists (admin creating user)
-    if (createUserDto.roleId && currentUser) {
+    if (createUserDto.role_id && currentUser) {
       // Get the role being assigned
-      const role = await this.rolesService.findById(createUserDto.roleId);
+      const role = await this.rolesService.findById(createUserDto.role_id);
 
       // Prevent assigning Admin role unless you're a Super Admin
       if (role.name === 'Admin' && !currentUser.roles.includes('SuperAdmin')) {
@@ -86,8 +86,8 @@ export class UserService {
       if (
         currentUser.roles.includes('Admin') &&
         !currentUser.roles.includes('SuperAdmin') &&
-        createUserDto.countryId &&
-        createUserDto.countryId !== currentUser.country
+        createUserDto.country_id &&
+        createUserDto.country_id !== currentUser.country
       ) {
         throw new ForbiddenException('Cannot create users for other countries');
       }
@@ -100,8 +100,8 @@ export class UserService {
     });
 
     // Assign the role
-    if (createUserDto.roleId) {
-      const data = await this.addRole(user.id, { roleId: createUserDto.roleId });
+    if (createUserDto.role_id) {
+      const data = await this.addRole(user.id, { roleId: createUserDto.role_id });
       if (!data) {
         throw new BadRequestException('Failed to assign role');
       }

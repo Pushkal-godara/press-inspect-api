@@ -80,20 +80,21 @@ export class UserController {
         // Your existing DTO fields
         email: { type: 'string', format: 'email' },
         password: { type: 'string' },
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-        passportNumber: { type: 'string' },
+        first_name: { type: 'string' },
+        last_name: { type: 'string' },
+        passport_number: { type: 'string' },
         mobile: { type: 'string' },
         address: { type: 'string' },
         city: { type: 'string' },
         state: { type: 'string' },
         pincode: { type: 'string' },
-        countryId: { type: 'number' },
-        companyName: { type: 'string' },
-        registrationId: { type: 'string' },
-        workExperience: { type: 'string' },
-        passportExpiryDate: { type: 'string', format: 'date' },
-        roleId: { type: 'number' },
+        country_id: { type: 'number' },
+        company_name: { type: 'string' },
+        registration_id: { type: 'string' },
+        joining_date: { type: 'string', format: 'date' },
+        work_experience: { type: 'string' },
+        passport_expiry_date: { type: 'string', format: 'date' },
+        role_id: { type: 'number' },
         // Optional file fields
         cv: { type: 'string', format: 'binary', description: 'CV PDF file (optional)' },
         passportAttachment: { type: 'string', format: 'binary', description: 'Passport PDF file (optional)' },
@@ -124,19 +125,19 @@ export class UserController {
       // Handle file uploads if present
       if (files?.cv && files.cv[0]) {
         const cvUrl = await this.s3Service.uploadFile(files.cv[0], 'cv-files');
-        createUserDto.cvUrl = cvUrl;
+        createUserDto.cv_url = cvUrl;
         uploadedFiles.cv = cvUrl;
       }
 
       if (files?.passportAttachment && files.passportAttachment[0]) {
         const passportUrl = await this.s3Service.uploadFile(files.passportAttachment[0], 'passport-files');
-        createUserDto.passportAttachment = passportUrl;
+        createUserDto.passport_attachment = passportUrl;
         uploadedFiles.passportAttachment = passportUrl;
       }
 
       if (files?.photoOfEngineer && files.photoOfEngineer[0]) {
         const photoUrl = await this.s3Service.uploadFile(files.photoOfEngineer[0], 'engineer-photos');
-        createUserDto.photoOfEngineer = photoUrl;
+        createUserDto.photo_of_engineer = photoUrl;
         uploadedFiles.photoOfEngineer = photoUrl;
       }
 
@@ -209,18 +210,18 @@ export class UserController {
       type: 'object',
       properties: {
         email: { type: 'string', format: 'email' },
-        firstName: { type: 'string' },
-        lastName: { type: 'string' },
-        passportNumber: { type: 'string' },
+        first_name: { type: 'string' },
+        last_name: { type: 'string' },
+        passport_number: { type: 'string' },
         mobile: { type: 'string' },
         address: { type: 'string' },
         city: { type: 'string' },
         state: { type: 'string' },
         pincode: { type: 'string' },
-        companyName: { type: 'string' },
-        registrationId: { type: 'string' },
-        workExperience: { type: 'string' },
-        passportExpiryDate: { type: 'string', format: 'date' },
+        company_name: { type: 'string' },
+        registration_id: { type: 'string' },
+        work_experience: { type: 'string' },
+        passport_expiry_date: { type: 'string', format: 'date' },
         // Optional file fields
         cv: { type: 'string', format: 'binary', description: 'CV PDF file (optional)' },
         passportAttachment: { type: 'string', format: 'binary', description: 'Passport PDF file (optional)' },
@@ -261,19 +262,19 @@ export class UserController {
       // Handle file uploads if present
       if (files?.cv && files.cv[0]) {
         const cvUrl = await this.s3Service.uploadFile(files.cv[0], 'cv-files');
-        updateUserDto.cvUrl = cvUrl;
+        updateUserDto.cv_url = cvUrl;
         newFiles.cv = cvUrl;
       }
 
       if (files?.passportAttachment && files.passportAttachment[0]) {
         const passportUrl = await this.s3Service.uploadFile(files.passportAttachment[0], 'passport-files');
-        updateUserDto.passportAttachment = passportUrl;
+        updateUserDto.passport_attachment = passportUrl;
         newFiles.passportAttachment = passportUrl;
       }
 
       if (files?.photoOfEngineer && files.photoOfEngineer[0]) {
         const photoUrl = await this.s3Service.uploadFile(files.photoOfEngineer[0], 'engineer-photos');
-        updateUserDto.photoOfEngineer = photoUrl;
+        updateUserDto.photo_of_engineer = photoUrl;
         newFiles.photoOfEngineer = photoUrl;
       }
 

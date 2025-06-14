@@ -10,7 +10,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  firstName: string;
+  first_name: string;
 
   @ApiProperty({
     description: 'Last name',
@@ -18,7 +18,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  lastName: string;
+  last_name: string;
 
   @ApiProperty({
     description: 'Role id',
@@ -28,7 +28,7 @@ export class CreateUserDto {
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
   @IsNotEmpty()
-  roleId: number;
+  role_id: number;
 
   @ApiProperty({
     description: 'Passport number',
@@ -36,7 +36,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  passportNumber: string;
+  passport_number: string;
 
   @ApiProperty({
     description: 'Email address',
@@ -111,7 +111,7 @@ export class CreateUserDto {
   @Transform(({ value }) => parseInt(value))
   @IsNumber()
   @IsNotEmpty()
-  countryId: number;
+  country_id: number;
 
   @ApiProperty({
     description: 'Company name',
@@ -120,7 +120,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  companyName?: string;
+  company_name?: string;
 
   @ApiProperty({
     description: 'Registration ID',
@@ -129,7 +129,7 @@ export class CreateUserDto {
   })
   @IsNotEmpty()
   @IsString()
-  registrationId: string;
+  registration_id: string;
 
   @ApiProperty({
     description: 'CV URL',
@@ -138,7 +138,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  cvUrl?: string;
+  cv_url?: string;
 
   @ApiProperty({
     description: 'Work experience details',
@@ -147,7 +147,7 @@ export class CreateUserDto {
   })
   @IsOptional()
   @IsString()
-  workExperience?: string;
+  work_experience?: string;
 
   @ApiProperty({
     description: 'Date of joining',
@@ -155,7 +155,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsNotEmpty()
-  joiningDate: Date;
+  joining_date: Date;
 
   @ApiProperty({
     description: 'Date of passport expiry',
@@ -163,7 +163,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  passportExpiryDate?: Date;
+  passport_expiry_date?: Date;
 
   @ApiProperty({
     description: 'Passport attachment',
@@ -171,7 +171,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  passportAttachment?: string;
+  passport_attachment?: string;
 
   @ApiProperty({
     description: 'Photo of engineer',
@@ -179,7 +179,7 @@ export class CreateUserDto {
   })
   @IsString()
   @IsOptional()
-  photoOfEngineer?: string;
+  photo_of_engineer?: string;
 
   @ApiProperty({
     description: 'Is active',
