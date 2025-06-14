@@ -62,7 +62,8 @@ npm run start:prod
 To seed the database with initial data for development:
 
 ```bash
-npm run seed
+npm run build
+node dist/seeders/seed.js
 ```
 
 This will create:

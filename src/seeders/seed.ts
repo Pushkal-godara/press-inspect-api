@@ -240,8 +240,8 @@ async function bootstrap() {
 
   // Create countries with code and phoneCode
   const countries = [
-    { name: 'India', code: 'IN', phoneCode: '+91' },
-    { name: 'Singapore', code: 'SG', phoneCode: '+65' }
+    { name: 'India', code: 'IN', phone_code: '+91' },
+    { name: 'Singapore', code: 'SG', phone_code: '+65' }
   ];
 
   for (const country of countries) {
