@@ -5,7 +5,7 @@ export class UpdateBuyerSellerDto {
   @ApiProperty({ description: 'Company name', example: 'ABC Company' })
   @IsOptional()
   @IsString()
-  companyName?: string;
+  company_name?: string;
 
   @ApiProperty({ description: 'Address', example: '123 Main St, Anytown, USA' })
   @IsOptional()

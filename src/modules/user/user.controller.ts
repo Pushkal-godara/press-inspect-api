@@ -80,7 +80,7 @@ export class UserController {
         // Your existing DTO fields
         email: { type: 'string', format: 'email' },
         password: { type: 'string' },
-        firstnName: { type: 'string' },
+        firstName: { type: 'string' },
         lastName: { type: 'string' },
         passportNumber: { type: 'string' },
         mobile: { type: 'string' },
