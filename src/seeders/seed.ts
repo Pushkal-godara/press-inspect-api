@@ -263,9 +263,9 @@ async function bootstrap() {
   }
   try {
     const adminUser = await User.create({
-      firstName: 'Super Admin',
-      lastName: 'User',
-      passportNumber: '1234567890',
+      first_name: 'Super Admin',
+      last_name: 'User',
+      passport_number : '1234567890',
       city: 'Super Admin City',
       pincode: '123456',
       mobile: '65823816781',
@@ -273,7 +273,7 @@ async function bootstrap() {
       password: await hashPassword('Superadmin123'),
       country_id: 1,
       address: 'Super Admin Address',
-      registrationId: 'P1',
+      registration_id: 'P1',
       cv_url: 'https://www.printocare.com',
       created_at: new Date(),
       updated_at: new Date()

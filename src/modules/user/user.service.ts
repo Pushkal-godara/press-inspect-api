@@ -214,7 +214,7 @@ export class UserService {
             },
           });
 
-          const userIdsToExclude = usersWithAdminRoles.map(ur => ur.userId);
+          const userIdsToExclude = usersWithAdminRoles.map(ur => ur.user_id);
 
           // If we found users to exclude, add them to the where clause
           if (userIdsToExclude.length > 0) {
