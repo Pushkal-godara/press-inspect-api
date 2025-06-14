@@ -22,30 +22,32 @@ import {
     @ForeignKey(() => ModelEntity)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull:  true,
+      defaultValue: null,
       unique: true, // Ensures one-to-one (only one spec per model)
     })
-    modelId: number;
+    model_id: number;
   
     @BelongsTo(() => ModelEntity)
     model: ModelEntity;
   
     @Column({
       type: DataType.DATE,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: DataType.NOW, // Automatically sets to current date if not provided
     })
-    dateOfUpload: Date;
+    date_of_upload: Date;
   
     @Column({
       type: DataType.STRING, // or DataType.TEXT if path/URL is long
-      allowNull: false,
+      allowNull: true,
     })
     pdf: string; // store path or URL to the uploaded PDF
 
     @Column({
       type: DataType.TEXT,
-      allowNull: false,
+      allowNull: true,
     })
-    fileName: string;
+    file_name: string;
   }
   

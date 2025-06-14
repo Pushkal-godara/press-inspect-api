@@ -7,6 +7,8 @@ import { TechnicalSpecification } from './entities/tech-specification.entity';
 
 import { CreateModelDto } from './dto/create-model.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
+import { UpdateTechSpecificationDto } from './dto/update-tech-specification.dto';
+import { CreateTechSpecificationDto } from './dto/create-tech-specification.dto';
 
 @Injectable()
 export class ModelsService {
@@ -23,48 +25,82 @@ export class ModelsService {
       if (!currentUser) {
         throw new UnauthorizedException('currentUser not found or token expired');
       }
-      const report = await this.machineModel.create({
+      const machine = await this.machineModel.create({
         ...createModelDto
       });
-      return report;
+      return machine;
     }
 
     async findAll(currentUser: any) {
       if (!currentUser) {
         throw new UnauthorizedException('currentUser not found or token expired');
       }
-      const reports = await this.machineModel.findAll();
-      return reports;
+      const machines = await this.machineModel.findAll();
+      return machines;
     }
 
     async updateModel(id: number, updateModelDto: UpdateModelDto, currentUser: any) {
       if (!currentUser) {
         throw new UnauthorizedException('currentUser not found or token expired');
       }
-      const report = await this.machineModel.findByPk(id);
-      if (!report) {
-        throw new NotFoundException(`Report with ID ${id} not found`);
+      const machine = await this.machineModel.findByPk(id);
+      if (!machine) {
+        throw new NotFoundException(`machine with ID ${id} not found`);
       }
-      await report.update(updateModelDto);
-      return report;
+      await machine.update(updateModelDto);
+      return machine;
+    }
+
+    async removeModel(id: number, currentUser: any) {
+      if (!currentUser) {
+        throw new UnauthorizedException('currentUser not found or token expired');
+      }
+      const machine = await this.machineModel.findByPk(id);
+      if (!machine) {
+        throw new NotFoundException(`machine with ID ${id} not found`);
+      }
+      await machine.destroy();
+      return { message: `machine with ID ${id} deleted successfully` };
+    }
+
+    async createTechSpecfication(createTechSpecificationDto: CreateTechSpecificationDto, currentUser: any) {
+      if (!currentUser) {
+        throw new UnauthorizedException('currentUser not found or token expired');
+      }
+      const specificationPdf = await this.techSpecModel.create({
+        ...createTechSpecificationDto
+      });
+      return specificationPdf;
+    }
+
+    async updateTechSpecfication(id: number, updateTechSpecificationDto: UpdateTechSpecificationDto, currentUser: any) {
+      if (!currentUser) {
+        throw new UnauthorizedException('currentUser not found or token expired');
+      }
+      const specficationPdf = await this.techSpecModel.findOne({where: {id}});
+      if (!specficationPdf) {
+        throw new NotFoundException(`specfication with ID ${id} not found`);
+      }
+      await specficationPdf.update(updateTechSpecificationDto);
+      return specficationPdf;
     }
 
     async getTechSpecficationPdf(id: number, currentUser: any) { // Here id should be model id, so that we can get tech specfication for that model
       if (!currentUser) {
         throw new UnauthorizedException('currentUser not found or token expired');
       }
-      const report = await this.techSpecModel.findOne({where: {model_id: id}});
-      if (!report) {
-        throw new NotFoundException(`Report with ID ${id} not found`);
+      const specficationPdf = await this.techSpecModel.findOne({where: {model_id: id}});
+      if (!specficationPdf) {
+        throw new NotFoundException(`machine with ID ${id} not found`);
       }
-      return report;
+      return specficationPdf;
     }
 
     async getAllTechSpecficationPdf(currentUser: any) { 
       if (!currentUser) {
         throw new UnauthorizedException('currentUser not found or token expired');
       }
-      const reports = await this.techSpecModel.findAll();
-      return reports;
+      const specficationPdf = await this.techSpecModel.findAll();
+      return specficationPdf;
     }
 }

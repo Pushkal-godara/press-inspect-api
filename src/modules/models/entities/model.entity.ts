@@ -31,31 +31,36 @@ export class ModelEntity extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   name: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  serialNumber: string;
+  serial_number: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  totalImpressions: string;
+  total_impressions: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   manufacturer: string;
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
     validate: {
       min: 1000,
       max: 9999
@@ -72,9 +77,10 @@ export class ModelEntity extends Model {
   @ForeignKey(() => Group)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  groupId: number;
+  group_id: number;
 
   @BelongsTo(() => Group)
   group: Group;
@@ -94,9 +100,10 @@ export class ModelEntity extends Model {
   @ForeignKey(() => Seller)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  sellerId: number;
+  seller_id: number;
 
   @BelongsTo(() => Seller)
   seller: Seller
@@ -104,9 +111,10 @@ export class ModelEntity extends Model {
   @ForeignKey(() => Buyer)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  buyerId: number;
+  buyer_id: number;
   
   @BelongsTo(() => Buyer)
   buyer: Buyer

@@ -27,6 +27,14 @@ const validatePhoto = (req, file, cb) => {
   }
 };
 
+const validateTechSpec = (req, file, cb) => {
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new BadRequestException('Technical specification must be a PDF file'), false);
+  }
+};
+
 // S3 Upload Configuration - Use memory storage for S3
 export const s3UploadConfig = {
   storage: memoryStorage(), // Store in memory for S3 upload
@@ -37,6 +45,8 @@ export const s3UploadConfig = {
       validatePassport(req, file, cb);
     } else if (file.fieldname === 'photoOfEngineer') {
       validatePhoto(req, file, cb);
+    } else if (file.fieldname === 'techSpecFile') {
+      validateTechSpec(req, file, cb);
     } else {
       cb(new BadRequestException('Invalid file field'), false);
     }
