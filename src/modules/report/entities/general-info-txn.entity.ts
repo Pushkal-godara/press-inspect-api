@@ -12,6 +12,7 @@ import {
   import { GeneralInfoQuestion } from './m-general-info.entity';
   import { ModelEntity } from '../../models/entities/model.entity';
   import { User } from '../../user/entities/user.entity';
+  import { Report } from './report.entity';
 
   @Table({
     tableName: 'general_info_txn',
@@ -71,5 +72,8 @@ import {
       allowNull: false,
     })
     inspectionDate: Date
+
+    @HasMany(() => Report)
+    reports: Report[]
 
 }

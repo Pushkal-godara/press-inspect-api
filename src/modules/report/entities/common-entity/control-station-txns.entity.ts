@@ -15,6 +15,7 @@ import {
   import { ThingToCheckControlStation } from './m-things-to-check.entity';
   import { Condition } from './condition.entity';
   import { User } from 'src/modules/user/entities/user.entity';
+  import { Report } from '../report.entity';
 
   @Table({
     tableName: 'control_station_txns',
@@ -88,5 +89,8 @@ import {
 
     @HasMany(() => ColorMeasurementTxns)
     colorMeasurementTxns: ColorMeasurementTxns[]
+
+    @HasMany(() => Report)
+    report: Report
 
   }

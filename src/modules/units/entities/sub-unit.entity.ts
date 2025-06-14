@@ -11,6 +11,7 @@ import {
   } from 'sequelize-typescript';
 import { Unit } from './unit.entity';
 import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
+import { Comments } from './comments.entity';
 
   @Table({
     tableName: 'sub_units',
@@ -41,4 +42,7 @@ import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
 
     @HasMany(() => ThingsToCheckUnits)
     thingsToCheck: ThingsToCheckUnits[]
+
+    @HasMany(() => Comments)
+    comments: Comments[]
   }

@@ -14,6 +14,8 @@ import {
 import { User } from 'src/modules/user/entities/user.entity';
 import { Condition } from 'src/modules/report/entities/common-entity/condition.entity';
 import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
+import { CoatingSystemUnit } from './m-coating-system-unit.entity';
+import { Report } from 'src/modules/report/entities/report.entity';
 
   @Table({
     tableName: 'coating_system_txns',
@@ -36,6 +38,16 @@ import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
   
     @BelongsTo(() => Condition)
     condition: Condition
+
+    @ForeignKey(() => CoatingSystemUnit)
+    @Column({
+      type: DataType.INTEGER,
+      allowNull: false,
+    })
+    coatingSystemUnitId: number;
+
+    @BelongsTo(() => CoatingSystemUnit)
+    coatingSystemUnit: CoatingSystemUnit;
 
     @ForeignKey(() => ThingsToCheckUnits)
     @Column({
@@ -98,5 +110,8 @@ import { ThingsToCheckUnits } from './m-unit-things-to-check.entity';
         allowNull: false,
       })
       dateOfInspection: Date;
+
+      @HasMany(() => Report)
+      reports: Report[]
 
   }

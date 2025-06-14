@@ -3,7 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { getSequelizeConfig } from './config/database.config';
 import { AuthModule } from './modules/auth/auth.module';
-import { CheckpointsModule } from './modules/checkpoints/checkpoints.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { GroupsModule } from './modules/groups/groups.module';
 import { ModelsModule } from './modules/models/models.module';
@@ -12,7 +11,6 @@ import { ReportsModule } from './modules/report/reports.module';
 import { RolesModule } from './modules/roles/roles.module';
 import { UnitsModule } from './modules/units/units.module';
 import { UserModule } from './modules/user/user.module';
-import { YearsModule } from './modules/years/years.module';
 import { CountryModule } from './modules/country/country.module';
 
 @Module({
@@ -29,10 +27,8 @@ import { CountryModule } from './modules/country/country.module';
     PermissionsModule,
     GroupsModule,
     ModelsModule,
-    YearsModule,
     UnitsModule,
     CustomersModule,
-    CheckpointsModule,
     ReportsModule,
     CountryModule,
   ],

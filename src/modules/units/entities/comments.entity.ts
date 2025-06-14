@@ -40,6 +40,16 @@ export class Comments extends Model {
 
   @BelongsTo(() => User)
   user: User;
+
+  @ForeignKey(() => SubUnit)
+  @Column({
+    type: DataType.INTEGER,
+    allowNull: false,
+  })
+  subUnitId: number;
+
+  @BelongsTo(() => SubUnit)
+  subUnit: SubUnit
   
   @Column({
     type: DataType.DATE,

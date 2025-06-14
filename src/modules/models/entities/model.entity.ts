@@ -16,6 +16,7 @@ import { TechnicalSpecification } from './tech-specification.entity';
 import { Seller } from '../../report/entities/seller.entity';
 import { Buyer } from '../../report/entities/buyer.entity';
 import { SubUnitTxn } from 'src/modules/units/entities/sub-unit-txns.entity';
+import { Report } from 'src/modules/report/entities/report.entity';
 
 @Table({
   tableName: 'models',
@@ -77,6 +78,9 @@ export class ModelEntity extends Model {
 
   @BelongsTo(() => Group)
   group: Group;
+
+  @HasMany(() => Report)
+  reports: Report[]
 
   @HasMany(() => GeneralInfoTxn)
   generalInfoTxns: GeneralInfoTxn[]

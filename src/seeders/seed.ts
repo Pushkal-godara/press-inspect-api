@@ -5,7 +5,6 @@ import { RolesService } from '../modules/roles/roles.service';
 import { PermissionsService } from '../modules/permissions/permissions.service';
 import { GroupsService } from '../modules/groups/groups.service';
 import { ModelsService } from '../modules/models/models.service';
-import { YearsService } from '../modules/years/years.service';
 import { UnitsService } from '../modules/units/units.service';
 
 import { Unit } from 'src/modules/units/entities/unit.entity';
@@ -22,7 +21,6 @@ async function bootstrap() {
   const groupsService = app.get(GroupsService);
 
   const modelsService = app.get(ModelsService);
-  const yearsService = app.get(YearsService);
   const unitsService = app.get(UnitsService);
 
   // Create permissions

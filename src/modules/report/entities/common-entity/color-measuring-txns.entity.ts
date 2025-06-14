@@ -12,6 +12,7 @@ import {
   } from 'sequelize-typescript';
   import { ColorMeasurments } from './m-color-measuring.entity';
   import { ControlStationTxns } from './control-station-txns.entity';
+  import { Report } from '../report.entity';
 
   @Table({
     tableName: 'color_measurement_txns',
@@ -74,4 +75,7 @@ import {
 
     @BelongsTo(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns
+
+    @HasMany(() => Report)
+    reports: Report[]
   }
