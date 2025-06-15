@@ -37,7 +37,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  sub_unit_id: number;
+  sub_unit_id?: number;
 
   @BelongsTo(() => SubUnitTxn)
   sub_unit: SubUnitTxn;
@@ -48,7 +48,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  delivery_type_id: number;
+  delivery_type_id?: number;
 
   @BelongsTo(() => DeliveryTypeCategory)
   delivery_type: DeliveryTypeCategory;
@@ -59,7 +59,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  coating_system_id: number;
+  coating_system_id?: number;
 
   @BelongsTo(() => CoatingSystemTxn)
   coating_system: CoatingSystemTxn;
@@ -70,7 +70,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  customer_id: number;
+  customer_id?: number;
 
   @BelongsTo(() => Customer)
   customer: Customer;
@@ -81,7 +81,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  inspector_id: number;
+  inspector_id?: number;
 
   @BelongsTo(() => User)
   inspector: User;
@@ -92,7 +92,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  group_id: number;
+  group_id?: number;
 
   @BelongsTo(() => Group)
   group: Group;
@@ -103,7 +103,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  model_id: number;
+  model_id?: number;
 
   @BelongsTo(() => ModelEntity)
   model: ModelEntity;
@@ -114,7 +114,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  general_info_id: number;
+  general_info_id?: number;
 
   @BelongsTo(() => GeneralInfoTxn)
   general_info: GeneralInfoTxn;
@@ -125,7 +125,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  control_station_id: number;
+  control_station_id?: number;
 
   @BelongsTo(() => ControlStationTxns)
   control_station: ControlStationTxns;
@@ -136,7 +136,7 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  color_measurement_id: number;
+  color_measurement_id?: number;
 
   @BelongsTo(() => ColorMeasurementTxns)
   color_measurement: ColorMeasurementTxns;
@@ -146,22 +146,21 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  inspection_place: string;
+  inspection_place?: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
     defaultValue: DataType.NOW,
   })
-  inspection_date: Date;
+  inspection_date?: Date;
 
   @Column({
     type: DataType.FLOAT,
     allowNull: true,
-    field: 'overall_score',
     defaultValue: null,
   })
-  overall_score: number;
+  overall_score?: number;
 
   @Column({
     type: DataType.ENUM('Excellent', 'Good', 'Average', 'Bad'),
@@ -175,14 +174,14 @@ export class Report extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  status: string;
+  status?: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: true,
     defaultValue: null,
   })
-  additional_comments: string;
+  additional_comments?: string;
 
   @Column({
     type: DataType.DATE,

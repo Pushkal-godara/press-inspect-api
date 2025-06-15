@@ -100,13 +100,13 @@ export class UpdateUserDto {
   @IsOptional()
   pincode?: string;
 
-  @ApiProperty({
-    description: 'Country ID',
-    example: 1,
-  })
-  @IsNumber()
-  @IsOptional()
-  country_id?: number;
+  // @ApiProperty({
+  //   description: 'Country ID',
+  //   example: 1,
+  // })
+  // @IsNumber()
+  // @IsOptional()
+  // country_id?: number;
 
   @ApiProperty({
     description: 'Company name',

@@ -32,19 +32,21 @@ import { Report } from 'src/modules/report/entities/report.entity';
     @ForeignKey(() => Condition)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    condition_id: number;
-  
+    condition_id?: number;
+
     @BelongsTo(() => Condition)
     condition: Condition
 
     @ForeignKey(() => CoatingSystemUnit)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    coating_system_unit_id: number;
+    coating_system_unit_id?: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit;
@@ -52,64 +54,73 @@ import { Report } from 'src/modules/report/entities/report.entity';
     @ForeignKey(() => ThingsToCheckUnits)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    things_to_check_id: number;
-  
+    things_to_check_id?: number;
+
     @BelongsTo(() => ThingsToCheckUnits)
     thingsToCheck: ThingsToCheckUnits
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      manufacturer: string;
-  
-      @Column({
-        type: DataType.STRING,
-        allowNull: false,
-      })
-      make_of_uv_dryer: string;
+      manufacturer?: string;
 
       @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      no_of_anilox_roller: string;
+      make_of_uv_dryer?: string;
 
       @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      anilox_roller_spec: string;
+      no_of_anilox_roller?: string;
 
       @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      coating_remote_control: string;
+      anilox_roller_spec?: string;
 
       @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      additional_spares: string;
+      coating_remote_control?: string;
+
+      @Column({
+        type: DataType.STRING,
+        allowNull: true,
+        defaultValue: null,
+      })
+      additional_spares?: string;
 
       @ForeignKey(() => User)
       @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
       })
-      user_id: number;
+      user_id?: number;
 
       @BelongsTo(() => User)
       user: User
 
       @Column({
         type: DataType.DATE,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: DataType.NOW,
       })
-      date_of_inspection: Date;
+      date_of_inspection?: Date;
 
       @HasMany(() => Report)
       reports: Report[]

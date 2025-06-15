@@ -32,9 +32,10 @@ import {
     @ForeignKey(() => ControlStation)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    control_station_id: number;
+    control_station_id?: number;
 
     @BelongsTo(() => ControlStation)
     controlStation: ControlStation
@@ -42,25 +43,27 @@ import {
     @ForeignKey(() => Condition)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    condition_id: number;
+    condition_id?: number;
 
     @BelongsTo(() => Condition)
     condition: Condition
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    model: string; // Flash or USB
+    model?: string; // Flash or USB
 
     @ForeignKey(() => ThingToCheckControlStation)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
     })
-    things_to_check_id: number;
+    things_to_check_id?: number;
 
     @BelongsTo(() => ThingToCheckControlStation)
     thingsToCheck: ThingToCheckControlStation
@@ -68,21 +71,23 @@ import {
     @Column({
       type: DataType.DATE,
       allowNull: true,
+      defaultValue: null,
     })
-    date_of_inspection: Date;
+    date_of_inspection?: Date;
 
     @Column({
       type: DataType.STRING,
       allowNull: true,
+      defaultValue: null,
     })
-    remarks: string;
+    remarks?: string;
 
     @ForeignKey(() => User)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
     })
-    user_id: number;
+    user_id?: number;
 
     @BelongsTo(() => User)
     user: User

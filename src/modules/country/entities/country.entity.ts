@@ -15,22 +15,25 @@ export class Country extends Model<Country> {
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
         unique: true,
+        defaultValue: null,
     })
-    name: string;
+    name?: string;
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
     })
-    code: string;
+    code?: string;
 
     @Column({
         type: DataType.STRING,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
     })
-    phone_code: string;
+    phone_code?: string;
 
     @HasMany(() => User)
     users: User[];

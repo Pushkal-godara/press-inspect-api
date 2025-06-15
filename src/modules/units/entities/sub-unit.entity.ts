@@ -26,16 +26,18 @@ import { Comments } from './comments.entity';
   
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    sub_unit_name: string;
+    sub_unit_name?: string;
 
     @ForeignKey(() => Unit)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    unit_id: number;
+    unit_id?: number;
 
     @BelongsTo(() => Unit)
     unit: Unit

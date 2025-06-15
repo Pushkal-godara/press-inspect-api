@@ -24,9 +24,10 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    station_name: string;
+    station_name?: string;
 
     @HasMany(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns[]

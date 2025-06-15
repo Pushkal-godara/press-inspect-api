@@ -28,10 +28,11 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: true,
+      unique: true,
+      defaultValue: null,
     })
-    name: string;
+    name?: string;
 
     @HasMany(() => DeliveryTypeCategory)
     deliveryTypeCategories: DeliveryTypeCategory[]

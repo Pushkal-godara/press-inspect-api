@@ -25,15 +25,17 @@ import { ModelEntity } from '../../models/entities/model.entity';
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    company_name: string;
+    company_name?: string;
 
     @Column({
         type: DataType.TEXT,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
     })
-    address: string;
+    address?: string;
 
     @HasMany(() => ModelEntity)
     models: ModelEntity[]

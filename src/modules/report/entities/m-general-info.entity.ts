@@ -24,9 +24,11 @@ import {
 
     @Column({
       type: DataType.TEXT,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
+      unique: true
     })
-    question: string;
+    question?: string;
 
     @HasMany(() => GeneralInfoTxn)
     generalInfoTxns: GeneralInfoTxn[]

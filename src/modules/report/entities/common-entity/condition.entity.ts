@@ -27,12 +27,13 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
       validate: {
         isIn: [Object.values(ConditionName)],
       },
     })
-    name: ConditionName;
+    name?: ConditionName;
 
     @HasMany(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns[]

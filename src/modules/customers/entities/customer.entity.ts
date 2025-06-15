@@ -22,33 +22,38 @@ export class Customer extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  name: string;
+  name?: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: true,
+    defaultValue: null,
   })
-  address: string;
+  address?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: null,
   })
-  contact_person: string;
+  contact_person?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: null,
   })
-  email: string;
+  email?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: null,
   })
-  phone: string;
+  phone?: string;
 
   @HasMany(() => Report)
   reports: Report[];
@@ -56,12 +61,14 @@ export class Customer extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW
   })
   created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW
   })
   updated_at?: Date;
 }

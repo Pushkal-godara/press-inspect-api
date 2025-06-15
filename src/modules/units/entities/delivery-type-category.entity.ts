@@ -31,9 +31,10 @@ export class DeliveryTypeCategory extends Model {
     @ForeignKey(() => User)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
     })
-    user_id: number;
+    user_id?: number;
 
     @BelongsTo(() => User)
     user: User;
@@ -41,9 +42,10 @@ export class DeliveryTypeCategory extends Model {
     @ForeignKey(() => DeliveryType)
     @Column({
         type: DataType.INTEGER,
-        allowNull: false,
+        allowNull: true,
+        defaultValue: null,
     })
-    delivery_type_id: number;
+    delivery_type_id?: number;
 
     @BelongsTo(() => DeliveryType)
     deliveryType: DeliveryType;
@@ -51,8 +53,9 @@ export class DeliveryTypeCategory extends Model {
     @Column({
         type: DataType.DATE,
         allowNull: true,
+        defaultValue: null,
     })
-    date_of_inspection: Date;
+    date_of_inspection?: Date;
 
     @HasMany(() => Report)
     reports: Report[];

@@ -22,78 +22,89 @@ export class User extends Model<User> {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  first_name: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  last_name: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  passport_number: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-    unique: true,
-  })
-  email: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  mobile: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  password: string;
-
-  @Column({
-    type: DataType.DATE,
-    allowNull: false,
-    defaultValue: DataType.NOW,
-  })
-  joining_date: Date;
-
-  @Column({
-    type: DataType.TEXT,
-    allowNull: false,
-  })
-  address: string;
-
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  city: string;
+  first_name?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: null,
   })
-  state: string;
+  last_name?: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  pincode: string;
+  passport_number?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    unique: true,
+    defaultValue: null,
+  })
+  email?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  mobile?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  password?: string;
+
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  joining_date?: Date;
+
+  @Column({
+    type: DataType.TEXT,
+    allowNull: true,
+    defaultValue: null,
+  })
+  address?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  city?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  state?: string;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+    defaultValue: null,
+  })
+  pincode?: string;
 
   @ForeignKey(() => Country)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  country_id: number;
+  country_id?: number;
 
   @BelongsTo(() => Country)
   country: Country;
@@ -101,51 +112,52 @@ export class User extends Model<User> {
   @Column({
     type: DataType.STRING,
     allowNull: true,
-    field: 'company_name',
+    defaultValue: null,
   })
-  company_name: string;
+  company_name?: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-    field: 'registration_id',
+    allowNull: true,
+    unique: true,
+    defaultValue: null,
   })
   registration_id: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
-    field: 'cv_url',
+    defaultValue: null,
   })
-  cv_url: string;
+  cv_url?: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: true,
-    field: 'work_experience',
+    defaultValue: null,
   })
-  work_experience: string;
+  work_experience?: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
-    field: 'passport_expiry_date',
+    defaultValue: null,
   })
-  passport_expiry_date: Date;
+  passport_expiry_date?: Date;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
-    field: 'passport_attachment',
+    defaultValue: null,
   })
-  passport_attachment: string;
+  passport_attachment?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
-    field: 'photo_of_engineer',
+    defaultValue: null,
   })
-  photo_of_engineer: string;
+  photo_of_engineer?: string;
 
   @BelongsToMany(() => Role, () => UserRole)
   roles: Role[];
@@ -171,12 +183,14 @@ export class User extends Model<User> {
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
   created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
   updated_at?: Date;
 
@@ -185,6 +199,6 @@ export class User extends Model<User> {
     allowNull: true,
     defaultValue: true
   })
-  is_active: boolean;
+  is_active?: boolean;
 
 }

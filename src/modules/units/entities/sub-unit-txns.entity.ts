@@ -31,16 +31,18 @@ import {
 
     @Column({
       type: DataType.TEXT,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    remarks: string;
+    remarks?: string;
 
     @ForeignKey(() => ModelEntity)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    model_id: number;
+    model_id?: number;
 
     @BelongsTo(() => ModelEntity)
     model: ModelEntity
@@ -48,9 +50,10 @@ import {
     @ForeignKey(() => ThingsToCheckUnits)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    things_to_check_id: number;
+    things_to_check_id?: number;
 
     @BelongsTo(() => ThingsToCheckUnits) 
     thingsToCheck: ThingsToCheckUnits
@@ -58,9 +61,10 @@ import {
     @ForeignKey(() => Condition)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    condition_id: number;
+    condition_id?: number;
 
     @BelongsTo(() => Condition)
     condition: Condition
@@ -68,9 +72,10 @@ import {
     @ForeignKey(() => User)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    user_id: number;
+    user_id?: number;
 
     @BelongsTo(() => User)
     user: User
@@ -78,9 +83,10 @@ import {
     @ForeignKey(() => SubUnit)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    sub_unit_id: number;
+    sub_unit_id?: number;
 
     @BelongsTo(() => SubUnit)
     subUnit: SubUnit
@@ -88,18 +94,20 @@ import {
     @ForeignKey(() => CoatingSystemUnit)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    coating_system_unit_id: number;
+    coating_system_unit_id?: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit
 
     @Column({
       type: DataType.DATE,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    txns_date: Date;
+    txns_date?: Date;
 
     @HasMany(() => Report)
     reports: Report[];

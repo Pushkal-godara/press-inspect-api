@@ -28,40 +28,46 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    version_of_device: string;
+    version_of_device?: string;
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    device_condition: string;   //  working, not working
+    device_condition?: string;   //  working, not working
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    comments_for_device_condition: string;
+    comments_for_device_condition?: string;
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    expiry_of_calibration_card: string;  //  Expired, Not Expired
+    expiry_of_calibration_card?: string;  //  Expired, Not Expired
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    comments_for_expiry_of_calibration_card: string;
+    comments_for_expiry_of_calibration_card?: string;
 
     @ForeignKey(() => ColorMeasurments)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    color_measurments_id: number;
+    color_measurments_id?: number;
 
     @BelongsTo(() => ColorMeasurments)
     colorMeasurments: ColorMeasurments
@@ -69,9 +75,10 @@ import {
     @ForeignKey(() => ControlStationTxns)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    control_station_txns_id: number;
+    control_station_txns_id?: number;
 
     @BelongsTo(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns

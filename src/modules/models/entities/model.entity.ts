@@ -34,28 +34,28 @@ export class ModelEntity extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  name: string;
+  name?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
-  serial_number: string;
+  serial_number?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
-  total_impressions: string;
+  total_impressions?: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
   })
-  manufacturer: string;
+  manufacturer?: string;
 
   @Column({
     type: DataType.INTEGER,
@@ -66,11 +66,12 @@ export class ModelEntity extends Model {
       max: 9999
     }
   })
-  year: number;
+  year?: number;
 
   @Column({
     type: DataType.JSON,
-    allowNull: true
+    allowNull: true,
+    defaultValue: null
   })
   metadata?: any;
 
@@ -80,7 +81,7 @@ export class ModelEntity extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  group_id: number;
+  group_id?: number;
 
   @BelongsTo(() => Group)
   group: Group;
@@ -103,7 +104,7 @@ export class ModelEntity extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  seller_id: number;
+  seller_id?: number;
 
   @BelongsTo(() => Seller)
   seller: Seller
@@ -114,20 +115,22 @@ export class ModelEntity extends Model {
     allowNull: true,
     defaultValue: null,
   })
-  buyer_id: number;
-  
+  buyer_id?: number;
+
   @BelongsTo(() => Buyer)
   buyer: Buyer
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW
   })
   created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW
   })
   updated_at?: Date;
 }

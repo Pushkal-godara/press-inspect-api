@@ -195,7 +195,6 @@ export class UserController {
   @Roles('SuperAdmin', 'Admin', 'Customer', 'PrePressInspector', 'PressInspector', 'PostPressInspector', 'PackagingInspector')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Update user by ID (with optional file uploads)' })
-  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -206,6 +205,7 @@ export class UserController {
       s3UploadConfig,
     ),
   )
+  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @ApiBody({
     schema: {
       type: 'object',

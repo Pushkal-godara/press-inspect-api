@@ -27,16 +27,18 @@ import {
 
     @Column({
       type: DataType.TEXT,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    answer: string;
+    answer?: string;
 
     @ForeignKey(() => GeneralInfoQuestion)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    question_id: number;
+    question_id?: number;
 
     @BelongsTo(() => GeneralInfoQuestion)
     generalInfo: GeneralInfoQuestion
@@ -44,9 +46,10 @@ import {
     @ForeignKey(() => ModelEntity)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    model_id: number;
+    model_id?: number;
 
     @BelongsTo(() => ModelEntity)
     model: ModelEntity
@@ -54,24 +57,27 @@ import {
     @ForeignKey(() => User)
     @Column({
       type: DataType.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    inspector_id: number;
+    inspector_id?: number;
 
     @BelongsTo(() => User)
     user: User
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    inspection_place: string
+    inspection_place?: string
 
     @Column({
       type: DataType.DATE,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: DataType.NOW,
     })
-    inspection_date: Date
+    inspection_date?: Date
 
     @HasMany(() => Report)
     reports: Report[]

@@ -27,9 +27,10 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null,
     })
-    coating_system: string;
+    coating_system?: string;
 
     @HasMany(() => SubUnitTxn)
     subUnitTxns: SubUnitTxn[]

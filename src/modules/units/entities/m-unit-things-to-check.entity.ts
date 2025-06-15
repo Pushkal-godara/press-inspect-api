@@ -41,7 +41,7 @@ export class ThingsToCheckUnits extends Model {
         allowNull: true,
         defaultValue: null
     })
-    sub_unit_id: number;
+    sub_unit_id?: number;
 
     @BelongsTo(() => SubUnit)
     subUnit: SubUnit;
@@ -52,7 +52,7 @@ export class ThingsToCheckUnits extends Model {
         allowNull: true,
         defaultValue: null
     })
-    coating_system_unit_id: number;
+    coating_system_unit_id?: number;
 
     @BelongsTo(() => CoatingSystemUnit)
     coatingSystemUnit: CoatingSystemUnit
@@ -62,7 +62,7 @@ export class ThingsToCheckUnits extends Model {
         allowNull: true,
         defaultValue: DataType.NOW
     })
-    created_at: Date;
+    created_at?: Date;
 
     @HasMany(() => SubUnitTxn)
     subUnitTxns: SubUnitTxn[]

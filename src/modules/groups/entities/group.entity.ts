@@ -23,10 +23,11 @@ export class Group extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     unique: true,
+    defaultValue: null
   })
-  name: string;
+  name?: string;
 
   @HasMany(() => ModelEntity)
   models: ModelEntity[];
@@ -37,12 +38,14 @@ export class Group extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: null
   })
   created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: null
   })
   updated_at?: Date;
 }

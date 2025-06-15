@@ -23,24 +23,26 @@ export class Unit extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     unique: true,
+    defaultValue: null,
   })
-  name: string;
+  name?: string;
 
   @HasMany(() => SubUnit)
   subUnits: SubUnit[];
 
+  @Column({
+    type: DataType.DATE,
+    allowNull: true,
+    defaultValue: DataType.NOW,
+  })
+  created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
-  created_at: Date;
-
-  @Column({
-    type: DataType.DATE,
-    allowNull: true,
-  })
-  updated_at: Date;
+  updated_at?: Date;
 }

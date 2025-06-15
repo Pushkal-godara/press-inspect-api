@@ -26,17 +26,19 @@ export class Comments extends Model {
 
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
     unique: true,
+    defaultValue: null,
   })
-  name: string;
+  name?: string;
 
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  user_id: number;
+  user_id?: number;
 
   @BelongsTo(() => User)
   user: User;
@@ -44,9 +46,10 @@ export class Comments extends Model {
   @ForeignKey(() => SubUnit)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
-  sub_unit_id: number;
+  sub_unit_id?: number;
 
   @BelongsTo(() => SubUnit)
   subUnit: SubUnit
@@ -54,12 +57,14 @@ export class Comments extends Model {
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: null,
   })
-  date_of_inspection: Date;
+  date_of_inspection?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
-  updated_at: Date;
+  updated_at?: Date;
 }

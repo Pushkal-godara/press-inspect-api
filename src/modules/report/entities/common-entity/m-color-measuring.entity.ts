@@ -24,9 +24,10 @@ import {
 
     @Column({
       type: DataType.STRING,
-      allowNull: false,
+      allowNull: true,
+      defaultValue: null
     })
-    device_name: string;
+    device_name?: string;
 
     @HasMany(() => ColorMeasurementTxns)
     colorMeasurementTxns: ColorMeasurementTxns[]
