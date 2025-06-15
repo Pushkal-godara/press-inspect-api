@@ -26,6 +26,7 @@ import {
 } from './dto/control-station-things-to-check.dto';
 import { ColorMeasuringTxnDto } from './dto/color-measuring-txn.dto';
 import { ColorMeasuringDeviceDto } from './dto/color-measuring.dto';
+import { CreateReportDto } from './dto/report.dto';
 
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { PermissionGuard } from '../../core/guards/permission.guard';
@@ -39,6 +40,24 @@ import { RolesGuard } from 'src/core/guards/roles.guard';
 @Controller('reports')
 export class ReportsController {
   constructor(private readonly reportsService: ReportsService) { }
+
+  @RequirePermissions('reports:create')
+  @Roles('Engineer', 'Admin', 'SuperAdmin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post('create')
+  createReport(@Body() createReportDto: CreateReportDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createReport(createReportDto, currentUser);
+  }
+
+  @RequirePermissions('reports:read')
+  @Roles('Engineer', 'Admin', 'SuperAdmin', 'Customer')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Get('all')
+  findAllReports(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllReports(currentUser);
+  }
 
   @RequirePermissions('reports:create')
   @Roles('Engineer', 'Admin', 'SuperAdmin')

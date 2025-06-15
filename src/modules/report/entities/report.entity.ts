@@ -34,7 +34,8 @@ export class Report extends Model {
   @ForeignKey(() => SubUnitTxn)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   sub_unit_id: number;
 
@@ -44,7 +45,8 @@ export class Report extends Model {
   @ForeignKey(() => DeliveryTypeCategory)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   delivery_type_id: number;
 
@@ -54,7 +56,8 @@ export class Report extends Model {
   @ForeignKey(() => CoatingSystemTxn)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   coating_system_id: number;
 
@@ -64,7 +67,8 @@ export class Report extends Model {
   @ForeignKey(() => Customer)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   customer_id: number;
 
@@ -74,7 +78,8 @@ export class Report extends Model {
   @ForeignKey(() => User)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   inspector_id: number;
 
@@ -84,7 +89,8 @@ export class Report extends Model {
   @ForeignKey(() => Group)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   group_id: number;
 
@@ -94,7 +100,8 @@ export class Report extends Model {
   @ForeignKey(() => ModelEntity)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   model_id: number;
 
@@ -104,7 +111,8 @@ export class Report extends Model {
   @ForeignKey(() => GeneralInfoTxn)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   general_info_id: number;
 
@@ -114,7 +122,8 @@ export class Report extends Model {
   @ForeignKey(() => ControlStationTxns)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   control_station_id: number;
 
@@ -124,7 +133,8 @@ export class Report extends Model {
   @ForeignKey(() => ColorMeasurementTxns)
   @Column({
     type: DataType.INTEGER,
-    allowNull: false,
+    allowNull: true,
+    defaultValue: null,
   })
   color_measurement_id: number;
 
@@ -134,12 +144,13 @@ export class Report extends Model {
   @Column({
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: null,
   })
   inspection_place: string;
 
   @Column({
     type: DataType.DATE,
-    allowNull: false,
+    allowNull: true,
     defaultValue: DataType.NOW,
   })
   inspection_date: Date;
@@ -148,36 +159,42 @@ export class Report extends Model {
     type: DataType.FLOAT,
     allowNull: true,
     field: 'overall_score',
+    defaultValue: null,
   })
   overall_score: number;
 
   @Column({
     type: DataType.ENUM('Excellent', 'Good', 'Average', 'Bad'),
     allowNull: true,
+    defaultValue: null,
   })
   overall_grade: string;
 
   @Column({
     type: DataType.ENUM('Draft', 'Completed', 'Submitted'),
     allowNull: true,
+    defaultValue: null,
   })
   status: string;
 
   @Column({
     type: DataType.TEXT,
     allowNull: true,
+    defaultValue: null,
   })
   additional_comments: string;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
   created_at?: Date;
 
   @Column({
     type: DataType.DATE,
     allowNull: true,
+    defaultValue: DataType.NOW,
   })
   updated_at?: Date;
 

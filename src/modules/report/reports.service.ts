@@ -11,11 +11,13 @@ import { ControlStation } from 'src/modules/report/entities/common-entity/m-cont
 import { ThingToCheckControlStation } from 'src/modules/report/entities/common-entity/m-things-to-check.entity';
 import { ColorMeasurments } from 'src/modules/report/entities/common-entity/m-color-measuring.entity';
 import { ColorMeasurementTxns } from 'src/modules/report/entities/common-entity/color-measuring-txns.entity';
+import { Report } from './entities/report.entity';
 
 import {
   CreateControlStationThingsToCheckDto,
   UpdateControlStationThingsToCheckDto
 } from './dto/control-station-things-to-check.dto';
+import { CreateReportDto } from './dto/report.dto';
 import { CreateBuyerSellerDto } from './dto/create-buyer-seller.dto';
 import { UpdateBuyerSellerDto } from './dto/update-buyer-seller.dto';
 import { GeneralInfoDto } from './dto/general-info-txn.dto';
@@ -50,6 +52,24 @@ export class ReportsService {
     @InjectModel(ModelEntity)
     private machineModel: typeof ModelEntity
   ) { }
+
+  async createReport(createReportDto: CreateReportDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await Report.create({
+      ...createReportDto
+    });
+    return report;
+  }
+
+  async findAllReports(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await Report.findAll();
+    return reports;
+  }
 
   async createBuyer(createBuyerSellerDto: CreateBuyerSellerDto, currentUser: any) {
     if (!currentUser) {
