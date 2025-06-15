@@ -62,7 +62,6 @@ export class UserController {
   @Roles('SuperAdmin', 'Admin')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Create a new user (with optional file uploads)' })
-  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -73,6 +72,7 @@ export class UserController {
       s3UploadConfig,
     ),
   )
+  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @ApiBody({
     schema: {
       type: 'object',
@@ -114,6 +114,7 @@ export class UserController {
       photoOfEngineer?: Express.Multer.File[];
     },
   ) {
+    console.log('🔍 DTO keys received:', Object.keys(createUserDto));
     const currentUser = req.user;
     const uploadedFiles = {
       cv: null,
