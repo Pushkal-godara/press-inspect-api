@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, IsJSON, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsJSON, IsNotEmpty, IsObject, IsOptional, IsString, IsUUID } from 'class-validator';
 
 export class CreateModelDto {
   @ApiProperty()
@@ -10,12 +10,12 @@ export class CreateModelDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  serialNumber: string;
+  serial_number: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  totalImpressions: string;
+  total_impressions: string;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -29,21 +29,21 @@ export class CreateModelDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsJSON()
-  metadata?: object;
+  @IsObject()
+  metadata?: Record<string, any>;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  groupId: number;
+  group_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  buyerId: number;
+  buyer_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  sellerId: number;
+  seller_id: number;
 }

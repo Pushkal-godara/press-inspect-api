@@ -40,6 +40,7 @@ export class ModelEntity extends Model {
     type: DataType.STRING,
     allowNull: true,
     defaultValue: null,
+    unique: true,
   })
   serial_number?: string;
 

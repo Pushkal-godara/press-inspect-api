@@ -10,6 +10,7 @@ import { UnitsService } from '../modules/units/units.service';
 import { Unit } from 'src/modules/units/entities/unit.entity';
 import { User } from 'src/modules/user/entities/user.entity';
 import { Country } from 'src/modules/country/entities/country.entity';
+import { Group } from 'src/modules/groups/entities/group.entity';
 import * as bcrypt from 'bcrypt';
 
 async function bootstrap() {
@@ -303,7 +304,7 @@ async function bootstrap() {
 
   for (const group of groups) {
     try {
-      const created = await groupsService.create(group);
+      const created = await Group.create(group);
       createdGroups[group.name] = created.id;
       console.log(`Created group: ${group.name}`);
     } catch (error) {

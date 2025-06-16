@@ -46,6 +46,18 @@ export class GroupsController {
     return this.groupsService.findAll(currentUser);
   }
 
+  @RequirePermissions('groups:create')
+  @Roles('Admin', 'SuperAdmin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @Post()
+  create(@Body() createGroupDto: CreateGroupDto, @Req() req) {
+    const currentUser = req.user;
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    return this.groupsService.create(createGroupDto, currentUser);
+  }
+
   // @Get(':id')
   // @RequirePermissions('groups:read')
   // findOne(@Param('id') id: string) {

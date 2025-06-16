@@ -41,8 +41,10 @@ export class GroupsService {
     return group;
   }
 
-  async create(createGroupDto: CreateGroupDto): Promise<Group> {
-    return this.groupModel.create(createGroupDto as any);
+  async create(createGroupDto: CreateGroupDto, currentUser: any): Promise<Group> {
+    const group = await this.groupModel.create({ ...createGroupDto} );
+    // You can add additional logic here if needed
+    return group;
   }
 
   async update(id: string, updateGroupDto: UpdateGroupDto): Promise<Group> {
