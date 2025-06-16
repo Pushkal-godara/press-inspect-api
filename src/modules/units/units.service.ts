@@ -162,11 +162,15 @@ export class UnitsService {
     return thingsToCheck;
   }
 
-  async findAllThingsToCheckUnits(currentUser: any): Promise<ThingsToCheckUnits[]> {
+  async findAllThingsToCheckUnits(currentUser: any, subUnitId: number): Promise<ThingsToCheckUnits[]> {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
-    return this.thingsToCheckUnitsModel.findAll();
+    return this.thingsToCheckUnitsModel.findAll({
+      where: {
+        sub_unit_id: subUnitId
+      }
+    });
   }
 
   async createCoatingSystemUnits(createCoatingSystemUnitsDto: CreateCoatingSystemUnitDto, currentUser: any): Promise<CoatingSystemUnit> {

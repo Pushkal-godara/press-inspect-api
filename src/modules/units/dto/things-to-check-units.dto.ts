@@ -13,9 +13,9 @@ export class CreateThingsToCheckUnitsDto {
   subUnitId: number;
 
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsInt()
-  coatingSystemUnitId: number;
+  coatingSystemUnitId?: number;
 
   @ApiProperty()
   @IsNotEmpty()

@@ -144,10 +144,10 @@ export class UnitsController {
   @RequirePermissions('units:read')
   @Roles('Engineer', 'Admin', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
-  @Get('read/things-to-check-units')
-  findAllThingsToCheckUnits(@Req() req) {
+  @Get('read/things-to-check-units/:sub_unit_id')
+  findAllThingsToCheckUnits(@Param('sub_unit_id') subUnitId: number, @Req() req) {
     const currentUser = req.user;
-    return this.unitsService.findAllThingsToCheckUnits(currentUser);
+    return this.unitsService.findAllThingsToCheckUnits(currentUser, +subUnitId);
   }
 
   @RequirePermissions('units:create')
