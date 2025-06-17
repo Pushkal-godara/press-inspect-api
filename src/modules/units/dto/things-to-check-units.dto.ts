@@ -5,42 +5,34 @@ export class CreateThingsToCheckUnitsDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  thingsToCheck: string;
+  things_to_check: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  subUnitId: number;
+  sub_unit_id: number;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  coatingSystemUnitId?: number;
+  coating_system_unit_id?: number;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsDate()
-  created_at: Date;
 }
 
 export class UpdateThingsToCheckUnitsDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
-  thingsToCheck: string;
+  things_to_check: string;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  subUnitId: number;
+  sub_unit_id?: number;
 
   @ApiProperty()
   @IsOptional()
   @IsInt()
-  coatingSystemUnitId: number;
+  coating_system_unit_id?: number;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsDate()
-  updated_at: Date;
 }

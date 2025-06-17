@@ -33,7 +33,7 @@ import {
         isIn: [Object.values(ConditionName)],
       },
     })
-    name?: ConditionName;
+    name?: ConditionName;  // TODO make this column unique
 
     @HasMany(() => ControlStationTxns)
     controlStationTxns: ControlStationTxns[]

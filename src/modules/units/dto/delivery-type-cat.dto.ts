@@ -4,13 +4,13 @@ import { ApiProperty } from '@nestjs/swagger';
 export class CreateDeliveryTypeCategoryDto {
   @ApiProperty()
   @IsInt()
-  userId: number;
+  user_id: number;
 
   @ApiProperty()
   @IsInt()
-  deliveryTypeId: number;
+  delivery_type_id: number;
 
   @ApiProperty()
   @IsDate()
-  dateOfInspection?: Date;
+  date_of_inspection?: Date;
 }

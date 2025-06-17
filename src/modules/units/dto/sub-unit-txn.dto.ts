@@ -1,5 +1,6 @@
-import { IsNotEmpty, IsInt, IsDate, IsString } from 'class-validator';
+import { IsNotEmpty, IsInt, IsDate, IsString, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateSubUnitTxnDto {
   @ApiProperty()
@@ -10,25 +11,36 @@ export class CreateSubUnitTxnDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  modelId: number;
+  model_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  thingsToCheckId: number;
+  things_to_check_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  conditionId: number;
+  condition_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  userId: number;
+  user_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
+  @IsInt()
+  sub_unit_id: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsInt()
+  coating_system_unit_id?: number;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @Type(() => Date)
   @IsDate()
-  txnsDate: Date;
+  txns_date: Date;
 }

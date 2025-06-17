@@ -1,5 +1,6 @@
 import { IsDate, IsInt, IsNotEmpty, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class GeneralInfoDto {
     @ApiProperty()
@@ -10,25 +11,26 @@ export class GeneralInfoDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsInt()
-    questionId: number;
+    question_id: number;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsInt()
-    modelId: number;
+    model_id: number;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsInt()
-    inspectorId: number;
+    inspector_id: number;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    inspectionPlace: string;
+    inspection_place: string;
 
     @ApiProperty()
     @IsNotEmpty()
+    @Type(() => Date)
     @IsDate()
-    inspectionDate: Date;
+    inspection_date: Date;
 }

@@ -12,6 +12,7 @@ import { ThingToCheckControlStation } from 'src/modules/report/entities/common-e
 import { ColorMeasurments } from 'src/modules/report/entities/common-entity/m-color-measuring.entity';
 import { ColorMeasurementTxns } from 'src/modules/report/entities/common-entity/color-measuring-txns.entity';
 import { Report } from './entities/report.entity';
+import { Condition } from './entities/common-entity/condition.entity';
 
 import {
   CreateControlStationThingsToCheckDto,
@@ -26,6 +27,7 @@ import { ControlStationDto } from './dto/control-station.dto';
 import { ControlStationTxnDto } from './dto/control-station-txn.dto';
 import { ColorMeasuringDeviceDto } from './dto/color-measuring.dto';
 import { ColorMeasuringTxnDto } from './dto/color-measuring-txn.dto';
+import { ConditionDto } from './dto/condition.dto';
 
 
 @Injectable()
@@ -49,6 +51,8 @@ export class ReportsService {
     private colorMeasurmentsModel: typeof ColorMeasurments,
     @InjectModel(ColorMeasurementTxns)
     private colorMeasurementTxnsModel: typeof ColorMeasurementTxns,
+    @InjectModel(Condition)
+    private conditionModel: typeof Condition,
     @InjectModel(ModelEntity)
     private machineModel: typeof ModelEntity
   ) { }
@@ -297,5 +301,23 @@ export class ReportsService {
     }
     const reports = await this.colorMeasurementTxnsModel.findAll();
     return reports;
+  }
+
+  async findAllConditions(currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const reports = await this.conditionModel.findAll();
+    return reports;
+  }
+
+  async createCondition(conditionDto: ConditionDto, currentUser: any) {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    const report = await this.conditionModel.create({
+      ...conditionDto
+    });
+    return report;
   }
 }

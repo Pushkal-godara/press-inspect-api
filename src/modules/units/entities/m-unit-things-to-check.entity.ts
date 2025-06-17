@@ -50,7 +50,7 @@ export class ThingsToCheckUnits extends Model {
     @Column({
         type: DataType.INTEGER,
         allowNull: true,
-        defaultValue: null
+        defaultValue: null,
     })
     coating_system_unit_id?: number;
 

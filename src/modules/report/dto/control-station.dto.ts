@@ -5,5 +5,5 @@ export class ControlStationDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    stationName: string;
+    station_name: string;
 }

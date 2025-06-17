@@ -9,10 +9,10 @@ export class CreateCommentsDto {
 
   @ApiProperty()
   @IsInt()
-  userId: number;
+  user_id: number;
 
   @ApiProperty()
   @IsDate()
-  dateOfInspection?: Date;
+  date_of_inspection?: Date;
 
 }

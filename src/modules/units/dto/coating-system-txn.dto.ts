@@ -5,12 +5,12 @@ export class CreateCoatingSystemTxnDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  conditionId: number;
+  condition_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  thingsToCheckId: number;
+  things_to_check_id: number;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -20,35 +20,35 @@ export class CreateCoatingSystemTxnDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  makeOfUvDryer: string;
+  make_of_uv_dryer: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  noOfAniloxRoller: string;
+  no_of_anilox_roller: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  aniloxRollerSpec: string;
+  anilox_roller_spec: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  coatingRemoteControl: string;
+  coating_remote_control: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  additionalSpares: string;
+  additional_spares: string;
 
   @ApiProperty()
   @IsInt()
   @IsNotEmpty()
-  userId: number;
+  user_id: number;
 
   @ApiProperty()
   @IsDate()
   @IsNotEmpty()
-  dateOfInspection: Date;
+  date_of_inspection: Date;
 }

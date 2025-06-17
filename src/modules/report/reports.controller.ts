@@ -33,6 +33,7 @@ import { PermissionGuard } from '../../core/guards/permission.guard';
 import { RequirePermissions } from '../../core/decorators/permission.decorator';
 import { Roles } from 'src/core/decorators/public.decorator';
 import { RolesGuard } from 'src/core/guards/roles.guard';
+import { ConditionDto } from './dto/condition.dto';
 
 @ApiTags('Reports')
 @ApiBearerAuth('access_token')
@@ -266,6 +267,18 @@ export class ReportsController {
   findAllColorMeasuringTxn(@Req() req) {
     const currentUser = req.user;
     return this.reportsService.findAllColorMeasuringTxn(currentUser);
+  }
+
+  @Get('getAll/conditions')
+  findAllConditions(@Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.findAllConditions(currentUser);
+  }
+
+  @Post('create/condition')
+  createCondition(@Body() conditionDto: ConditionDto, @Req() req) {
+    const currentUser = req.user;
+    return this.reportsService.createCondition(conditionDto, currentUser);
   }
 
 }

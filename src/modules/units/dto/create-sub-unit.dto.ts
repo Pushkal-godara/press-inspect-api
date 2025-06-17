@@ -5,11 +5,11 @@ export class CreateSubUnitDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    subUnitName: string;
+    sub_unit_name: string;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsInt()
-    unitId: number;
+    unit_id: number;
 
 }

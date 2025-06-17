@@ -22,6 +22,9 @@ import { CreateCoatingSystemUnitDto } from './dto/coating-system-unit.dto';
 import { CreateDeliveryTypeCategoryDto } from './dto/delivery-type-cat.dto';
 import { CreateCommentsDto } from './dto/comments.dto';
 import { CreateCoatingSystemTxnDto } from './dto/coating-system-txn.dto';
+import { ModelEntity } from '../models/entities/model.entity';
+import { Condition } from '../report/entities/common-entity/condition.entity';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class UnitsService {
@@ -125,7 +128,31 @@ export class UnitsService {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
-    return this.subUnitTxnModel.findAll();
+    return this.subUnitTxnModel.findAll({
+      include: [
+        {
+          model: SubUnit,
+          attributes: ['id', 'sub_unit_name'],
+        },
+        {
+          model: ModelEntity,
+          attributes: ['id', 'name', 'serial_number'],
+        },
+        {
+          model: ThingsToCheckUnits,
+          attributes: ['id', 'things_to_check', 'sub_unit_id'],
+        },
+        {
+          model: Condition,
+          attributes: ['id', 'name']
+        },
+        {
+          model: User,
+          attributes: ['id', 'first_name', 'last_name']
+        },
+      ],
+      attributes: ['id', 'remarks', 'coating_system_unit_id', 'txns_date']
+    });
   }
 
   // async updateSubUnitTxn(id: number, updateSubUnitTxnDto: UpdateSubUnitTxnDto, currentUser: any): Promise<SubUnit> {

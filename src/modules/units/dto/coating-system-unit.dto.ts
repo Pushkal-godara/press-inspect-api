@@ -5,10 +5,10 @@ export class CreateCoatingSystemUnitDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  coatingSystem: string;
+  coating_system: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsInt()
-  unitId: number;
+  unit_id: number;
 }
