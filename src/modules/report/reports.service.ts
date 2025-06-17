@@ -191,7 +191,9 @@ export class ReportsService {
     if (!currentUser) {
       throw new UnauthorizedException('currentUser not found or token expired');
     }
-    const reports = await this.controlStationTxnsModel.findAll();
+    const reports = await this.controlStationTxnsModel.findAll({
+      include: [{ all: true }]
+    });
     return reports;
   }
 
