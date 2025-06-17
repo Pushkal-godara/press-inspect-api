@@ -99,6 +99,7 @@ export class ModelsController {
         techSpecFile: { type: 'string', format: 'binary' },
         file_name: { type: 'string' },
       },
+      required: ['model_id', 'techSpecFile']
     },
   })
   @Post('create-tech-specification')
