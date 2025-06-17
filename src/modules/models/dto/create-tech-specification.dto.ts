@@ -1,24 +1,26 @@
 import { IsOptional, IsInt, IsDateString, IsString, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 
 export class CreateTechSpecificationDto {
-  @ApiProperty({ required: true })
-  @IsInt()
-  @IsNotEmpty()
-  model_id: number;
+    @ApiProperty({ required: true })
+    @Type(() => Number)
+    @IsInt()
+    @IsNotEmpty()
+    model_id: number;
 
-  @ApiProperty({ required: true })
-  @IsDateString()
-  @IsNotEmpty()
-  date_of_upload: Date;
+    @ApiProperty()
+    @IsDateString()
+    @IsOptional()
+    date_of_upload?: Date;
 
-  @ApiProperty({ required: true })
-  @IsString()
-  @IsNotEmpty()
-  pdf: string;
+    @ApiProperty()
+    @IsOptional()
+    @IsNotEmpty()
+    pdf?: string;
 
-  @ApiProperty({ required: true })
-  @IsString()
-  @IsNotEmpty()
-  file_name: string;
+    @ApiProperty()
+    @IsString()
+    @IsOptional()
+    file_name?: string;
 }

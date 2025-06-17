@@ -81,7 +81,6 @@ export class ModelsController {
   @Roles('Engineer', 'SuperAdmin')
   @UseGuards(PermissionGuard, RolesGuard)
   @ApiOperation({ summary: 'Create Tech Specification' })
-  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -90,19 +89,19 @@ export class ModelsController {
       s3UploadConfig,
     ),
   )
+  @ApiConsumes('multipart/form-data', 'application/json') // Accept both
   @ApiBody({
     schema: {
       type: 'object',
       properties: {
         model_id: { type: 'number' },
         date_of_upload: { type: 'string' },
-        pdf: { type: 'string', format: 'binary' },
+        techSpecFile: { type: 'string', format: 'binary' },
         file_name: { type: 'string' },
       },
-      required: ['model_id', 'date_of_upload', 'pdf', 'file_name'],
     },
   })
-  @Post('createTechSpecfication')
+  @Post('create-tech-specification')
   async createTechSpecfication(
     @Body() createTechSpecificationDto: CreateTechSpecificationDto, 
     @Req() req,
