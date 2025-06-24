@@ -17,6 +17,7 @@ import { UpdateUserPasswordDto, UserWithGeneratedPassword } from './dto/update-u
 
 import { RolesService } from '../roles/roles.service';
 import { S3Service } from 'src/services/s3.service';
+import { ReplaceRolesDto } from './dto/replace-roles.dto';
 
 @Injectable()
 export class UserService {
@@ -75,7 +76,7 @@ export class UserService {
     // If role is being assigned and currentUser exists (admin creating user)
     if (createUserDto.role_id && currentUser) {
       // Get the role being assigned
-      const role = await this.rolesService.findById(createUserDto.role_id);
+      const role = await this.rolesService.findById(createUserDto.role_id, currentUser);
 
       // Prevent assigning Admin role unless you're a Super Admin
       if (role.name === 'Admin' && !currentUser.roles.includes('SuperAdmin')) {
@@ -474,18 +475,18 @@ export class UserService {
     return this.findByIdWithRolesAndPermissions(id);
   }
 
-  async removeRole(id: number, roleId: string, currentUser): Promise<User> {
-    const user = await this.findById(id, currentUser);
-    const role = await this.roleModel.findByPk(roleId);
+  // async removeRole(id: number, roleId: string, currentUser): Promise<User> {
+  //   const user = await this.findById(id, currentUser);
+  //   const role = await this.roleModel.findByPk(roleId);
 
-    if (!role) {
-      throw new NotFoundException(`Role with ID ${roleId} not found`);
-    }
+  //   if (!role) {
+  //     throw new NotFoundException(`Role with ID ${roleId} not found`);
+  //   }
 
-    await user.$remove('roles', role);
+  //   await user.$remove('roles', role);
 
-    return this.findByIdWithRolesAndPermissions(id);
-  }
+  //   return this.findByIdWithRolesAndPermissions(id);
+  // }
 
   // Method to find users by country filtering
 
@@ -525,4 +526,244 @@ export class UserService {
     const salt = await bcrypt.genSalt();
     return bcrypt.hash(password, salt);
   }
+
+  // ADD THESE METHODS TO YOUR EXISTING UserService CLASS:
+
+async assignRole(userId: number, addRoleDto: AddRoleDto, currentUser: any): Promise<User> {
+  if (!currentUser) {
+    throw new UnauthorizedException('currentUser not found or token expired');
+  }
+
+  // Find the target user with current roles
+  const targetUser = await this.userModel.findByPk(userId, {
+    include: [
+      {
+        model: Role,
+        attributes: ['id', 'name'],
+        through: { attributes: [] }
+      }
+    ]
+  });
+
+  if (!targetUser) {
+    throw new NotFoundException(`User with ID ${userId} not found`);
+  }
+
+  // Find the role to be assigned
+  const role = await this.roleModel.findByPk(addRoleDto.roleId);
+  if (!role) {
+    throw new NotFoundException(`Role with ID ${addRoleDto.roleId} not found`);
+  }
+
+  // Security checks
+  await this.validateRoleAssignmentPermissions(targetUser, role, currentUser);
+
+  // Check if user already has this role
+  const existingUserRole = await this.userRoleModel.findOne({
+    where: {
+      userId: userId,
+      roleId: addRoleDto.roleId
+    }
+  });
+
+  if (existingUserRole) {
+    throw new BadRequestException('User already has this role');
+  }
+
+  // Assign the role
+  await this.userRoleModel.create({
+    userId: userId,
+    roleId: addRoleDto.roleId
+  });
+
+  return this.findByIdWithRolesAndPermissions(userId);
+}
+
+async removeRole(userId: number, roleId: number, currentUser: any): Promise<User> {
+  if (!currentUser) {
+    throw new UnauthorizedException('currentUser not found or token expired');
+  }
+
+  // Find the target user with current roles
+  const targetUser = await this.userModel.findByPk(userId, {
+    include: [
+      {
+        model: Role,
+        attributes: ['id', 'name'],
+        through: { attributes: [] }
+      }
+    ]
+  });
+
+  if (!targetUser) {
+    throw new NotFoundException(`User with ID ${userId} not found`);
+  }
+
+  // Find the role to be removed
+  const role = await this.roleModel.findByPk(roleId);
+  if (!role) {
+    throw new NotFoundException(`Role with ID ${roleId} not found`);
+  }
+
+  // Security checks
+  await this.validateRoleRemovalPermissions(targetUser, role, currentUser);
+
+  // Check if user has this role
+  const userRole = await this.userRoleModel.findOne({
+    where: {
+      userId: userId,
+      roleId: roleId
+    }
+  });
+
+  if (!userRole) {
+    throw new BadRequestException('User does not have this role');
+  }
+
+  // Prevent removing the last SuperAdmin role
+  if (role.name === 'SuperAdmin') {
+    const superAdminCount = await this.userRoleModel.count({
+      include: [
+        {
+          model: Role,
+          where: { name: 'SuperAdmin' }
+        }
+      ]
+    });
+
+    if (superAdminCount <= 1) {
+      throw new BadRequestException('Cannot remove the last SuperAdmin role');
+    }
+  }
+
+  // Remove the role
+  await userRole.destroy();
+
+  return this.findByIdWithRolesAndPermissions(userId);
+}
+
+async getUserRoles(userId: number, currentUser: any): Promise<Role[]> {
+  if (!currentUser) {
+    throw new UnauthorizedException('currentUser not found or token expired');
+  }
+
+  // Find the user and validate access
+  const user = await this.findById(userId, currentUser);
+
+  // Get user roles
+  const userWithRoles = await this.userModel.findByPk(userId, {
+    include: [
+      {
+        model: Role,
+        attributes: ['id', 'name', 'description', 'status'],
+        through: { attributes: ['created_at'] }
+      }
+    ]
+  });
+
+  return userWithRoles.roles;
+}
+
+async replaceUserRoles(userId: number, replaceRolesDto: ReplaceRolesDto, currentUser: any): Promise<User> {
+  if (!currentUser) {
+    throw new UnauthorizedException('currentUser not found or token expired');
+  }
+
+  // Find the target user
+  const targetUser = await this.userModel.findByPk(userId, {
+    include: [
+      {
+        model: Role,
+        attributes: ['id', 'name'],
+        through: { attributes: [] }
+      }
+    ]
+  });
+
+  if (!targetUser) {
+    throw new NotFoundException(`User with ID ${userId} not found`);
+  }
+
+  // Validate all roles exist
+  const roles = await this.roleModel.findAll({
+    where: {
+      id: {
+        [Op.in]: replaceRolesDto.roleIds
+      }
+    }
+  });
+
+  if (roles.length !== replaceRolesDto.roleIds.length) {
+    throw new BadRequestException('One or more roles do not exist');
+  }
+
+  // Security checks for each role
+  for (const role of roles) {
+    await this.validateRoleAssignmentPermissions(targetUser, role, currentUser);
+  }
+
+  // Use transaction for atomic operation
+  const transaction = await this.userModel.sequelize.transaction();
+
+  try {
+    // Remove all existing roles
+    await this.userRoleModel.destroy({
+      where: { userId: userId },
+      transaction
+    });
+
+    // Add new roles
+    const userRoles = replaceRolesDto.roleIds.map(roleId => ({
+      userId: userId,
+      roleId: roleId
+    }));
+
+    await this.userRoleModel.bulkCreate(userRoles, { transaction });
+
+    await transaction.commit();
+
+    return this.findByIdWithRolesAndPermissions(userId);
+  } catch (error) {
+    await transaction.rollback();
+    throw error;
+  }
+}
+
+// Private helper methods
+private async validateRoleAssignmentPermissions(targetUser: User, role: Role, currentUser: any): Promise<void> {
+  // Prevent non-SuperAdmins from modifying SuperAdmins
+  const targetUserRoles = targetUser.roles.map(r => r.name);
+  if (targetUserRoles.includes('SuperAdmin') && !currentUser.roles.includes('SuperAdmin')) {
+    throw new ForbiddenException('Cannot modify SuperAdmin users');
+  }
+
+  // Prevent Admins from assigning users from other countries
+  if (
+    currentUser.roles.includes('Admin') &&
+    !currentUser.roles.includes('SuperAdmin') &&
+    targetUser.country_id !== currentUser.country
+  ) {
+    throw new ForbiddenException('Cannot modify users from other countries');
+  }
+
+  // Prevent assigning SuperAdmin role unless you're a SuperAdmin
+  if (role.name === 'SuperAdmin' && !currentUser.roles.includes('SuperAdmin')) {
+    throw new ForbiddenException('Only SuperAdmins can assign the SuperAdmin role');
+  }
+
+  // Prevent assigning Admin role unless you're a SuperAdmin
+  if (role.name === 'Admin' && !currentUser.roles.includes('SuperAdmin')) {
+    throw new ForbiddenException('Only SuperAdmins can assign the Admin role');
+  }
+
+  // Prevent users from modifying their own roles
+  if (targetUser.id === currentUser.id) {
+    throw new ForbiddenException('Cannot modify your own roles');
+  }
+}
+
+private async validateRoleRemovalPermissions(targetUser: User, role: Role, currentUser: any): Promise<void> {
+  // Reuse the same validation logic
+  await this.validateRoleAssignmentPermissions(targetUser, role, currentUser);
+}
 }

@@ -15,6 +15,7 @@ import { UserService } from './user.service';
 import { S3Service } from '../../services/s3.service';
 
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
+import { ReplaceRolesDto } from '../user/dto/replace-roles.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 import { AddRoleDto } from './dto/add-role.dto';
@@ -449,86 +450,86 @@ export class UserController {
 
   // New API endpoints for role-permission management for users
 
-  // @RequirePermissions('users:update')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(PermissionGuard, RolesGuard)
-  // @ApiOperation({ summary: 'Assign role to user by user id' })
-  // @Post('roles/:id')
-  // async assignRole(
-  //   @Param('id') userId: number,
-  //   @Body() addRoleDto: AddRoleDto,
-  //   @Req() req
-  // ) {
-  //   const currentUser = req.user;
-  //   if (!currentUser) {
-  //         throw new UnauthorizedException('currentUser not found or token expired');
-  //       }
-  //   const result = await this.userService.assignRole(+userId, addRoleDto, currentUser);
+  @RequirePermissions('users:update')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Assign role to user by user id' })
+  @Post('roles/:id')
+  async assignRole(
+    @Param('id') userId: number,
+    @Body() addRoleDto: AddRoleDto,
+    @Req() req
+  ) {
+    const currentUser = req.user;
+    if (!currentUser) {
+          throw new UnauthorizedException('currentUser not found or token expired');
+        }
+    const result = await this.userService.assignRole(+userId, addRoleDto, currentUser);
 
-  //   return {
-  //     success: true,
-  //     message: 'Role assigned successfully',
-  //     data: result
-  //   };
-  // }
+    return {
+      success: true,
+      message: 'Role assigned successfully',
+      data: result
+    };
+  }
 
-  // @RequirePermissions('users:update')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(PermissionGuard, RolesGuard)
-  // @ApiOperation({ summary: 'Remove role from user' })
-  // @Delete(':id/roles/:roleId')
-  // async removeRole(
-  //   @Param('id') userId: number,
-  //   @Param('roleId') roleId: number,
-  //   @Req() req
-  // ) {
-  //   const currentUser = req.user;
-  //   const result = await this.userService.removeRole(+userId, +roleId, currentUser);
+  @RequirePermissions('users:update')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Remove role from user' })
+  @Delete(':id/roles/:roleId')
+  async removeRole(
+    @Param('id') userId: number,
+    @Param('roleId') roleId: number,
+    @Req() req
+  ) {
+    const currentUser = req.user;
+    const result = await this.userService.removeRole(+userId, +roleId, currentUser);
 
-  //   return {
-  //     success: true,
-  //     message: 'Role removed successfully',
-  //     data: result
-  //   };
-  // }
+    return {
+      success: true,
+      message: 'Role removed successfully',
+      data: result
+    };
+  }
 
-  // @RequirePermissions('users:read')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(PermissionGuard, RolesGuard)
-  // @ApiOperation({ summary: 'Get user roles by user id' })
-  // @Get('roles/:id')
-  // async getUserRoles(
-  //   @Param('id') userId: number,
-  //   @Req() req
-  // ) {
-  //   const currentUser = req.user;
-  //   const roles = await this.userService.getUserRoles(+userId, currentUser);
+  @RequirePermissions('users:read')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Get user roles by user id' })
+  @Get('roles/:id')
+  async getUserRoles(
+    @Param('id') userId: number,
+    @Req() req
+  ) {
+    const currentUser = req.user;
+    const roles = await this.userService.getUserRoles(+userId, currentUser);
 
-  //   return {
-  //     success: true,
-  //     message: 'User roles retrieved successfully',
-  //     data: roles
-  //   };
-  // }
+    return {
+      success: true,
+      message: 'User roles retrieved successfully',
+      data: roles
+    };
+  }
 
-  // @RequirePermissions('users:update')
-  // @Roles('SuperAdmin', 'Admin')
-  // @UseGuards(PermissionGuard, RolesGuard)
-  // @ApiOperation({ summary: 'Replace all user roles' })
-  // @Put(':id/roles')
-  // async replaceUserRoles(
-  //   @Param('id') userId: string,
-  //   @Body() replaceRolesDto: ReplaceRolesDto,
-  //   @Req() req
-  // ) {
-  //   const currentUser = req.user;
-  //   const result = await this.userService.replaceUserRoles(+userId, replaceRolesDto, currentUser);
+  @RequirePermissions('users:update')
+  @Roles('SuperAdmin', 'Admin')
+  @UseGuards(PermissionGuard, RolesGuard)
+  @ApiOperation({ summary: 'Replace all user roles' })
+  @Put('roles/:id')
+  async replaceUserRoles(
+    @Param('id') userId: string,
+    @Body() replaceRolesDto: ReplaceRolesDto,
+    @Req() req
+  ) {
+    const currentUser = req.user;
+    const result = await this.userService.replaceUserRoles(+userId, replaceRolesDto, currentUser);
 
-  //   return {
-  //     success: true,
-  //     message: 'User roles updated successfully',
-  //     data: result
-  //   };
-  // }
+    return {
+      success: true,
+      message: 'User roles updated successfully',
+      data: result
+    };
+  }
 
 }

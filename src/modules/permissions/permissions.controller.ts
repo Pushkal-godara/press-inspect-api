@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../core/guards/jwt-auth.guard';
 import { RolesGuard } from '../../core/guards/roles.guard';
@@ -8,8 +8,8 @@ import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionGuard } from '../../core/guards/permission.guard';
 import { RequirePermissions } from '../../core/decorators/permission.decorator';
 @ApiTags('Permissions')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard, RolesGuard, PermissionGuard)
+@ApiBearerAuth('access_token')
+@UseGuards(JwtAuthGuard)
 @Controller('permissions')
 export class PermissionsController {
   constructor(private readonly permissionsService: PermissionsService) {}
@@ -20,11 +20,12 @@ export class PermissionsController {
   //   return this.permissionsService.create(createPermissionDto);
   // }
 
-  // @Get()
-  // @RequirePermissions('permissions:read')
-  // findAll() {
-  //   return this.permissionsService.findAll();
-  // }
+  @ApiOperation({ summary: 'Get all permissions' })
+  @Get()
+  findAll(@Req() request) {
+    const currentUser = request.user;
+    return this.permissionsService.findAll(currentUser);
+  }
 
   // @Get(':id')
   // @RequirePermissions('permissions:read')

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Permission } from './entities/permission.entity';
 import { CreatePermissionDto } from './dto/create-permission.dto';
@@ -11,8 +11,13 @@ export class PermissionsService {
     private permissionModel: typeof Permission,
   ) {}
 
-  async findAll(): Promise<Permission[]> {
-    return this.permissionModel.findAll();
+  async findAll(currentUser?: any): Promise<Permission[]> {
+    if (!currentUser) {
+      throw new UnauthorizedException('currentUser not found or token expired');
+    }
+    return this.permissionModel.findAll({
+      attributes: ['id', 'name', 'resource', 'action', 'description'],
+    });
   }
 
   async findById(id: string): Promise<Permission> {
